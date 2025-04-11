@@ -1,0 +1,48 @@
+<!-- <p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+ -->
+ 
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'850px': '75vw'}"
+[style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true"  [baseZIndex]="1000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Información General">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="inputLastName" class="label">Código Tabla</label>
+                    <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" [(ngModel)]="dto.CodigoTabla" [disabled]="puedeEditar" />
+                </div>
+                <div class="col-sm-6">
+                     <label for="inputLastName" class="label">Nombre</label>
+                    <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" [(ngModel)]="dto.Nombre" [disabled]="puedeEditar" />
+
+                </div>
+                <div class="col-sm-6">
+                    <label for="inputLastName" class="label">Descripción</label>
+                    <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" [(ngModel)]="dto.Descripcion" [disabled]="puedeEditar"  />
+                </div>
+                <div class="col-sm-6">
+                    <label for="inputLastName" class="label">Versión</label>
+                    <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" [(ngModel)]="dto.Version" [disabled]="puedeEditar" />
+                </div>
+                <div class="col-sm-6">
+                    <label for="inputLastName" class="label">Estado</label>
+                    <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown>
+                </div>
+            </div>
+            <br>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Auditoria">
+            <!-- <ngx-auditoria  ></ngx-auditoria> -->
+        <ngx-auditoria [tipoAuditoria]="">
+        </ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="saveProduct($event)"></p-button>
+    </ng-template>
+</p-dialog>
+<p-toast></p-toast>

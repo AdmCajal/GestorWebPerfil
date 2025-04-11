@@ -1,0 +1,256 @@
+<p-blockUI [blocked]="bloquearPag">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-confirmDialog #c key="confirm2">
+    <p-footer>
+        <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+            (click)="c.accept()"></button>
+        <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded"
+            (click)="c.reject()"></button>
+    </p-footer>
+</p-confirmDialog>
+
+<p-card>
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="titulonuevo">Contrato</h4>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-sm-2" style="background-color: transparent;"></div>
+        <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+            <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+                (click)="coreBuscar()"></button>
+            <button pButton icon="fa fa-file" type="button" title="Nuevo" label="Nuevo" class="p-button-secondary"
+                (click)="coreNuevo()"></button>
+            <button pButton icon="fa fa-file-pdf" type="button" title="Anulacion Venta" label="Anulacion"
+                class="p-button-secondary" (click)="coreinactivar(seleccion)"></button>
+            <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+                styleClass="p-button-text p-button-secondary" [model]="ltsExportar"></p-splitButton>
+        </div>
+    </div>
+    <p-fieldset legend="Información Consulta" (keyup.enter)="coreBuscar()">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Compañia</label>
+                <p-dropdown [(ngModel)]="filtro.CompaniaCodigo" [options]="lstCompania"
+                    (onChange)="selectedItemcompania($event)"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Sucursal</label>
+                <p-dropdown [(ngModel)]="filtro.IdSede" [options]="lstSucursal" (onChange)="cargarComboPrograma()"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Programa</label>
+                <p-dropdown [(ngModel)]="filtro.IdProyecto" [options]="lstPrograma"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}"
+                    (onChange)="selectedItemPrograma($event)"></p-dropdown>
+            </div>
+
+            <!-- <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Manzana</label>
+                <p-dropdown [(ngModel)]="filtro.IdManzana" [options]="lstManzana"
+                [style]="{'width':'100%','text-transform': 'uppercase'}" (onChange)="selectedItemManzana($event)"></p-dropdown>
+            </div>
+
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Lote</label>
+                <p-dropdown [(ngModel)]="filtro.IdLote" [options]="lstLote"
+                [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+            </div> -->
+
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Cliente</label>
+                <input pInputText type="text" placeholder="" [(ngModel)]="filtro.Cliente"
+                    style="width: 100%; height: 30px" />
+            </div>
+
+            <div class="col-sm-4">
+                <label class="label">Fecha Inicio</label>
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [style]="{ width: '100%' }"
+                    [inputStyle]="{ width: '100%' }" yearRange="1940:2200" [locale]="es"
+                    [(ngModel)]="filtro.FechaInicial" dateFormat="dd/mm/yy" [showIcon]="true">
+                </p-calendar>
+            </div>
+            <div class="col-sm-4">
+                <label class="label">Fecha Fin</label>
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [style]="{ width: '100%' }" 
+                    [inputStyle]="{ width: '100%' }" yearRange="1940:2200" [locale]="es" [(ngModel)]="filtro.FechaModificacion"
+                    dateFormat="dd/mm/yy" [showIcon]="true">
+                </p-calendar>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Estado</label>
+                <p-dropdown [options]="lstEstados" [(ngModel)]="filtro.Estado"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+            </div>
+        </div>
+    </p-fieldset>
+
+    <br>
+    <p-fieldset legend="Detalle">
+
+        <p-table id="contenido" #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="num" [value]="lstContrato"
+            [responsive]="true" [sortOrder]="1" sortField="num" [(selection)]="seleccion"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [scrollable]="true"
+            selectionMode="single" [rowsPerPageOptions]="[15, 30, 50]" [showCurrentPageReport]="true"
+            scrollHeight="300px">
+            <ng-template pTemplate="header">
+                <tr>
+                    <!-- <th class="tablaHeaderCheckBox">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th> -->
+                    <th class="tablaHeaderAccion3 label" ALIGN="center">Acciones</th>
+                    <th pSortableColumn="num" class="label" ALIGN="center" style="width: 5rem;">Nro <p-sortIcon
+                            field="num"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="FechaContrato" class="label" ALIGN="center"
+                        style="width: 6rem; text-align: center">
+                        Fecha<p-sortIcon field="FechaContrato"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="DescripcionCorta" ALIGN="center"
+                        style="width: 15rem; text-align: center;">
+                        Compañia<p-sortIcon field="DescripcionCorta"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="SedDescripcion" ALIGN="center"
+                        style="width: 10rem; text-align: center;">
+                        Sucursal<p-sortIcon field="SedDescripcion"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="NomProyecto" ALIGN="center"
+                        style="width: 10rem; text-align: center;">
+                        Programa<p-sortIcon field="NomProyecto"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="NomManzana" ALIGN="center"
+                        style="width: 6rem; text-align: center;">
+                        Manzana<p-sortIcon field="NomManzana"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="Lote" ALIGN="center" style="width: 10rem; text-align: center;">
+                        Lote<p-sortIcon field="Lote"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="Cliente" class="label" ALIGN="center"
+                        style="width: 10rem; text-align: center;">
+                        Cliente<p-sortIcon field="Cliente"></p-sortIcon>
+                    </th>
+
+                    <th class="label" pSortableColumn="Area" ALIGN="center" style="width: 6rem; text-align: center;">
+                        Area M2<p-sortIcon field="Area"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="Valor" ALIGN="center" style="width: 6rem; text-align: center;">
+                        Precio<p-sortIcon field="Valor"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="Monto" ALIGN="center" style="width: 7rem; text-align: center;">
+                        Monto Total<p-sortIcon field="Monto"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="DesEstado" class="label" ALIGN="center"
+                        style="width: 5rem; text-align: center;">Estado<p-sortIcon field="DesEstado"></p-sortIcon>
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr [pSelectableRow]="rowData">
+                    <!-- <td class="tablaColumnaCheckBox">
+                            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                        </td> -->
+                    <td class="tablaColumnaAccion3">
+                        <span class="p-column-title">Acción</span>
+                        <table>
+                            <tr>
+                                <th>
+                                    <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                                        class="p-button-rounded p-button-text" title="Editar" *ngIf="(rowData.Estado != '4' && rowData.Estado != '5')"
+                                        (click)="coreEditar(rowData)"></button>
+                                </th>
+                                <th>
+                                    <button pButton pRipple type="button" icon="fad fa-search"
+                                        (click)="coreVer(rowData)" class="p-button-rounded p-button-text"
+                                        title="Ver"></button>
+                                </th>
+                                <th>
+                                    <button pButton pRipple type="button" icon="fad fa-minus-circle"
+                                        *ngIf="rowData.Estado == '1' "
+                                        class="p-button-rounded p-button-text" title="Anular"
+                                        (click)="coreinactivar(rowData)"></button>
+                                </th>
+                                <th>
+                                    <button pButton pRipple type="button" icon="pi pi-compass" 
+                                        *ngIf="!(rowData.Estado == '5') && (rowData.flatAprob == '1' || rowData.Estado != '5')" 
+                                        class="p-button-rounded p-button-text" 
+                                        title="Judicial"
+                                        (click)="coreJudicial(rowData)">
+                                    </button>
+                                </th>                                
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                        <span class="p-column-title">Nro</span>
+                        {{ rowData.num}}
+                    </td>
+                    <td class=" tablaColumnaCodigoChico text-center" style="width: 7rem;">
+                        <span class="p-column-title">Fecha </span>
+                        {{ rowData.FechaContrato | date : "dd/MM/yyyy" }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+                        <span class="p-column-title">Compañia</span>
+                        {{ rowData.DescripcionCorta | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                        <span class="p-column-title">Sucursal</span>
+                        {{ rowData.SedDescripcion | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                        <span class="p-column-title">Programa</span>
+                        {{ rowData.NomProyecto | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+                        <span class="p-column-title">Manzana</span>
+                        {{ rowData.NomManzana | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                        <span class="p-column-title">Lote</span>
+                        {{ rowData.lote | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                        <span class="p-column-title">Cliente</span>
+                        {{ rowData.Cliente | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+                        <span class="p-column-title">Area M2</span>
+                        {{ rowData.Area | number:'1.2-2'}}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+                        <span class="p-column-title">Precio</span>
+                        {{ rowData.Valor | number:'1.2-2'}}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 7rem;">
+                        <span class="p-column-title">Monto Total</span>
+                        {{ rowData.Monto | number:'1.2-2'}}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                        <span class="p-column-title">Estado</span>
+                        {{ rowData.DesEstado | uppercase }}
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </p-fieldset>
+</p-card>
+
+<ngx-contrato-mantenimiento></ngx-contrato-mantenimiento>
+
+
+
+<p-toast key="bc" [baseZIndex]="4000"></p-toast>

@@ -1,0 +1,812 @@
+{
+    "data": [
+        {
+            "label": "Comercial Web",
+            "data": "1",
+            "expandedIcon": "pi pi-folder-open",
+            "collapsedIcon": "pi pi-folder",
+            "partialSelected": false,
+            "leaf": false,
+            "expanded": false,
+            "children": [
+                {
+                    "label": "Admisión",
+                    "data": "1.1",
+                    "expandedIcon": "pi pi-folder-open",
+                    "collapsedIcon": "pi pi-folder",
+                    "partialSelected": false,
+                    "leaf": false,
+                    "expanded": false,
+                    "children": [
+                        {
+                            "label": "Paciente Clínica",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.1.1",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Guardar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Anular",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar OA",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Datos del Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.8",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir Código",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.9",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Correo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.1.10",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Convenio",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.1.2",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Guardar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Anular",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Datos del Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Empresa",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.8",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Compaña",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.9",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir Codigo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.10",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Correo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.2.11",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Particular",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.1.3",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.1",
+                                    "leaf": true,
+                                    "expanded":false,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Guardar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Anular",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Datos del Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir Codigo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.8",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Const At.",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.9",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Correo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.3.10",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Paciente Adicional Clínica",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.1.4",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Guardar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Anular",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Buscar Persona",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Datos del Paciente",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.1.4.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "label": "Liquidación",
+                    "data": "1.2",
+                    "expandedIcon": "pi pi-folder-open",
+                    "collapsedIcon": "pi pi-folder",
+                    "leaf": false,
+                    "expanded": false,
+                    "partialSelected": false,
+                    "children": [
+                        {
+                            "label": "CorrelativosMast",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.2.1",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Buscar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Ver",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Copiar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Inactivar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Asignar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.1.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Aprobación de Estado",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.2.2",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Buscar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Ver",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Copiar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Inactivar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.2.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Producción",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.2.3",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Buscar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.3.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.3.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.3.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Exportar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.3.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Eliminar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.3.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Liquidación",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.2.4",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Buscar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Exportar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Inactivar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Detalle",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Aprobar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Cerrar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.8",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Revertir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.4.9",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Facturación",
+                            "partialSelected": false,
+                            "expandedIcon": "pi pi-folder-open",
+                            "collapsedIcon": "pi pi-folder",
+                            "data": "1.2.5",
+                            "leaf": false,
+                            "expanded": false,
+                            "children": [
+                                {
+                                    "label": "Buscar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.1",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Nuevo",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.2",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Editar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.3",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Anular",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.4",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Detalle",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.5",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "NotaCredito",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.6",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Emitir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.7",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Enviar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.8",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Otorgar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.9",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Imprimir",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.10",
+                                    "leaf": true,
+                                    "expanded":false
+                                },
+                                {
+                                    "label": "Exportar",
+                                    "partialSelected": false,
+                                    "expandedIcon": "pi pi-folder-open",
+                                    "collapsedIcon": "pi pi-folder",
+                                    "data": "1.2.5.11",
+                                    "leaf": true,
+                                    "expanded":false
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

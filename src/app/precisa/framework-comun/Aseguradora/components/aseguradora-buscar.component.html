@@ -1,0 +1,171 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="10000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+  </p-blockUI>
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '1000px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+
+        <p-fieldset legend="Criterios de Busqueda">
+
+
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Busqueda Por:&nbsp;&nbsp;&nbsp; </label>
+
+                        <div class="form-check form-check-inline">
+                            <input (click)="checknombre($event)" class="form-check-input" type="radio"
+                                name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                            <label class="form-check-label" for="inlineRadio1">Nombre</label>
+
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input (click)="checkdocumento($event)" class="form-check-input" type="radio"
+                                name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Código</label>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <form [formGroup]="validarBusAseg">
+                <div class="col-sm-4" *ngIf="vernombre">
+                    <div class="p-inputgroup">
+                        <label for="inputLastName" class="label">Nombre</label>
+                        <div *ngIf="nombreField.touched && nombreField.invalid">
+                            <p class="caption status-danger" *ngIf="nombreField.hasError('required')">
+                                *
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" [(ngModel)]="filtro.NombreEmpresa" style="width:100%"
+                            (keydown)="validarTeclaEnter($event)" minlength="2" formControlName="nombre" />
+                        <button pButton icon="fa fa-binoculars" type="button" title="Buscar"
+                            (click)="coreBuscar(dtmultiple)"></button>
+                        <!-- <button pButton icon="fas fa-check" type="button" title="Seleccionar"></button>  -->
+                    </div>
+                    <div *ngIf="nombreField.touched && nombreField.invalid">
+                        <p class="caption status-danger" *ngIf="nombreField.hasError('minlength')">
+                            Ingresar Minimo 2 Caracteres
+                        </p>
+                    </div>
+
+                </div>
+            </form>
+            <form [formGroup]="validarBusAseg2">
+                <div class="col-sm-4" *ngIf="verdocumento">
+                    <div class="p-inputgroup">
+                        <label for="inputLastName" class="label">Codigo</label>
+                        <div *ngIf="codigoField.touched && codigoField.invalid">
+                            <p class="caption status-danger" *ngIf="codigoField.hasError('required')">
+                                *
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" [(ngModel)]="filtro.IdAseguradora" style="width:100%" (keypress)="esIdValido($event)"
+                            (keydown)="validarTeclaEnter($event)" minlength="1" maxlength="10" formControlName="codigo" />
+                        <button pButton icon="fa fa-binoculars" type="button" title="Buscar"
+                            (click)="coreBuscar(dtmultiple)"></button>
+                        <!-- <button pButton icon="fas fa-check" type="button" title="Seleccionar"></button>  -->
+                    </div>
+                    <div *ngIf="codigoField.touched && codigoField.invalid">
+                        <p class="caption status-danger" *ngIf="codigoField.hasError('required')">
+                            Ingresar Minimo 1 Carácter
+                        </p>
+                    </div>
+                    <div *ngIf="codigoField.touched && codigoField.invalid">
+                        <p class="caption status-danger" *ngIf="codigoField.hasError('maxlength')">
+                            Reducir Carácteres
+                        </p>
+                    </div>
+
+                </div>
+            </form>
+
+
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Resultados">
+            <div class="col">
+                <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                    [sortOrder]="1" sortField="numeroaseguradora" [value]="lstAseguradora"
+                    (onLazyLoad)="grillaCargarDatos($event)" [rowsPerPageOptions]="[15,30,50]"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                    [showCurrentPageReport]="true" [style]="{ width: '100%'}" [loading]="loading" [scrollable]="true"
+                    scrollHeight="200px">
+
+                    <ng-template pTemplate="colgroup">
+                        <colgroup>
+                            <col style="width:100px">
+                        </colgroup>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="label" style="width: 8rem;">Acción</th>
+
+                            <th class="label" style="width: 5rem;" pSortableColumn="numeroaseguradora">N°<p-sortIcon
+                                    field="numeroaseguradora">
+                                </p-sortIcon>
+                            </th>
+                            <th class="label" style="width: 8rem;" pSortableColumn="IdAseguradora">Código<p-sortIcon
+                                    field="IdAseguradora"> </p-sortIcon>
+                            </th>
+                            <th class="label" style="width: 20rem;" pSortableColumn="NombreEmpresa">Aseguradora
+                                <p-sortIcon field="NombreEmpresa">
+                                </p-sortIcon>
+                            </th>
+                            
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td class="tablaColumnaAccion3">
+                                <span class="p-column-title">Acción</span>
+                                <table>
+                                    <tr [pSelectableRow]="rowData">
+                                        <td style="width: 10rem" class="tablaColumnaAccion1">
+                                            <span class="p-column-title">Acción</span>
+                                            <button pButton icon="pi pi-check" type="button"
+                                                class="p-button-rounded p-button-text botonGrilla"
+                                                (click)="coreSeleccionar(rowData)" title="Seleccionar"></button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                            <td class="tablaColumnaCodigoChico" style="width: 5rem;" ALIGN="center">
+                                <span class="p-column-title">N°</span>
+                                {{rowData.numeroaseguradora}}
+                            </td>
+
+                            <td class="tablaColumnaCodigoChico" style="width: 8rem;" ALIGN="center">
+                                <span class="p-column-title">CMP</span>
+                                {{rowData.IdAseguradora}}
+                            </td>
+                            <td class="tablaColumnaCodigoChico" style="width: 20rem;" ALIGN="center">
+                                <span class="p-column-title">Medico</span>
+                                {{rowData.NombreEmpresa}}
+                            </td>
+                            
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-fieldset>
+
+        <!-- <p-fieldset legend="Auditoria">
+                <ngx-auditoria></ngx-auditoria>
+            </p-fieldset> -->
+
+
+    </ng-template>
+
+
+</p-dialog>

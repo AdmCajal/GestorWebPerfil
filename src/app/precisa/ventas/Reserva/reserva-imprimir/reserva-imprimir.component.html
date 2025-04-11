@@ -1,0 +1,71 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="2000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '900px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+    <br>
+    <ng-template class="row" pTemplate="content">
+        <div id="boleta" class="col-sm-12 boleta">
+            <div class="row col-boleta">
+                <div class="col-sm-3 img-boleta">
+                    <img [src]="logoCompania" />
+                    <!-- <img src="../../../../../assets/img/immoweb//empresas/logo_emp_00001000.png" alt="logoEmpresa"> -->
+
+                </div>
+                <div class="col-sm-6 text-center titulos-boleta">
+                    <p> www.grupoltorres.com</p>
+                      <!--     <p>{{personaCompania.Direccion | lowercase}}</p>
+                    <p>Telf:(51) {{compania.Telefono1}}</p>
+              <p>{{compania.DireccionComun |lowercase}}</p> -->
+                </div>
+                <div class="col-sm-3 tabla-boleta">
+                    <table>
+                        <tr class="row">
+                            <td class="col-sm-12 ruc-boleta">
+                                R.U.C. {{compania.RUC}}
+                            </td>
+                            <td id="td" class="col-sm-12 nombre-boleta">
+                                RECIBO DE SEPARACIÓN
+                            </td>
+                            <td id="td" class="col-sm-12 id-boleta">
+                                001- N° {{dto.IdReserva}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row mt-3 col-boleta">
+                <div class="col-sm-12 cuerpo-boleta">
+                    <p>Señor(a) <b>{{persona.NombreCompleto}}</b> con DNI: <b>{{persona.Documento}}</b>, con domicilio en:
+                        <b>{{persona.Direccion}}</b>
+                        , Telefono: <b>{{persona.Telefono}}</b>. Entrega la cantidad de  <b>${{dto.ValorSeparacion |
+                        number:'1.2-2'}}</b>. Con este deposito se compromete hasta el día <b>{{dto.FechaFinal.toLocaleDateString('es-ES', opcionesFormato)}}</b>
+                        a reservar el <b>{{dto.Lote}}</b> de la manzana <b>{{dto.NomManzana}}</b>
+                         del programa de vivienda <b>{{dto.NomProyecto}}</b>  con una área de <b>{{dto.Diametro | number:'1.2-2'}} m2</b> cuyo precio por M2 es
+                        de <b>${{dto.Valor | number:'1.2-2' }}</b> teniendo un costo total de <b>${{dto.CostoTotal | number:'1.2-2'}}</b>.
+                    </p>
+                </div>
+                <div class="col-sm-12 text-right datos-boleta">
+                    <p class="text-right">Los Olivos {{fechaActual.toLocaleDateString('es-ES', opcionesFormato)}}</p>
+                    <p class="text-right">TOTAL ${{dto.ValorSeparacion}}</p>
+                </div>
+            </div>
+            <div class="row mt-3 col-boleta">
+                <div class="col-sm-12 firmas-boleta">
+                    <p class="text-center" style="margin-right: 80px;">Secretaria</p>
+                    <p class="text-center">Administrativo</p>
+                </div>
+            </div>
+            <div class="row mt-3 col-boleta">
+                <div class="col-sm-12 nota-boleta">
+                    <p>Nota: Tenga presente que, en caso de no hacer contrato, no habrá devolución.</p>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Imprimir" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+            (click)="generarPDF()" type="submit"></p-button>
+
+    </ng-template>
+</p-dialog>

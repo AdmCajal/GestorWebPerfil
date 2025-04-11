@@ -1,0 +1,212 @@
+<nb-card>
+    <p-dialog [(visible)]="verMantMedico" [draggable]="false" [modal]="true" [resizable]="false"
+        [breakpoints]="{'1050px': '75vw'}" [style]="{width: '850px'}" [header]="acciones" [position]="position"
+        [maximizable]="true" [baseZIndex]="10000">
+
+        <ng-template pTemplate="content">
+            <br>
+            <p-fieldset legend="Datos">
+                <form [formGroup]="validarMed">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Apellido Paterno</label>
+                                <div *ngIf="apePatField.touched && apePatField.invalid">
+                                    <p class="caption status-danger" *ngIf="apePatField.hasError('required')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.ApellidoPaterno"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    formControlName="apePat" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">DNI</label>
+                                <div *ngIf="dniField.touched && dniField.invalid">
+                                    <p class="caption status-danger" *ngIf="dniField.hasError('pattern')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.Documento"
+                                    (keypress)="esCMPValido($event)" style="width:100%; height: 30px;"
+                                    formControlName="dni" minlength="8" maxlength="8" />
+                            </div>
+                            <div *ngIf="dniField.touched && dniField.invalid">
+                                <p class="caption status-danger" *ngIf="dniField.hasError('minlength')">
+                                    Ingresar 8 caracteres
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Id</label>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.MedicoId"
+                                    style="width:100%; height: 30px;" formControlName="id" />
+                            </div>
+                        </div>
+                        <!-- <div class="col-sm-3"></div>
+                        <div class="col-sm-1" *ngIf="verLabelId">
+                            <label for="inputLastName" class="label">Id : {{dto.MedicoId}}</label>
+                        </div>
+                        <div class="col-sm-1" *ngIf="ocultarLabelId">
+                            <label for="inputLastName" class="label"></label>
+
+                        </div> -->
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Apellido Materno</label>
+                                <div *ngIf="apeMatField.touched && apeMatField.invalid">
+                                    <p class="caption status-danger" *ngIf="apeMatField.hasError('required')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.ApellidoMaterno"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    formControlName="apeMat" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">E-mail</label>
+                                <div *ngIf="correoField.touched && correoField.invalid">
+                                    <p class="caption status-danger" *ngIf="correoField.hasError('pattern')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="email" [(ngModel)]="dto.Correo"
+                                    style="width:100%; height: 30px;" formControlName="correo" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="inputLastName" class="label">Sexo</label>
+                            <p-dropdown placeholder="Seleccione" [options]="lstSexo" [(ngModel)]="dto.Sexo"
+                                formControlName="sexo" [filter]="true">
+                            </p-dropdown>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Nombres</label>
+                                <div *ngIf="nombresField.touched && nombresField.invalid">
+                                    <p class="caption status-danger" *ngIf="nombresField.hasError('required')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.Nombres"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    formControlName="nombres" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <label for="inputLastName" class="label">Registro Nacional de Especialista</label>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" style="width:100%; height: 30px;" [(ngModel)]="dto.RNE"
+                                    formControlName="regNaEs" />
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Telefono</label>
+                                <div *ngIf="telfField.touched && telfField.invalid">
+                                    <p class="caption status-danger" *ngIf="telfField.hasError('pattern')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.Telefono"
+                                    style="width:100%; height: 30px;" formControlName="telf" />
+
+                            </div>
+                            <div *ngIf="telfField.touched && telfField.invalid">
+                                <p class="caption status-danger" *ngIf="telfField.hasError('minlength')">
+                                    Ingresar un número real
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="inputLastName" class="label">Especialidad</label>
+                            <p-dropdown [options]="lstespecialidad" [(ngModel)]="dto.IdEspecialidad" [filter]="true"
+                                [style]="{'width':'100%'}" formControlName="espe"></p-dropdown>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Registro Colegio Medico del Perú</label>
+                                <div *ngIf="regColMedField.touched && regColMedField.invalid">
+                                    <p class="caption status-danger" *ngIf="regColMedField.hasError('required')">
+                                        *
+                                    </p>
+                                </div>
+                                <div *ngIf="regColMedField.touched && regColMedField.invalid">
+                                    <p class="caption status-danger" *ngIf="regColMedField.hasError('pattern')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.CMP" minlength="6" maxlength="6"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    formControlName="regColMed" (keypress)="esCMPValido($event)" />
+                            </div>
+                            <div *ngIf="regColMedField.touched && regColMedField.invalid">
+                                <p class="caption status-danger" *ngIf="regColMedField.hasError('minlength')">
+                                    Ingresar 6 caracteres
+                                </p>
+                                <!-- <p class="caption status-danger" *ngIf="regColMedField.hasError('pattern')">
+                               Solo Ingresar Números
+                            </p> -->
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Estado</label>
+                                <div *ngIf="estadoField.touched && estadoField.invalid">
+                                    <p class="caption status-danger" *ngIf="estadoField.hasError('required')">
+                                        *
+                                    </p>
+                                </div>
+                            </div>
+                            <p-dropdown [options]="lstEstado" [(ngModel)]="dto.Estado" [filter]="true"
+                                [style]="{'background-color':'rgb(247, 247, 208)'}" formControlName="estado">
+                            </p-dropdown>
+                        </div>
+                    </div>
+                </form>
+            </p-fieldset>
+            <br>
+            <p-fieldset legend="Auditoria">
+                <div class="col-sm-12">
+                    <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                        [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+                </div>
+            </p-fieldset>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+                type="submit" (click)="guardarmedico()"></p-button>
+        </ng-template>
+
+    </p-dialog>
+</nb-card>
+<p-toast></p-toast>

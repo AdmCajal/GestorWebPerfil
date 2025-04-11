@@ -1,0 +1,392 @@
+<nb-card fixed>
+    <nb-card-header>
+        <nav class="fixed">
+            <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+        </nav>
+    </nb-card-header>
+
+    <nb-card-body>
+
+        <p-fieldset legend="Consulta General jordan ">
+
+            <div class="row" style="padding: 10px;">
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Compañia</label>
+                        <p-dropdown placeholder="--Compañia--"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Tipo Comprobante</label>
+                        <p-dropdown placeholder="--Tipo Comprobante--"></p-dropdown>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Serie</label>
+                        <p-dropdown placeholder="--Serie--"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Sede</label>
+                        <p-dropdown placeholder="--Seleccione--"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Nro.Comprobante</label>
+                    <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                        [maxFractionDigits]="0">
+                    </p-inputNumber>
+
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+
+
+                </div>
+
+                <div class="col">
+                    <label for="inputLastName" class="label">Cliente</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" placeholder="" [style]="{'width':'50px'}" />
+                        <div class="col-sm-4">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:100%" />&nbsp;
+                        </div>
+
+                        <p-button styleClass="btn btn-outline-primary" type="button" title="Buscar">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </p-button>
+                        <button styleClass="btn btn-outline-primary" pButton type="button" title="Limpiar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 10 13">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                                </path>
+                            </svg>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Unidad de Negocio</label>
+                        <p-dropdown placeholder="--Tipo Comprobante--"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Estado</label>
+                        <p-dropdown placeholder="--Tipo Comprobante--"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Fecha de Emision
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                        [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder='' [monthNavigator]="true"
+                        [yearNavigator]="true"></p-calendar>
+                    <button pButton type="button" title="Limpiar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 10 13">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                            </path>
+                        </svg>
+                    </button>
+
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Fecha de Vencimiento
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                        [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder='' [monthNavigator]="true"
+                        [yearNavigator]="true"></p-calendar>
+                    <button pButton type="button" title="Limpiar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 10 13">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                            </path>
+                        </svg>
+                    </button>
+
+                </div>
+            </div>
+        </p-fieldset>
+        <p-fieldset legend="Leyenda General">
+
+
+        </p-fieldset>
+
+        <br>
+        <p-tabView>
+            <p-tabPanel header="Factura">
+                <p-fieldset legend="Comprobante">
+                    <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario"
+                        [responsive]="true" [sortOrder]="-1" sortField="tipousuario"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                        [showCurrentPageReport]="true">
+
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="checkbox" scope="col"><input type="checkbox"></th>
+
+                                <th pSortableColumn="tipousuario">E.Envío<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="Perfil">Sunat<p-sortIcon field="Perfil"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="VaEstado">F.Factura<p-sortIcon field="VaEstado">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="tipousuario">Nro.Factura<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="tipousuario">Cliente<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="tipousuario">Concepto<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="tipousuario">Clasificador<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+
+
+
+
+
+
+
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-asignarPerfil>
+                            <tr>
+
+                                <td>{{asignarPerfil.tipousuario}}</td>
+
+                                <td>{{asignarPerfil.Perfil}}</td>
+
+                                <td>
+                                    <span>{{asignarPerfil.VaEstado}}</span>
+                                </td>
+
+                                <td>
+                                    <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                                        placeholder="Asignar Perfil"></p-dropdown>
+                                </td>
+
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-fieldset>
+
+            </p-tabPanel>
+            <p-tabPanel header="Detalle Comprobante">
+                <div class="container overflow-hidden">
+                    <div class="row gx-5">
+                        <div class="col">
+                            <p-fieldset legend="Detalle Comprobante">
+                                <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario"
+                                    [responsive]="true" [sortOrder]="-1" sortField="tipousuario"
+                                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                                    [showCurrentPageReport]="true">
+
+                                    <ng-template pTemplate="header">
+                                        <tr>
+
+                                            <th pSortableColumn="tipousuario">E.Envío<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+
+                                            <th pSortableColumn="Perfil">Sunat<p-sortIcon field="Perfil"></p-sortIcon>
+                                            </th>
+
+                                            <th pSortableColumn="VaEstado">F.Factura<p-sortIcon field="VaEstado">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Nro.Factura<p-sortIcon
+                                                    field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Cliente<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Concepto<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Clasificador<p-sortIcon
+                                                    field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-asignarPerfil>
+                                        <tr>
+
+                                            <td>{{asignarPerfil.tipousuario}}</td>
+
+                                            <td>{{asignarPerfil.Perfil}}</td>
+
+                                            <td>
+                                                <span>{{asignarPerfil.VaEstado}}</span>
+                                            </td>
+
+                                            <td>
+                                                <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                                                    placeholder="Asignar Perfil"></p-dropdown>
+                                            </td>
+
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+
+
+                                <br>
+
+
+
+
+                            </p-fieldset>
+                        </div>
+                        <div class="col">
+                            <p-fieldset legend="Detalle Homologación">
+                                <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario"
+                                    [responsive]="true" [sortOrder]="-1" sortField="tipousuario"
+                                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                                    [showCurrentPageReport]="true">
+
+                                    <ng-template pTemplate="header">
+                                        <tr>
+
+                                            <th pSortableColumn="tipousuario">E.Envío<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+
+                                            <th pSortableColumn="Perfil">Sunat<p-sortIcon field="Perfil"></p-sortIcon>
+                                            </th>
+
+                                            <th pSortableColumn="VaEstado">F.Factura<p-sortIcon field="VaEstado">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Nro.Factura<p-sortIcon
+                                                    field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Cliente<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Concepto<p-sortIcon field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+                                            <th pSortableColumn="tipousuario">Clasificador<p-sortIcon
+                                                    field="tipousuario">
+                                                </p-sortIcon>
+                                            </th>
+
+
+
+
+
+
+
+
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-asignarPerfil>
+                                        <tr>
+
+                                            <td>{{asignarPerfil.tipousuario}}</td>
+
+                                            <td>{{asignarPerfil.Perfil}}</td>
+
+                                            <td>
+                                                <span>{{asignarPerfil.VaEstado}}</span>
+                                            </td>
+
+                                            <td>
+                                                <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                                                    placeholder="Asignar Perfil"></p-dropdown>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                                <br>
+                            </p-fieldset>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Cuota">
+                <p-fieldset legend="Cuota">
+                    <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario"
+                        [responsive]="true" [sortOrder]="-1" sortField="tipousuario"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                        [showCurrentPageReport]="true">
+
+                        <ng-template pTemplate="header">
+                            <tr>
+
+                                <th pSortableColumn="tipousuario">Fecha Pago<p-sortIcon field="tipousuario">
+                                    </p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="Perfil">Cuota Pago<p-sortIcon field="Perfil"></p-sortIcon>
+                                </th>
+
+                                <th pSortableColumn="VaEstado">Monto<p-sortIcon field="VaEstado">
+                                    </p-sortIcon>
+                                </th>
+
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-asignarPerfil>
+                            <tr>
+
+                                <td>{{asignarPerfil.tipousuario}}</td>
+
+                                <td>{{asignarPerfil.Perfil}}</td>
+
+                                <td>
+                                    <span>{{asignarPerfil.VaEstado}}</span>
+                                </td>
+                                <td>
+                                    <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                                        placeholder="Asignar Perfil"></p-dropdown>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <br>
+                </p-fieldset>
+
+            </p-tabPanel>
+        </p-tabView>
+    </nb-card-body>
+</nb-card>
+<ngx-lista-comprobantes-mantenimiento></ngx-lista-comprobantes-mantenimiento>

@@ -1,0 +1,279 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="9000">
+  <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-toast></p-toast>
+<p-confirmDialog #c key="confirm2">
+  <p-footer>
+    <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+      (click)="c.accept()"></button>
+    <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded" (click)="c.reject()"></button>
+  </p-footer>
+</p-confirmDialog>
+<p-card>
+  <div class="row">
+    <div class="col-sm-4">
+      <h4 class="titulonuevo">Req. pago Pendientes</h4>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col-sm-2" style="background-color: transparent;"></div>
+    <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+      <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+        (click)="coreBuscar()"></button>
+      <button pButton icon="fa fa-file-excel" (click)="coreImprimir()" type="button" title="Imprimir" label="Imprimir"
+        class="p-button-secondary"></button>
+      <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+        styleClass="p-button-text p-button-secondary" [model]="ltsExportar"></p-splitButton>
+
+    </div>
+  </div>
+  <p-fieldset legend="Información Consulta" (keyup.enter)="coreBuscar()">
+    <div class="row">     
+      <div class="col-sm-4">
+        <label for="inputOrdAten" class="label">Compañia</label>
+        <p-dropdown [(ngModel)]="filtro.CompaniaCodigo" [options]="lstCompania"
+          (onChange)="selectedItemcompania($event)"
+          [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+      </div>
+      <div class="col-sm-4">
+        <label for="inputOrdAten" class="label">Sucursal</label>
+        <p-dropdown [(ngModel)]="filtro.IdSede" [options]="lstSucursal" (onChange)="selectedItemSucursal($event)"
+          [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+      </div>
+      <!--    cargarComboPrograma() -->
+      <div class="col-sm-4">
+        <label for="inputOrdAten" class="label">Programa</label>
+        <p-dropdown [(ngModel)]="filtro.IdProyecto" [options]="lstPrograma" (onChange)="selectedItemPrograma($event)"
+          [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+      </div>
+
+      <div class="col-sm-4">
+        <label class="label">Cliente</label>
+        <input pInputText type="text" placeholder="" [(ngModel)]="filtro.Cliente" style="width:100%; height: 30px;" />
+      </div>
+      <div class="col-sm-4">
+        <label class="label">Fecha Inicio</label>
+        <p-calendar [monthNavigator]="true" [(ngModel)]="filtro.FechaInicial" [yearNavigator]="true"
+          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" yearRange="1940:2300" [locale]="es"
+          dateFormat="dd/mm/yy" [showIcon]="true">
+        </p-calendar>
+      </div>
+      <div class="col-sm-4">
+        <label class="label">Fecha Fin</label>
+        <p-calendar [monthNavigator]="true" [(ngModel)]="filtro.FechaModificacion" [yearNavigator]="true"
+          [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" yearRange="1940:2200" [locale]="es"
+          dateFormat="dd/mm/yy" [showIcon]="true">
+        </p-calendar>
+      </div>
+      <div class="col-sm-4">
+        <label for="inputOrdAten" class="label">Estado</label>
+        <p-dropdown [options]="lstEstados" [(ngModel)]="filtro.Estado"
+          [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+      </div>
+    </div>
+  </p-fieldset>
+  <br>
+  <p-fieldset legend="Información Consulta">
+    <p-table id="contenido" #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true "
+      [style]="{ width: '100%'}" [sortOrder]="1" sortField="num" [value]="lstContrato" [(selection)]="seleccion"
+      selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+      [rowsPerPageOptions]="[15,50,100,200]" [showCurrentPageReport]="true" [scrollable]="true" scrollHeight="300px">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="tablaHeaderAccion3 label" ALIGN="center">Acciones</th>
+          <th pSortableColumn="num" class="label" ALIGN="center" style="width: 4rem;">Nro <p-sortIcon field="num">
+            </p-sortIcon>
+          </th>
+          <th pSortableColumn="FechaVencimiento" class="label" ALIGN="center" style="width: 7rem; text-align: center">
+            Fecha<p-sortIcon field="FechaVencimiento"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="DescripcionCorta" ALIGN="center" style="width: 15rem; text-align: center;">
+            Compañia<p-sortIcon field="DescripcionCorta"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="SedDescripcion" ALIGN="center" style="width: 8rem; text-align: center;">
+            Sucursal<p-sortIcon field="SedDescripcion"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="NomProyecto" ALIGN="center" style="width: 10rem; text-align: center;">
+            Programa<p-sortIcon field="NomProyecto"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="NomManzana" ALIGN="center" style="width: 6rem; text-align: center;">
+            Manzana<p-sortIcon field="NomManzana"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="Lote" ALIGN="center" style="width: 6rem; text-align: center;">
+            Lote<p-sortIcon field="Lote"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Cliente" class="label" ALIGN="center" style="width: 15rem; text-align: center;">
+            Cliente<p-sortIcon field="Cliente"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Cliente" class="label" ALIGN="center" style="width: 15rem; text-align: center;">
+            Proceso<p-sortIcon field="Cliente"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="Area" ALIGN="center" style="width: 6rem; text-align: center;">
+            Area M2<p-sortIcon field="Area"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="Valor" ALIGN="center" style="width: 6rem; text-align: center;">
+            Precio<p-sortIcon field="Valor"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="Interes" ALIGN="center" style="width: 6rem; text-align: center;">
+            Interes<p-sortIcon field="Interes"></p-sortIcon>
+          </th>
+          <th class="label" pSortableColumn="Monto" ALIGN="center" style="width: 7rem; text-align: center;">
+            Monto Total<p-sortIcon field="Monto"></p-sortIcon>
+          </th>
+          <th pSortableColumn="DesEstado" class="label" ALIGN="center" style="width: 5rem; text-align: center;">
+            Estado<p-sortIcon field="DesEstado"></p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+        <tr [pSelectableRow]="rowData">
+          <td class="tablaColumnaAccion3">
+            <span class="p-column-title">Acción</span>
+            <table>
+              <tr>
+                <th>
+                  <button pButton pRipple type="button" icon="fad fa-search" (click)="coreVer(rowData)"
+                    class="p-button-rounded p-button-text" title="Ver"></button>
+                </th>
+              </tr>
+            </table>
+          </td>
+          <td class="tablaColumnaCodigoChico text-center" style="width: 4rem;">
+            <span class="p-column-title">Nro</span>
+            {{ rowData.num }}
+          </td>
+          <td class="tablaColumnaCodigoChico text-center" style="width: 7rem;">
+            <span class="p-column-title">Fecha </span>
+            {{ rowData.FechaVencimiento | date : "dd/MM/yyyy" }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+            <span class="p-column-title">Compañia</span>
+            {{ rowData.DescripcionCorta |uppercase }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 8rem;">
+            <span class="p-column-title">Sucursal</span>
+            {{ rowData.SedDescripcion |uppercase }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+            <span class="p-column-title">Programa</span>
+            {{ rowData.NomProyecto |uppercase }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+            <span class="p-column-title">Manzana</span>
+            {{ rowData.NomManzana |uppercase }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+            <span class="p-column-title">Lote</span>
+            {{ rowData.DesLote |uppercase }}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+            <span class="p-column-title">Cliente</span>
+            {{ rowData.Cliente |uppercase }}
+          </td>
+<!--           <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+            <span class="p-column-title">Proceso</span>
+            <div class="custom-progress-bar">
+              <div class="progress-bar-paid" [style.width.%]="rowData.CantidadLetraPendientePagadas"></div>
+              <div class="progress-bar-delayed" [style.width.%]="rowData.CantidadLetraPendiente"></div>
+              <div class="progress-bar-pending" [style.width.%]="rowData.progreso"></div>
+            </div>
+          </td> -->
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+            <span class="p-column-title">Proceso</span>
+            <p-progressBar [style]="{'height':'20px'}" [value]="rowData.progreso | number:'1.0-0'"></p-progressBar>
+          </td>
+
+          <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+            <span class="p-column-title">Area M2</span>
+            {{ rowData.Area | number:'1.2-2'}}
+          </td>
+
+          <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+            <span class="p-column-title">Precio</span>
+            {{ rowData.MontoAfecto | number:'1.2-2'}}
+          </td>
+          <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+            <span class="p-column-title">Interes</span>
+            {{ rowData.Interes | number:'1.2-2'}}
+          </td>
+          <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 7rem;">
+            <span class="p-column-title">Monto Total</span>
+            {{ rowData.MontoTotal | number:'1.2-2'}}
+          </td>
+
+          <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+            <span class="p-column-title">Estado</span>
+            {{ rowData.DesEstado |uppercase}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-fieldset>
+</p-card>
+<p-toast key="bc" [baseZIndex]="4000"></p-toast>
+<ngx-requerimiento-detalle></ngx-requerimiento-detalle>
+<div *ngIf="isImprimir" class="row" id="requerimiento-doc"
+  [style]="{'width':'600px', 'z-index':'-1000','position':'sticky'}">
+  <div class="col-sm-12 text-center pb-3">
+    <h3><strong>{{seleccion.DescripcionCorta}} </strong> </h3>
+  </div>
+  <div class="col-sm-12 text-center pb-3"><strong>Av. Antunez de Mayolo 1161 2do Piso Urb. Mercurio
+      TEL:521-7969</strong></div>
+  <br>
+  <div class="col-sm-12 text-center pb-3">
+    <h3><strong><em><u>REQUERIMIENTO DE PAGO</u></em></strong> </h3>
+  </div>
+  <br>
+  <div class="col-sm-12 text-right"><strong><em>Lima, {{date | date : "dd 'de' MM 'del' yyyy"}}</em></strong> </div>
+  <div class="col-sm-12"><strong><em>Señor(es):</em></strong></div>
+  <div class="col-sm-12"><strong><em>{{seleccion.Cliente}}</em></strong></div>
+  <div class="col-sm-12"><strong><em>URB. SAN FERNANDO MZ. "Z" LT. 16</em></strong></div>
+  <br>
+  <br>
+  <div class="col-sm-12"><em>Referencia: Programa de Vivienda: <strong>“{{seleccion.NomProyecto}}” MZ. “{{seleccion.NomManzana}}” LT. {{seleccion.lote}}</strong></em>
+  </div>
+  <div class="col-sm-12"><em>Asunto: Obligaciones de {{seleccion.letrasVencidas}} letras vencidas: <strong> USD {{seleccion.montoLetrasVencidas | number:'1.2-2'}}</strong></em>
+  </div>
+  <div class="col-sm-12"><strong><em>Desde la Letra Nº {{seleccion.desdeLetra}} f/v 30/01/2023 hasta la Letra Nº {{seleccion.hastaLetra}} f/v
+        30/01/2023</em></strong></div>
+  <div class="col-sm-12"><em>Más intereses correspondiente.<strong><u> (Sujeto a Resolución).</u></strong></em></div>
+  <div class="col-sm-12" [style]="{'text-align':'justify'}">
+    <br>
+    <p><em>&nbsp;&nbsp;&nbsp;&nbsp;Le comunicamos que hemos realizado todos los intentos a fin de solucionar su deuda
+        con
+        nuestra representada en
+        forma conciliatoria y por su constante negativa en asumir su obligación ha decidido usted guardar silencio
+        rechazando las invitaciones y/o alternativas posibles a fin de regularizar su situación, razón por la cual nos
+        vemos en la imperiosa necesidad de informarle que las letras de cambio aceptadas pasaran a la cobranza
+        judicial.</em>
+    </p>
+    <p><em>&nbsp;&nbsp;&nbsp;&nbsp;A partir de la fecha toda negociación y/o pago será con nuestro departamento legal
+        precisando siempre que la deuda se incrementará notablemente por los intereses, moras y gastos administrativos
+        que
+        se ocasionen hasta la satisfacción total del monto adeudado.</em>
+    </p>
+    <p><em>&nbsp;&nbsp;&nbsp;&nbsp;Le invocamos que reflexione sobre su situación jurídica y con sentido común y en
+        forma
+        sensata cumpla con honrar su deuda con nuestra representada y evite comprometer su patrimonio y su tiempo con un
+        proceso judicial que terminara declarando fundada nuestra pretensión, Adicionalmente a la presentación de
+        cualquier acción administrativa y/o judicial solicitaremos las medidas cautelares correspondientes tales como
+        embargo y/o secuestros en la dirección consignada en las cámbiales y/o contrato compra-venta</em>
+    </p>
+    <p><em>&nbsp;&nbsp;&nbsp;&nbsp;No obstante, lo indicado en los párrafos precedentes, lo invitamos para que en el
+        plazo
+        perentorio de 48 horas de recepcionada la presente se apersone a nuestras oficinas para regularizar su
+        obligación.
+        En el supuesto de que no concurran en el plazo indicado ejerceremos las acciones legales correspondientes.</em>
+    </p>
+  </div>
+  <div class="col-sm-12 text-center">Esperando se sirva visitarnos en el plazo encomendado nos suscribimos de usted.
+  </div>
+  <div class="col-sm-12 text-center">Atentamente </div>
+</div>

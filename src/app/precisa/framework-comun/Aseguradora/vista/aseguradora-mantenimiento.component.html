@@ -1,0 +1,91 @@
+<p-dialog [(visible)]="verMantAseguradora" [draggable]="false" [modal]="true" [resizable]="false"
+    [breakpoints]="{'950px': '75vw'}" [style]="{width: '650px'}" [header]="acciones" [position]="position"
+    [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Datos">
+            <form [formGroup]="validarAseg">
+                <!-- aria-orientation="horizontal" -->
+                <div class="row" style="padding: 10px;" aria-orientation="horizontal">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Nombre Aseguradora</label>
+                                <div *ngIf="nombreAseguradoraField.touched && nombreAseguradoraField.invalid">
+                                    <p class="caption status-danger"
+                                        *ngIf="nombreAseguradoraField.hasError('required')">*
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.NombreEmpresa" class="hoverDisabled"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    [disabled]="editarCampos" formControlName="nombreAseguradora" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Id Aseguradora</label>
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" [(ngModel)]="dto.IdAseguradora" class="hoverDisabled"
+                                    style="width:100%; height: 30px;" [disabled]="true" formControlName="id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-inputgroup">
+                            <label for="inputLastName" class="label">Tipo Aseguradora</label>
+                            <div *ngIf="tipoAseguradoraField.touched && tipoAseguradoraField.invalid">
+                                <p class="caption status-danger" *ngIf="tipoAseguradoraField.hasError('required')">*
+                                </p>
+                            </div>
+                        </div>
+                        <p-dropdown formControlName="tipoAseguradora" [options]="lstTipoAseguradora"
+                            [(ngModel)]="dto.TipoAseguradora" [disabled]="editarCampos" [filter]="true"
+                            [style]="{'background-color':'rgb(247, 247, 208)'}">
+                        </p-dropdown>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-inputgroup">
+                            <label for="inputLastName" class="label">Estado</label>
+                            <div *ngIf="estadoField.touched && estadoField.invalid">
+                                <p class="caption status-danger" *ngIf="estadoField.hasError('required')">
+                                    *
+                                </p>
+                            </div>
+                        </div>
+                        <p-dropdown [options]="lstEstados" [filter]="true"  [(ngModel)]="dto.Estado" 
+                            [style]="{'background-color':'rgb(247, 247, 208)'}" formControlName="estado">
+                        </p-dropdown>
+                    </div>
+
+                </div>
+            </form>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+
+        </p-fieldset>
+        <br>
+
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="guardaraseguradora()"></p-button>
+    </ng-template>
+
+</p-dialog>
+<p-toast></p-toast>

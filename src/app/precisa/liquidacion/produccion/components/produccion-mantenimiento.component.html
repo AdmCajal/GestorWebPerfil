@@ -1,0 +1,245 @@
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-tabView>
+            <p-tabPanel header="Corte Masivo">
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Periodo</label>
+                            <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                                [maxFractionDigits]="0">
+                            </p-inputNumber>
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+
+                            <label for="inputLastName" class="label">Fecha Final</label>
+                            <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <label for="inputLastName" class="label">Fecha Inicial</label>
+                        <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                            [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+                    </div>
+                </div>
+
+            </p-tabPanel>
+            <p-tabPanel header="Corte por cliente">
+                <p-fieldset legend="Corte por cliente">
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="inputLastName" class="label">Tipo Admisión</label>
+                                <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                                <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                                </p-dropdown>
+                                <label for="inputLastName" class="label">Periodo</label>
+                                <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" />
+
+
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+
+                                <label for="inputLastName" class="label">Cliente</label>
+                                <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                                <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                                </p-dropdown>
+                                <label for="inputLastName" class="label">Fecha Inicial</label>
+                                <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                    [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                    [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+
+                            <label for="inputLastName" class="label">Clasificador de Negocio</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Fecha Final</label>
+                            <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+
+                        </div>
+                    </div>
+
+
+                    <br>
+
+
+
+
+                </p-fieldset>
+            </p-tabPanel>
+            <p-tabPanel header="Corte al Detalle">
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Tipo Admisión</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Tipo Paciente</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Paciente</label>
+                            <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                                [maxFractionDigits]="0">
+                            </p-inputNumber>
+                            <label for="inputLastName" class="label">Clasificación</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Estado</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+
+                            <label for="inputLastName" class="label">Cliente</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Sede</label>
+                            <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                            <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Aseguradoras</label>
+                            <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                                [maxFractionDigits]="0">
+                            </p-inputNumber>
+                            <label for="inputLastName" class="label">Código Examen</label>
+                            <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                                [maxFractionDigits]="0">
+                            </p-inputNumber>
+                            <label for="inputLastName" class="label">Fecha Inicial</label>
+                            <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <label for="inputLastName" class="label">Clasificador de Negocio</label>
+                        <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                        <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                        </p-dropdown>
+                        <label for="inputLastName" class="label">Tipo de Atención</label>
+                        <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                        <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                        </p-dropdown>
+                        <label for="inputLastName" class="label">Empresa</label>
+                        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                            [maxFractionDigits]="0">
+                        </p-inputNumber>
+                        <label for="inputLastName" class="label">Examen</label>
+                        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                            [maxFractionDigits]="0">
+                        </p-inputNumber>
+                        <label for="inputLastName" class="label">Fecha Final</label>
+                        <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                            [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+
+
+
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
+        <br>
+
+        <!-- <p-fieldset legend="">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                [sortOrder]="-1" sortField="tipousuario"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                [showCurrentPageReport]="true">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nro.</th>
+
+                        <th pSortableColumn="">Descripción<p-sortIcon field="Documento"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="">Tipo Admisión<p-sortIcon field="IdOr"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Tipo Paciente<p-sortIcon field="Paterno"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Empresa<p-sortIcon field="Materno"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Sede<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Factor<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Estado<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td class="">
+                        </td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+        </p-fieldset> -->
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="saveProduct($event)"></p-button>
+    </ng-template>
+
+
+
+    <!-- <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+        type="submit"   (click)="saveProduct($event)" ></p-button>
+    </ng-template> -->
+
+
+
+
+</p-dialog>
+<p-toast></p-toast>

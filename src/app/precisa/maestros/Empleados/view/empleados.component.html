@@ -1,0 +1,175 @@
+<p-blockUI [blocked]="bloquearPag">
+  <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-confirmDialog #c key="confirm">
+  <p-footer>
+    <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+      (click)="c.accept()"></button>
+    <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded" (click)="c.reject()"></button>
+  </p-footer>
+</p-confirmDialog>
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-4">
+        <h4 class="titulonuevo">Empleado</h4>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="col-sm-2" style="background-color: transparent;"></div>
+      <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+        <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+          (click)="coreBuscar()"></button>
+          <button pButton icon="fa fa-file" type="button" title="Nuevo" label="Nuevo" class="p-button-secondary"
+          (click)="coreNuevo()"></button>
+        <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+          styleClass="p-button-text p-button-secondary" [model]="ltsExportar"></p-splitButton>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <p-fieldset legend="Información Consulta" (keyup.enter)="coreBuscar()">
+      <div class="row" style="padding: 10px;">
+        <div class="col-sm-4">
+          <label class="label">Tipo Documento</label>
+          <p-dropdown [style]="{'width':'100%','text-transform': 'uppercase'}" placeholder="Seleccione" [options]="lstTipoDocumento" [(ngModel)]="filtro.TipoDocumento">
+          </p-dropdown>
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Nro.Documento</label>
+          <input #myDocumento pInputText type="text" style="width:100%; height: 30px;"
+            [(ngModel)]="filtro.Documento" />
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Nombre</label>
+          <input pInputText type="text" placeholder="" style="width:100%; height: 30px;"
+            [(ngModel)]="filtro.NombreCompleto" />
+
+        </div>
+
+        <div class="col-sm-4">
+          <label class="label">Compañia</label>
+          <p-dropdown placeholder="Seleccione" [options]="lstCompania" [(ngModel)]="filtro.CompaniaSocio"
+            [style]="{'width':'100%'}"></p-dropdown>
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Cargo</label>
+          <p-dropdown placeholder="Seleccione" [options]="lstCargo" [(ngModel)]="filtro.Cargo">
+          </p-dropdown>
+        </div>
+        <div class="col-sm-4">
+          <label for="inputLastName" class="label">Estado</label>
+          <p-dropdown [style]="{'width':'100%','text-transform': 'uppercase'}" placeholder="Seleccione" [options]="lstEstados" [(ngModel)]="filtro.Estado">
+          </p-dropdown>
+        </div>
+      </div>
+    </p-fieldset>
+    <br>
+    <p-fieldset legend="Detalle">
+      <p-table id="contenido" #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true " [style]="{ width: '100%'}"
+      [sortOrder]="1" [value]="lstEmpleado" sortField="num"
+      currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+      [rowsPerPageOptions]="[15,30,50]" [showCurrentPageReport]="true" [scrollable]="true" scrollHeight="300px">
+
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="tablaHeaderAccion3 label" ALIGN="center" >Acciones</th>
+
+            <th pSortableColumn="num" class="label" ALIGN="center" style="width: 5rem; text-align: center;">Nro <p-sortIcon field="num"> </p-sortIcon>
+            </th>
+            <th class=" label" style="width: 10rem; text-align: center;" ALIGN="center" pSortableColumn="UneDescripcion" >Compañia<p-sortIcon field="UneDescripcion"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 8rem; text-align: center;" ALIGN="center" pSortableColumn="TIPODOCUMENTO">Tipo Documento<p-sortIcon field="TIPODOCUMENTO"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 6rem; text-align: center;" ALIGN="center" pSortableColumn="Documento">Documento<p-sortIcon field="Documento"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 10rem; text-align: center;" ALIGN="center" pSortableColumn="NombreCompleto">Empleado<p-sortIcon field="NombreCompleto"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 6rem; text-align: center;" ALIGN="center" pSortableColumn="DesCargo">Cargo<p-sortIcon field="DesCargo"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 17rem; text-align: center;" ALIGN="center" pSortableColumn="CorreoInterno">Email<p-sortIcon field="CorreoInterno"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 6rem; text-align: center;" ALIGN="center" pSortableColumn="FechaInicioContrato">F. Inicio<p-sortIcon field="FechaInicioContrato"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 6rem; text-align: center;" ALIGN="center" pSortableColumn="FechaCese">F. Cese<p-sortIcon field="FechaCese"></p-sortIcon>
+            </th>
+            <th class=" label" style="width: 6rem; text-align: center;" ALIGN="center" pSortableColumn="DescEstado">Estado<p-sortIcon field="DescEstado"></p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td class="tablaColumnaAccion3">
+              <span class="p-column-title">Acción</span>
+              <table>
+                  <tr>
+                      <th>
+                          <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                              class="p-button-rounded p-button-text" title="Editar" *ngIf="rowData.IdLotePadre == null "
+                              (click)="coreEditar(rowData)"></button>
+                      </th>
+                      <th>
+                          <button pButton pRipple type="button" icon="fad fa-search"
+                              (click)="coreVer(rowData)" class="p-button-rounded p-button-text"
+                              title="Ver"></button>
+                      </th>
+                      <th>
+                          <button pButton pRipple type="button" icon="fad fa-minus-circle"  *ngIf="rowData.Estado == 'A'"
+                              (click)="coreinactivar(rowData)"   class="p-button-rounded p-button-text" title="Inactivar"></button>
+                      </th>
+                  </tr>
+              </table>
+          </td>
+          <td  class="tablaColumnaCodigoChico text-center" style="width: 5rem; ">
+            <span class="p-column-title">Nro</span>
+            {{rowData.num}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 10rem;" >
+            <span class="p-column-title">Compañia</span>
+            {{rowData.UneDescripcion|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 8rem;" >
+            <span class="p-column-title">Tipo Documento</span>
+              {{rowData.DesDocumento|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 6rem;" >
+            <span class="p-column-title">Documento</span>
+              {{rowData.Documento|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 10rem;" >
+            <span class="p-column-title">Empleado</span>
+              {{rowData.NombreCompleto|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 6rem;" >
+            <span class="p-column-title">Cargo</span>
+              {{rowData.DesCargo|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 17rem;" >
+            <span class="p-column-title">Email</span>
+              {{rowData.CorreoInterno|uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 6rem;" >
+            <span class="p-column-title">F. Inicio</span>
+              {{rowData.FechaInicioContrato | date : "dd/MM/yyyy"}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 6rem;" >
+            <span class="p-column-title">F. Cese</span>
+              {{rowData.FechaCese | date : "dd/MM/yyyy"}}
+          </td>
+          <td  class="tablaColumnaCodigoChico"  ALIGN="center" style="width: 6rem;" >
+            <span class="p-column-title">Estado</span>
+              {{rowData.DescEstado|uppercase}}
+          </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-fieldset>
+  </nb-card-body>
+</nb-card>
+
+<ngx-empleados-mantenimiento></ngx-empleados-mantenimiento>
+
+<p-toast key="bc" [baseZIndex]="2000"></p-toast>

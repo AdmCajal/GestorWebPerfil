@@ -1,0 +1,204 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="10000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '1400px'}" [header]="titulo" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+    <ng-template class="row" pTemplate="content">
+        <br>
+        <p-fieldset legend="Criterios de Busqueda">
+
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Busqueda Por:&nbsp;&nbsp;&nbsp; </label>
+                        <div class="form-check form-check-inline">
+                            <input (click)="checknombre()" class="form-check-input" type="radio"
+                                name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                            <label class="form-check-label" for="inlineRadio1">Nombre</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input (click)="checkdocumento()" class="form-check-input" type="radio"
+                                name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                            <label class="form-check-label" for="inlineRadio2">Documento</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4" *ngIf="isbuscadorNombre">
+                    <label for="inputOrdAten" class="label">Nombre Completo</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" placeholder="" [(ngModel)]="filtro.Cliente"
+                            (keydown)="validarTeclaEnter($event)" style="width: 100%; height: 30px" maxlength="15" />
+                        &nbsp;
+                        <button pButton icon="fa fa-search" type="button" title="Buscar"
+                            (click)="coreBuscar()"></button>
+                    </div>
+                </div>
+               
+                
+                
+            </div>
+            <div class="col-sm-4" *ngIf="isbuscadorDocumento">
+                <label for="inputOrdAten" class="label">Tipo de Documento</label>
+                <div class="p-inputgroup">
+                    <p-dropdown 
+                        [style]="{'width':'100%','text-transform': 'uppercase'}"
+                        [(ngModel)]="filtro.TipoDocumento" [options]="lstTipoDocumento" class="tablaCompletaIzquieda">
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class="col-sm-4" *ngIf="isbuscadorDocumento">
+                <label for="inputOrdAten" class="label">Documento</label>
+                <div class="p-inputgroup">
+                    <input pInputText type="text" placeholder="" [(ngModel)]="filtro.Documento"
+                        (keydown)="validarTeclaEnter($event)" style="width: 100%; height: 30px" maxlength="15" />
+                    &nbsp;
+                    <button pButton icon="fa fa-search" type="button" title="Buscar"
+                        (click)="coreBuscar()"></button>
+                </div>
+            </div>
+        </p-fieldset>
+        <div class="col-sm-8" style="background-color: transparent;" aria-orientation="horizontal">
+
+        </div>
+        <p-fieldset class="col-sm-12" legend="Información Consulta">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="num" [value]="lstReserva"
+                [responsive]="true" [sortOrder]="1" sortField="num" [(selection)]="lstSeleccionadomultiple"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                selectionMode="single" [rowsPerPageOptions]="[15, 30, 50]" [showCurrentPageReport]="true"
+                [scrollable]="true" scrollHeight="300px">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="num" class="label" ALIGN="center" style="width: 4rem">
+                            Nro<p-sortIcon field="num"> </p-sortIcon>
+                        </th>
+                        <th pSortableColumn="FechaInicial" class="label" ALIGN="center"
+                            style="width: 8rem; text-align: center">
+                            F. Separación<p-sortIcon field="FechaInicial"> </p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="DescripcionCorta" ALIGN="center"
+                            style="width: 15rem; text-align: center;">
+                            Compañia<p-sortIcon field="DescripcionCorta"></p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="SedDescripcion" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Sucursal<p-sortIcon field="SedDescripcion"></p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="NomProyecto" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Programa<p-sortIcon field="NomProyecto"></p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="NomManzana" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Manzana<p-sortIcon field="NomManzana"></p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="Lote" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Lote<p-sortIcon field="Lote"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Cliente" class="label" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Documento<p-sortIcon field="Documento"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Cliente" class="label" ALIGN="center"
+                            style="width: 10rem; text-align: center;">
+                            Cliente<p-sortIcon field="Cliente"></p-sortIcon>
+                        </th>
+                        <th class="label" pSortableColumn="ValorSeparacion" ALIGN="center"
+                            style="width: 13rem; text-align: center;">
+                            Monto de Separación<p-sortIcon field="ValorSeparacion"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TipoPago" class="label" ALIGN="center"
+                            style="width: 8rem; text-align: center;">
+                            Tipo de Pago<p-sortIcon field="TipoPago"></p-sortIcon>
+                        </th>
+                        <!--<th pSortableColumn="desBanco" class="label" ALIGN="center" style="width: 5rem; text-align: center;">
+                            Banco<p-sortIcon field="desBanco"></p-sortIcon>
+                        </th>-->
+                        <th pSortableColumn="FechaFinal" class="label" ALIGN="tablaHeaderFecha"
+                            style="width: 5rem; text-align: center;">
+                            F. Fin<p-sortIcon field="FechaFinal"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="DesEstado" class="label" ALIGN="center"
+                            style="width: 7rem; text-align: center;">
+                            E. Reserva<p-sortIcon field="DesEstado"></p-sortIcon>
+                        </th>
+
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" DblClick() let-rowData>
+                    <tr [pSelectableRow]="rowData" (dblclick)="ondobleRowDblclick(rowData)">
+                        <td class="tablaColumnaCodigoChico text-center text-center" style="width: 4rem;">
+                            <span class="p-column-title">Nro</span>
+                            {{ rowData.num }}
+                        </td>
+                        <td class="tablaColumnaCodigoChico text-center" style="width: 8rem;">
+                            <span class="p-column-title">Fecha Separación</span>
+                            {{ rowData.FechaInicial | date : "dd/MM/yyyy" }}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;">
+                            <span class="p-column-title">Compañia</span>
+                            {{ rowData.DescripcionCorta |uppercase}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Sucursal</span>
+                            {{ rowData.SedDescripcion |uppercase}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Programa</span>
+                            {{ rowData.NomProyecto |uppercase}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center " ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Manzana</span>
+                            {{ rowData.NomManzana |uppercase}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Lote</span>
+                            {{ rowData.Lote |uppercase}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Documento</span>
+                            {{ rowData.Documento|uppercase }}
+                        </td>
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                            <span class="p-column-title">Cliente</span>
+                            {{ rowData.Cliente|uppercase }}
+                        </td>
+                        <td class="tablaColumnaCodigoChico text-center " ALIGN="center" style="width: 13rem;">
+                            <span class="p-column-title">Monto de Separación</span>
+                            {{ rowData.ValorSeparacion | number:'1.2-2'}}
+                        </td>
+                        <td class="tablaColumnaCodigoChico text-center " ALIGN="center" style="width: 8rem;">
+                            <span class="p-column-title">Tipo de Pago</span>
+                            {{ rowData.NomTipoPago |uppercase}}
+                        </td>
+
+                        <!--<td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;" >
+                            <span class="p-column-title">Banco</span>
+                            {{ rowData.NomBanco |uppercase}}
+                        </td>-->
+
+
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                            <span class="p-column-title">F. Fin</span>
+                            <span> {{ rowData.FechaFinal | date : "dd/MM/yyyy" }} </span>
+                        </td>
+                        <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 7rem;">
+                            <span class="p-column-title">E. Lote</span>
+                            {{ rowData.DesEstado |uppercase}}
+                        </td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-fieldset>
+    </ng-template>
+</p-dialog>

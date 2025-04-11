@@ -1,0 +1,374 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="10000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-confirmDialog #c key="refinanciar" [visible]="visible" [baseZIndex]="10000">
+    <p-footer>
+        <button pButton type="button" icon="fa fa-check" label="Si, Guardar" class="ui-button-rounded ui-button-danger"
+            (click)="c.accept()"></button>
+        <button pButton type="button" icon="fa fa-close" label="No, Cancelar" class="ui-button-rounded"
+            (click)="c.reject()"></button>
+    </p-footer>
+</p-confirmDialog>
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '1350px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+    <ng-template pTemplate="content">
+  <!--       <div class="row"> -->
+            <div *ngIf="acciones == 'PAGAR'||acciones == 'VER' ||acciones == 'VER PAGO'">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p-fieldset legend="Comprobante">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Tipo de Comprobante:</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="true" [options]="lstTipoComprobante"
+                                                        [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"
+                                                        [(ngModel)]="contrato.TipoComprobante" class="tablaCompletaIzquieda"
+                                                        (onChange)="SeleccioneSerie()">
+                                                    </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Serie:</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="puedeEditar" [options]="lstSerie"
+                                                        [(ngModel)]="contrato.SerieComprobante"
+                                                        [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"
+                                                        class="tablaCompletaIzquieda">
+                                                       </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="label">Fecha de Emisión:</label>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <p-calendar [monthNavigator]="true" [yearNavigator]="true"
+                                                        [disabled]="puedeEditar" [style]="{'width':'100%'}"
+                                                        [(ngModel)]="contrato.FechaEmision" [inputStyle]="{'width':'100%'}"
+                                                        yearRange="1940:2300" [locale]="es" dateFormat="dd/mm/yy"
+                                                        [showIcon]="true">
+                                                    </p-calendar>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="label">Nro Comprobante</label>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input [readOnly]="true" pInputText type="text" style="width:100%;"
+                                                        [disabled]="true" [(ngModel)]="contrato.NumeroComprobante"
+                                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition" />
+                                                </div>
+                                            </div>
+                                        </div>                                     
+                                        <div class="col-sm-8">
+                                            <label class="label">Cliente</label>
+                                            <input [readOnly]="true" pInputText type="text"
+                                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                                style="width:100%;" [(ngModel)]="contrato.Cliente" [disabled]="puedeEditar" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Moneda:</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="puedeEditar" [options]="lstMoneda"
+                                                        [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"
+                                                        class="tablaCompletaIzquieda" [(ngModel)]="contrato.MonedaCodigo">
+                                                    </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Cambio:</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-inputNumber mode="decimal" [(ngModel)]="contrato.TipoCambio"
+                                                        [inputStyle]="{'width':'100%','text-align': 'right'}"
+                                                        [maxFractionDigits]="2" [disabled]="true" [minFractionDigits]="2">
+                                                    </p-inputNumber>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="label">Monto:</label>
+                                                <div class="p-inputgroup">
+                                                    <button
+                                                    type="button"
+                                                    class="p-inputgroup-addon"
+                                                    [disabled]="!isMontoEnabled"
+                                                    (click)="toggleMontoEditable()" >                                                 
+                                                    <i class="fas fa-edit"></i>
+                                                  </button>                                             
+                                                    <p-inputNumber mode="decimal" [(ngModel)]="montoPagar"
+                                                    id="monto"                                                   
+                                                    (change)="onMontoChange($event)"
+                                                    [inputStyle]="{'width':'100%','text-align': 'right'}"
+                                                    [maxFractionDigits]="2" [disabled]="true" [minFractionDigits]="2">
+                                                    </p-inputNumber>                                                   
+                                                </div>
+                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-fieldset>
+                    </div>
+                    <div class="col-sm-6">
+                        <p-fieldset legend="Cobranza">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Forma de Pago</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda"
+                                                        [options]="lstTipoPago" (click)="validarTipoPago()"
+                                                        [(ngModel)]="contrato.FormaPago"
+                                                        [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}">
+                                                    </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Banco</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="disabledBanco" class="tablaCompletaIzquieda"
+                                                        [options]="lstBanco" [(ngModel)]="contrato.Banco"
+                                                        (onChange)="cuentaBancaria()"
+                                                        [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Cuenta Bancaria</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda"
+                                                        [disabled]="disabledBanco" [options]="lstcuentaBancaria"
+                                                        [(ngModel)]="contrato.CuentaBancaria"
+                                                        [style]="{'width':'100%','text-transform': 'uppercase'}"> </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="label">Referencia</label>
+                                                <div class="p-inputgroup">
+                                                    <input pInputText type="text" style="width:100%;"
+                                                        [(ngModel)]="contrato.CampoReferencia" [disabled]="disabledBanco"
+                                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="label">Observación</label>
+                                                </div>
+                                                <div class="col-sm-12">
+                                                    <input pInputText type="text"
+                                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                                        [disabled]="montoEditable" style="width:100%;" [(ngModel)]="contrato.Observacion" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p-fieldset>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12" *ngIf="acciones == 'REFINANCIAR'">
+                <p-fieldset legend="Refinanciamiento">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="label">Tipo Descuento</label>
+                                        <div class="p-inputgroup">
+                                            <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                            <p-dropdown [options]="lstTipoDescuento"
+                                                (onChange)="selectTipoDescuento($event)"   [(ngModel)]="TipoDescuento"
+                                                [style]="{'width':'100%','text-transform': 'uppercase','background-color':'rgb(247, 247, 208)'}"
+                                                class="tablaCompletaIzquieda">
+                                            </p-dropdown>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="label">Descuento</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <p-inputNumber [locale]="locale" mode="decimal" [(ngModel)]="descuento"
+                                                [inputStyle]="{'width':'100%','text-align': 'left','background-color':'rgb(247, 247, 208)'}"
+                                                [style]="{'width':'100%'}" [maxFractionDigits]="0"
+                                                (onBlur)="calculoRefinanciar()" [minFractionDigits]="0">
+                                            </p-inputNumber>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="label">Nuevo Total</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <p-inputNumber [locale]="locale" mode="decimal" [(ngModel)]="nuevoTotal"
+                                                [disabled]="true" [inputStyle]="{'width':'100%','text-align': 'left'}"
+                                                [style]="{'width':'100%'}" [maxFractionDigits]="2"
+                                                [minFractionDigits]="2">
+                                            </p-inputNumber>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="label">Monto Total</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <p-inputNumber [locale]="locale" mode="decimal" [(ngModel)]="montoTotal"
+                                                [disabled]="true" [inputStyle]="{'width':'100%','text-align': 'left'}"
+                                                [style]="{'width':'100%'}" [maxFractionDigits]="2"
+                                                [minFractionDigits]="2">
+                                            </p-inputNumber>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="label">Tipo Motivo</label>
+                                                <div class="p-inputgroup">
+                                                    <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                                                    <p-dropdown [options]="lstTipoMotivo"
+                                                          [(ngModel)]="TipoMotivo"
+                                                        [style]="{'width':'100%','text-transform': 'uppercase','background-color':'rgb(247, 247, 208)'}"
+                                                        class="tablaCompletaIzquieda">
+                                                    </p-dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <label class="label">Motivo</label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <input pInputText type="text"
+                                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                                style="width:100%;" [(ngModel)]="dtoInteres.Observacion" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-12">
+                <p-fieldset legend="Detalle">
+
+                    <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="num" [value]="lstInteres"
+                        [responsive]="true" [sortOrder]="1" sortField="num"
+                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                        [rowsPerPageOptions]="[25, 50, 100]" [showCurrentPageReport]="true" [scrollable]="true">
+
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="num" class="label" ALIGN="center" style="width: 2rem;">Nro
+                                    <p-sortIcon field="num"> </p-sortIcon>
+                                </th>
+                                <th pSortableColumn="FechaVencimiento" class="label" ALIGN="center"
+                                    style="width: 5rem; text-align: center">
+                                    Fecha de Vencimiento<p-sortIcon field="FechaVencimiento"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="Observacion" class="label" ALIGN="center"
+                                    style="width: 5rem; text-align: center">
+                                    letra(s)<p-sortIcon field="Observacion"></p-sortIcon>
+                                </th>
+                                <th class="label" pSortableColumn="DiasMora" ALIGN="center"
+                                    style="width: 5rem; text-align: center;">
+                                    Días de Mora<p-sortIcon field="DiasMora"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="MontoTotal" class="label" ALIGN="center"
+                                    style="width: 5rem; text-align: center;">Monto de letra<p-sortIcon
+                                        field="MontoTotal"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData>
+                            <tr>
+                                <td class="tablaColumnaCodigoChico text-center" style="width: 2rem;">
+                                    <span class="p-column-title">Nro</span>
+                                    {{ rowData.num | number:'1.0-0'}}
+                                </td>
+                                <td class="tablaColumnaCodigoChico text-center" style="width: 5rem;">
+                                    <span class="p-column-title">Fecha Vencimiento</span>
+                                    {{ rowData.FechaVencimiento | date : "dd/MM/yyyy" }}
+                                </td>
+                                <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                                    <span class="p-column-title">letra(s)</span>
+                                    {{ rowData.Observacion }}
+                                </td>
+                                <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                                    <span class="p-column-title">Días de Mora</span>
+                                    {{ rowData.DiasMora | number:'1.0-0'}}
+                                </td>
+                                <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+                                    <span class="p-column-title">Monto de Letra</span>
+                                    {{ rowData.TotalMora | number:'1.2-2'}}
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-fieldset>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="{{acciones | titlecase}}" *ngIf="!puedeEditar" icon="pi pi-save" styleClass="p-button-primary"
+            type="submit" (click)="corepagar()"></p-button>
+         <p-button label="Imprimir" icon="pi pi-file-pdf" styleClass="p-button-primary" 
+            type="submit"  (click)="generarPdf()"  ></p-button>
+    </ng-template>
+</p-dialog>

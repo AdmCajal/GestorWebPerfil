@@ -1,0 +1,182 @@
+<nb-card style="background-color: transparent;" accent="warning" class="col-sm-12">
+    <p-blockUI [blocked]="bloquearPag">
+        <img src="assets\img\ZZ5H.gif" style="width: 5%">
+    </p-blockUI>
+    <nb-card-header>
+        <!-- <nav class="fixed">
+            <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+        </nav> -->
+        <div class="row">
+            <div class="col-sm-2">
+                <br>
+                <h4 class="titulonuevo">&nbsp; &nbsp;Aseguradora</h4>
+            </div>
+            <div class="col-sm-7" style="background-color: transparent;">
+            </div>
+            <div class="col-sm-3" style="background-color: transparent;" aria-orientation="horizontal">
+                <div>
+
+                    <nb-card class="col-sm-12 fondocard" style="padding: 2px; margin-bottom: -10px; margin-top: 5px;">
+                        <div class="row" aria-orientation="horizontal">
+                            <br>
+                            <button (click)="coreBuscar()" style="color: #2B4E64; padding: 0px;"
+                                class="col button btn"><img src="assets/img/Busc_mante.ico" style="filter: drop-shadow(5px 5px 7px #444); width: 30%;
+                              flex: 0 0 30%;max-width: 30%;"><br><label
+                                    style="font-size: 10px;font-weight: bold">Buscar</label></button>
+                            <br>
+                            <button (click)="coreNuevo()" style="color: #2B4E64; padding: 0px;"
+                                class="col button btn"><img src="assets/img/nuevo1.ico" style="filter: drop-shadow(5px 5px 7px #444); width: 30%;
+                              flex: 0 0 30%;max-width: 30%;"><br><label
+                                    style="font-size: 10px;font-weight: bold">Nuevo</label>
+                            </button>
+                            <br>
+                            <!-- <button style="color: #2B4E64; padding: 0px;" class="col-sm-2 button btn"><img
+                                    src="assets/img/ico_editar.ico" width="40%"
+                                    style="filter: drop-shadow(5px 5px 7px #444);"><br><label
+                                    style="font-size: 12px;font-weight: bold">Editar</label></button>
+                            <button style="color: #2B4E64; padding: 0px;" class="col-sm-2 button btn"><img
+                                    src="assets/img/ico_imprimir.ico" width="40%"
+                                    style="filter: drop-shadow(5px 5px 7px #444);"><br><label
+                                    style="font-size: 12px;font-weight: bold">Ver</label></button> -->
+                            <button (click)="enDesarrollo()" style="color: #2B4E64; padding: 0px;"
+                                class="col button btn"><img src="assets/img/COPIAR.png" style="filter: drop-shadow(5px 5px 7px #444); width: 30%;
+                                    flex: 0 0 30%;max-width: 30%;"><br><label
+                                    style="font-size: 10px;font-weight: bold">Copiar</label></button>
+                            <!-- <button style="color: #2B4E64; padding: 0px;" class="col-sm-2 button btn"><img
+                                    src="assets/img/inactivar.png" width="40%"
+                                    style="filter: drop-shadow(5px 5px 7px #444);"><br><label
+                                    style="font-size: 12px;font-weight: bold">Inactivar</label></button> -->
+
+
+                        </div>
+                    </nb-card>
+                </div>
+
+            </div>
+        </div>
+    </nb-card-header>
+    <!-- <p-divider align="left" [ngStyle]="{'padding-left': '15px','padding-right': '15px'}">
+        <div class="p-d-inline-flex p-ai-center">
+            <i class="pi pi-bars p-mr-2"></i>
+            <b>&nbsp;Aseguradora</b>
+        </div>
+      </p-divider> -->
+    <nb-card-body>
+
+        <p-fieldset legend="Información Consulta" style="background-color: transparent;">
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Aseguradora</label>
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" placeholder="" [(ngModel)]="filtro.NombreEmpresa"
+                                [style]="{'width':'100%'}" (keydown)="validarTeclaEnter($event)" />
+                            <button pButton icon="fas fa-user-shield" type="button" title="Aseguradora"
+                                style="background-color: #ffc72f; border-color:#ffc72f ;" disabled="true"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Estado</label>
+                    <p-dropdown [options]="lstEstado" [(ngModel)]="filtro.Estado" [filter]="true"></p-dropdown>
+                  </div>
+            </div>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Detalle">
+            <div class="col">
+
+
+                <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                    [sortOrder]="1" sortField="numeroaseguradora" [value]="lstPacienteClinica"
+                    (onLazyLoad)="grillaCargarDatos($event)"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                    [showCurrentPageReport]="true" [style]="{ width: '100%'}" [loading]="loading" [scrollable]="true"
+                    scrollHeight="200px" [rowsPerPageOptions]="[15,30,50]">
+
+                    <ng-template pTemplate="colgroup">
+                        <colgroup>
+                            <col style="width:130px">
+                        </colgroup>
+                    </ng-template>
+
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th style="width: 10rem;" class="label">Acción</th>
+                            <th style="width: 5rem;" class="label" pSortableColumn="numeroaseguradora">Nro<p-sortIcon
+                                    field="numeroaseguradora">
+                                </p-sortIcon>
+                            </th>
+                            <th style="width: 20rem;" class="label" pSortableColumn="NombreEmpresa">Aseguradora
+                                <p-sortIcon field="NombreEmpresa"> </p-sortIcon>
+                            </th>
+                            <!-- <th style="width: 20rem;" pSortableColumn="Clasificacion_1">Observación<p-sortIcon
+                                    field="Clasificacion_1"> </p-sortIcon>
+                            </th> -->
+                            <th style="width: 20rem;" class="label" pSortableColumn="DscTipo">Tipo Aseguradora
+                                <p-sortIcon field="DscTipo"> </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" class="label" pSortableColumn="tipousuario">Estado<p-sortIcon
+                                    field="tipousuario"> </p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                            <td style="width: 10rem" class="tablaColumnaAccion3">
+                                <span class="p-column-title">Acción</span>
+                                <table>
+                                    <tr>
+                                        <th>
+                                            <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                                                class="p-button-rounded p-button-text" title="Editar"
+                                                (click)="editProduct(rowData)"></button>
+                                        </th>
+                                        <th>
+                                            <button pButton pRipple type="button" icon="fad fa-search"
+                                                class="p-button-rounded p-button-text" title="Ver"
+                                                (click)="verProduct(rowData)"></button>
+                                        </th>
+                                        <th>
+                                            <button pButton pRipple type="button" icon="fad fa-minus-circle"
+                                                class="p-button-rounded p-button-text" title="Inactivar"
+                                                (click)="invactivarProduct(rowData)"></button>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="width: 5rem;" class="tablaColumnaCodigoChico" ALIGN="center">
+                                <span class="p-column-title">Nro</span>
+                                <!-- {{rowData.IdAseguradora}} -->
+                                {{rowData.numeroaseguradora}}
+                            </td>
+
+                            <td style="width: 20rem;" class="tablaColumnaCodigoChico" ALIGN="center">
+                                <span class="p-column-title">Aseguradora</span>
+                                {{rowData.NombreEmpresa}}
+                            </td>
+
+                            <!-- <td style="width: 20rem;" ALIGN="center">
+                                <span class="p-column-title">Observación</span>
+                                {{rowData.Clasificacion_1}}
+                            </td> -->
+                            <td style="width: 20rem;" class="tablaColumnaCodigoChico" ALIGN="center">
+                                <span class="p-column-title">Tipo Aseguradora</span>
+                                {{rowData.DscTipo}}
+                            </td>
+                            <td style="width: 10rem;" ALIGN="center">
+                                <span class="p-column-title">Estado</span>
+                                <label class="tablaEstadoActivo">{{rowData.ESTADOdesc}}</label>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-fieldset>
+    </nb-card-body>
+
+</nb-card>
+
+
+<p-confirmDialog [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{width: '30vw'}"></p-confirmDialog>
+<ngx-aseguradora-mantenimiento></ngx-aseguradora-mantenimiento>

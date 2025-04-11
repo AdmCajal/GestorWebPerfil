@@ -1,0 +1,1655 @@
+.p-inputtext {
+
+  font-size: 0.85rem;
+  text-transform: uppercase;
+
+
+}
+.p-button.p-button-secondary, .p-buttonset.p-button-secondary > .p-button, .p-splitbutton.p-button-secondary > .p-button{
+  margin-right: 2px;
+}
+
+
+.p-inputgroup .p-inputtext,
+.p-fluid .p-inputgroup .p-inputtext {
+
+  font-size: 0.85rem;
+
+}
+
+
+.obligatorio {
+  background-color: #f5e910;
+  background-color: #e9de11 !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  padding: 0.2rem 1rem !important;
+  font-size: 0.85rem;
+}
+
+.p-dropdown .p-dropdown-label {
+  background: transparent;
+  border: 0 none;
+  font-size: 0.85rem;
+}
+
+
+/* ARMAS: TABLA - ESTADO COLORES */
+.tablaEstadoActivo {
+  color: rgb(111, 204, 154);
+  font-size: 0.85rem
+}
+
+.tablaEstadoInactivo {
+  color: rgb(255, 152, 152);
+  font-size: 0.85rem
+}
+
+.tablaEstadoPreparado {
+  color: skyblue;
+  font-size: 0.85rem
+}
+
+.tablaEstadoAprobado {
+  color: green;
+  font-size: 0.85rem
+}
+
+.tablaEstadoAnulado {
+  color: red;
+  font-size: 0.85rem
+}
+
+.tablaEstadoRegistrado {
+  color: rgb(155, 29, 29);
+  font-size: 0.85rem
+}
+
+.tablaEstadoTerminado {
+  color: rgb(83, 19, 19);
+  font-size: 0.85rem
+}
+
+.tablaEstadoTransferido {
+  color: orange;
+  font-size: 0.85rem
+}
+
+.tablaEstadoPagado {
+  color: purple;
+  font-size: 0.85rem
+}
+
+.tablaEstadoPendiente {
+  color: rgb(70, 0, 128);
+  font-size: 0.85rem
+}
+
+.p-fluid .p-inputtext {
+  display: flex !important;
+}
+
+.p-fluid .p-inputnumber {
+  display: flex !important;
+}
+
+.importante {
+  color: brown;
+}
+
+.p-datatable-scrollable-header {
+  margin-right: 0px;
+}
+
+/* LEONARDO: TABLA - ESTADO JUICIO-LEGAL COLORES*/
+.tablaEstadoTramite {
+  color: #4fb9fe;
+}
+
+.tablaEstadoSentenciado {
+  color: #6a9955;
+}
+
+/* DARIO:TABLA - INICIO */
+.tablaHeaderAccion0 {
+  text-align: center !important;
+  width: 70px !important;
+}
+
+.tablaHeaderAccion1 {
+  text-align: center !important;
+  width: 90px;
+}
+
+.tablaHeaderAccion2 {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderAccion3 {
+  text-align: center !important;
+  width: 120px !important;
+}
+
+.tablaHeaderAccion4 {
+  text-align: center !important;
+  width: 130px;
+}
+
+.tablaHeaderAccion5 {
+  text-align: center !important;
+  width: 140px;
+}
+
+.tablaHeaderAccion6 {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaHeaderAccion7 {
+  text-align: center !important;
+  width: 160px;
+}
+
+.tablaHeaderckeckselect {
+  text-align: center !important;
+  width: 60px;
+}
+
+.tablaHeaderCheckBox1 {
+  text-align: center !important;
+  width: 70px;
+}
+
+.tablaHeaderCheckBox {
+  text-align: center !important;
+  width: 40px;
+}
+
+.tablaColumnaCheckBoxMediano {
+  text-align: center !important;
+  width: 100px;
+}
+
+
+.formularioFila {
+  padding: 0.1em;
+  margin-bottom: 0rem !important;
+}
+
+.formularioFila>.p-grid>.p-col,
+.p-grid>[class*="p-col"] {
+  padding: 0.6em;
+}
+
+.formularioFila>.p-grid>.p-col,
+.p-grid>[class*="p-col"] {
+  padding: 0.6em;
+}
+
+
+.p-fluid .p-inputgroup .p-button.p-button-icon-only {
+  padding: 0.2em;
+}
+
+.tablaHeaderCodigoPequenio {
+  text-align: center !important;
+  width: 50px;
+}
+
+.tablaHeaderCodigoChico {
+  text-align: center !important;
+  width: 80px;
+}
+
+.tablaHeaderCodigo {
+  text-align: center !important;
+  width: 120px;
+}
+
+.tablaHeaderCompania {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderCodigoGrande {
+  text-align: center !important;
+  width: 130px;
+}
+
+.tablaHeaderCodigoGrandeX {
+  text-align: center !important;
+  width: 160px;
+}
+
+.tablaHeaderUsuario {
+  /* login de usuario*/
+  text-align: center !important;
+  width: 120px;
+}
+
+.tablaHeaderDocumento {
+  /*numero de documento*/
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderAdjunto {
+  /*numero de documento*/
+  text-align: center !important;
+  width: 180px;
+}
+
+.tablaHeaderDocumentoAdjunto {
+  /*numero de documento*/
+  text-align: center !important;
+  width: 250px !important;
+}
+
+.tablaHeaderFecha {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderFechaGrande {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaHeaderFechaHora {
+  text-align: center !important;
+  width: 155px;
+}
+
+.tablaHeaderHora {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderDia {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderPeriodo {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderKPIMes {
+  text-align: center !important;
+  width: 50px;
+}
+
+.tablaHeaderKPIAnio {
+  text-align: center !important;
+  width: 30px;
+}
+
+.tablaHeaderKPISimbolo {
+  text-align: center !important;
+  width: 15px;
+}
+
+.tablaHeaderMontoChico {
+  text-align: center !important;
+  width: 70px;
+}
+
+.tablaHeaderMonto {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderMontoGrande {
+  text-align: center !important;
+  width: 170px;
+}
+
+.tablaHeaderNumero {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderTexto {
+  text-align: center !important;
+}
+
+.tablaHeaderEstado {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaHeaderEstadoGrande {
+  text-align: center !important;
+  width: 120px;
+}
+
+.tablaHeaderEstadoDetalle {
+  text-align: center !important;
+  width: 160px;
+}
+
+.tablaHeaderEstadoComboBox {
+  text-align: center !important;
+  width: 130px;
+}
+
+.tablaHeaderTipo {
+  text-align: center !important;
+  width: 100px !important;
+}
+
+.tablaHeaderNombre {
+  text-align: center !important;
+  width: 300px;
+}
+
+.tablaHeaderNombreChico {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaHeaderNombreMedio {
+  text-align: center !important;
+  width: 200px;
+}
+
+.tablaHeaderUbigeo {
+  text-align: center !important;
+  width: 240px;
+}
+
+.tablaHeaderUbigeoGrande {
+  text-align: center !important;
+  width: 350px;
+}
+
+.tablaHeaderCorreo {
+  text-align: center !important;
+  width: 200px;
+}
+
+.tablaHeaderDireccion {
+  text-align: center !important;
+  width: 400px;
+}
+
+.tablaHeaderNombreGrandeEvento {
+  text-align: center !important;
+  width: 480px;
+}
+
+.tablaHeaderCentro {
+  text-align: center !important;
+}
+
+.tablaHeaderIzquierda {
+  text-align: left !important;
+}
+
+.tablaHeaderTelefono {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaHeaderCelular {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaHeaderNombreProceso {
+  width: 264px !important;
+  text-align: left !important;
+}
+
+.tablaHeaderBoxSemaforo {
+  /*  x5 de los CARDS */
+  width: 1225px !important;
+  text-align: left !important;
+}
+
+.tablaHeaderCheckBoxMediano {
+  text-align: center !important;
+  width: 100px;
+}
+
+//REPORTE TRANSPORTE
+.tablaHeaderKardexMes {
+  width: 300px !important;
+  text-align: center !important;
+}
+
+.tablaHeaderCombustibleAnualMes {
+  width: 200px !important;
+  text-align: center !important;
+}
+
+/* DARIO:TABLA - FIN */
+
+/* DARIO:TABLA COLUMNA - INICIO */
+.tablaColumnaAccion0 {
+  text-align: center !important;
+  width: 70px !important;
+}
+
+.tablaColumnaAccion1 {
+  text-align: center !important;
+  width: 90px !important;
+}
+
+.tablaColumnaAccion2 {
+  text-align: center !important;
+  width: 100px !important;
+}
+
+.tablaColumnaAccion3 {
+  text-align: center !important;
+  width: 120px !important;
+}
+
+.tablaColumnaAccion4 {
+  text-align: center !important;
+  width: 130px !important;
+}
+
+.tablaColumnaAccion5 {
+  text-align: center !important;
+  width: 140px !important;
+}
+
+.tablaColumnaAccion6 {
+  text-align: center !important;
+  width: 150px !important;
+}
+
+.tablaColumnaAccion7 {
+  text-align: center !important;
+  width: 160px !important;
+}
+
+.tablaColumnaCodigoPequenio {
+  text-align: center !important;
+  width: 50px;
+}
+
+.tablaColumnaCheckBox {
+  text-align: center !important;
+  width: 40px;
+}
+
+.tablaColumnaCheckBox1 {
+  text-align: center !important;
+  width: 70px;
+}
+
+.tablaCheckBoxCentro {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.tablaColumnaCodigo {
+  text-align: center !important;
+  width: 120px !important;
+}
+
+.tablaColumnaCodigoGrande {
+  text-align: center !important;
+  width: 130px;
+}
+
+.tablaColumnaKPIMes {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaColumnaKPIAnio {
+  text-align: center !important;
+  width: 64px !important;
+}
+
+.tablaColumnaKPISimbolo {
+  text-align: center !important;
+  width: 20px;
+}
+
+.tablaColumnaCompania {
+  text-align: center !important;
+  width: 100px !important;
+}
+
+.tablaColumnaDocumento {
+  /*numero de documento*/
+  text-align: center;
+  width: 100px !important;
+}
+
+.tablaColumnaAdjunto {
+  /*adjunto grilla*/
+  text-align: center;
+  width: 180px !important;
+}
+
+.tablaColumnaDocumentoAdjunto {
+  /*numero de documento*/
+  text-align: center !important;
+  width: 250px !important;
+}
+
+.tablaColumnaBoxSemaforo {
+  width: 245px;
+}
+
+.tablaColumnaNombreProceso {
+  width: 264px !important;
+  text-align: left !important;
+  word-wrap: break-word;
+}
+
+.tablaColumnaUsuario {
+  text-align: center !important;
+  width: 120px;
+}
+
+.tablaColumnaFecha {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaColumnaFechaGrande {
+  text-align: center !important;
+  width: 150px;
+}
+
+.tablaColumnaFechaHora {
+  text-align: center !important;
+  width: 155px !important;
+}
+
+.tablaColumnaHora {
+  text-align: center;
+  width: 100px;
+}
+
+.tablaColumnaDia {
+  text-align: center;
+  width: 100px;
+}
+
+.tablaColumnaPeriodo {
+  text-align: center !important;
+  width: 100px;
+}
+
+.tablaColumnaCodigoChico {
+  text-align: left !important;
+  width: 70px;
+  font-size: 0.75rem;
+}
+
+.tablaColumnaMontoChico {
+  text-align: right !important;
+  width: 70px;
+  font-size: 0.75rem;
+}
+
+.tablaColumnaMonto {
+  text-align: right !important;
+  width: 100px;
+}
+
+.tablaColumnaMontoGrande {
+  text-align: right !important;
+  width: 100px;
+}
+
+.tablaColumnaNumero {
+  text-align: right !important;
+  width: 100px;
+}
+
+.tablaColumnaTexto {
+  text-align: left !important;
+}
+
+.tablaColumnaEstado {
+  text-align: center !important;
+  width: 100px;
+  font-size: 0.75rem;
+}
+
+.tablaColumnaEstadoGrande {
+  text-align: center !important;
+  width: 120px;
+}
+
+.tablaColumnaEstadoComboBox {
+  text-align: center;
+  width: 130px;
+}
+
+.tablaColumnaEstadoDetalle {
+  text-align: center;
+  width: 160px;
+}
+
+.tablaColumnaTipo {
+  text-align: center !important;
+  width: 100px !important;
+}
+
+.tablaColumnaNombre {
+  text-align: left;
+  width: 300px !important;
+  word-wrap: break-word;
+  font-size: 0.75rem;
+}
+
+.tablaColumnaNombreGrandeEvento {
+  text-align: left;
+  width: 480px !important;
+  word-wrap: break-word;
+}
+
+.tablaColumnaNombreChico {
+  text-align: left;
+  width: 150px !important;
+  word-wrap: break-word;
+  font-size: 0.75rem;
+}
+
+.tablaColumnaNombreMedio {
+  text-align: left;
+  width: 200px;
+  word-wrap: break-word;
+}
+
+.tablaColumnaUbigeo {
+  text-align: left;
+  width: 240px !important;
+}
+
+.tablaColumnaUbigeoGrande {
+  text-align: left;
+  width: 350px !important;
+}
+
+.tablaColumnaCorreo {
+  text-align: left;
+  width: 200px;
+}
+
+.tablaColumnaEdad {
+  text-align: left;
+  width: 210px;
+}
+
+.tablaColumnaDireccion {
+  text-align: left !important;
+  width: 400px !important;
+}
+
+.tablaColumnaCentro {
+  text-align: center !important;
+}
+
+.tablaColumnaIzquierda {
+  text-align: left !important;
+}
+
+.tablaColumnaDerecha {
+  text-align: right !important;
+}
+
+.tablaCompletaDerecha {
+  text-align: right;
+  width: 100%;
+}
+
+.tablaCompletaCentro {
+  text-align: center;
+  width: 100%;
+}
+
+.tablaCompletaIzquieda {
+  text-align: left;
+  width: 100%;
+}
+
+.tablaColumnaTelefono {
+  text-align: center;
+  width: 150px;
+}
+
+.tablaColumnaCelular {
+  text-align: center;
+  width: 150px;
+}
+
+/* DARIO:TABLA COLUMNA - FIN */
+
+.p-md-1,
+.p-md-2,
+.p-md-3,
+.p-md-4,
+.p-md-5,
+.p-md-6,
+.p-md-7,
+.p-md-8,
+.p-md-9,
+.p-md-10,
+.p-md-11,
+.p-md-12 {
+  padding-bottom: 0rem !important;
+}
+
+.p-col-1,
+.p-col-2,
+.p-col-3,
+.p-col-4,
+.p-col-5,
+.p-col-6,
+.p-col-7,
+.p-col-8,
+.p-col-9,
+.p-col-10,
+.p-col-11,
+.p-col-12 {
+  padding-top: 0.3rem !important;
+}
+
+.tablaBotonIcono {
+  /*background-color: #ffffff00 !important;*/
+  border: 1px solid #ffffff00 !important;
+  box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0) !important;
+  /*margin-right: 10px !important;*/
+}
+
+.tablaBotonIconoEditar {}
+
+.tablaBotonIconoVer {}
+
+.tablaBotonIconoAnular {}
+
+.tablaBotonIconoEliminar {}
+
+.breadcrumbEscritorio {
+  display: flex;
+}
+
+.breadcrumbMovil {
+  display: none;
+}
+
+.p-treetable .p-treetable-tbody>tr>td {
+  padding: 0.1rem 1rem 0.1rem 1rem;
+}
+
+.tablaColumnaAccion1>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion4>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion2>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion3>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion4>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion5>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion6>table {
+  width: 100%;
+  float: left;
+}
+
+.tablaColumnaAccion1>table>tr>th {
+  width: 100% !important;
+  text-align: center;
+}
+
+.tablaColumnaAccion2>table>tr>th {
+  width: 50% !important;
+  text-align: center;
+}
+
+.tablaColumnaAccion3>table>tr>th {
+  width: 33% !important;
+  text-align: center;
+}
+
+.tablaColumnaAccion4>table>tr>th {
+  width: 25% !important;
+  text-align: center;
+}
+
+.tablaColumnaAccion5>table>tr>th {
+  width: 20% !important;
+  text-align: center;
+}
+
+.tablaColumnaAccion6>table>th {
+  width: 16.5% !important;
+  text-align: center;
+}
+
+.p-button.p-button-icon-only.p-button-rounded {
+  height: 1.357rem !important;
+}
+
+.inputCodigo {
+  width: 40% !important;
+}
+
+.inputMonto {
+  width: 40% !important;
+}
+
+.inputFecha {
+  width: 40% !important;
+  text-align: center;
+}
+
+.inputFechaHora {
+  width: 80% !important;
+  text-align: center;
+}
+
+.login-body .login-wrapper .login-panel .login-form {
+  width: 250px;
+}
+
+.login-body .login-wrapper .login-panel .login-form>input {
+  width: 100%;
+  max-width: 100%;
+}
+
+.login-body .login-wrapper .login-panel .login-form>button {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media screen and (min-width: 0em) and (max-width: 40em) {
+  .login-body .login-wrapper .login-panel .login-form {
+    width: 100%;
+    margin-top: 0rem;
+  }
+
+  .p-col-1,
+  .p-col-2,
+  .p-col-3,
+  .p-col-4,
+  .p-col-5,
+  .p-col-6,
+  .p-col-7,
+  .p-col-8,
+  .p-col-9,
+  .p-col-10,
+  .p-col-11,
+  .p-col-12 {
+    padding-top: 0.3rem !important;
+  }
+
+  .p-col-0 {
+    display: none;
+  }
+
+  .app-auditoria {
+    display: none;
+  }
+
+  .tablaColumnaAccion1 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion2 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion3 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion4 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion5 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion6 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAccion7 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCodigoChico {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaKPIMes {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaKPIAnio {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaKPISimbolo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCheckBox {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCheckBox1 {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCheckBoxMediano {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCodigo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCompania {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCodigoGrande {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaUsuario {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaDocumento {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaAdjunto {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaDocumentoAdjunto {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaFecha {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaFechaGrande {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaFechaHora {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaHora {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaDia {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaPeriodo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaMonto {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaMontoGrande {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaNumero {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaTexto {
+    text-align: left !important;
+  }
+
+  .tablaColumnaEstado {
+    text-align: left !important;
+    width: 100% !important;
+    font-size: 0.75rem;
+  }
+
+  .tablaColumnaEstadoDetalle {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaTipo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaNombre {
+    text-align: left !important;
+    width: 100% !important;
+    word-wrap: break-word;
+  }
+
+  .tablaColumnaNombreGrandeEvento {
+    text-align: left !important;
+    width: 100% !important;
+    word-wrap: break-word;
+  }
+
+  .tablaColumnaNombreChico {
+    text-align: left !important;
+    width: 100% !important;
+    word-wrap: break-word;
+  }
+
+  .tablaColumnaNombreMedio {
+    text-align: left !important;
+    width: 100% !important;
+    word-wrap: break-word;
+  }
+
+  .tablaColumnaUbigeo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaUbigeoGrande {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCorreo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaDireccion {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCentro {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaIzquierda {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaDerecha {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaCompletaDerecha {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaCompletaCentro {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaCompletaIzquieda {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaTelefono {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaCelular {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .textosPequenio720p {
+    font-size: 1px !important;
+  }
+
+  .tablaColumnaBoxSemaforo {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .tablaColumnaNombreProceso {
+    text-align: left !important;
+    width: 100% !important;
+  }
+
+  .textochicoKPI {
+    font-size: 1rem !important;
+  }
+
+  .p-breadcrumb {
+    border: 1px solid #dee2e600;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  .p-breadcrumb ul li .p-menuitem-link .p-menuitem-text {
+    font-size: 14px !important;
+  }
+
+  .p-breadcrumb ul li.p-breadcrumb-chevron {
+    margin: 0 0 0 0;
+    font-size: 14px;
+  }
+
+  .p-paginator .p-paginator-pages .p-paginator-page {
+    margin: 0rem;
+  }
+
+  .topbar-right {
+    display: none;
+    color: #495057;
+  }
+
+  .layout-wrapper .layout-topbar {
+    height: 4.125rem !important;
+  }
+
+  .layout-wrapper .layout-content-wrapper {
+    padding-top: 4.125rem;
+  }
+
+  .p-paginator .p-paginator-current {
+    display: none;
+  }
+
+  .breadcrumbEscritorio {
+    display: none;
+  }
+
+  .breadcrumbMovil {
+    display: flex;
+  }
+
+  .p-datatable .p-datatable-tbody>tr:nth-child(even) {
+    background: #e6edff;
+  }
+
+  .p-datatable .p-datatable-tbody>tr:nth-child(even).p-highlight {
+    background: #e6edff;
+    color: #495057;
+  }
+
+  .tablaColumnaAccion1>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .tablaColumnaAccion2>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .tablaColumnaAccion3>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .tablaColumnaAccion4>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .tablaColumnaAccion5>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .tablaColumnaAccion6>table {
+    width: 40% !important;
+    float: left;
+  }
+
+  .layout-wrapper .layout-topbar .topbar-left {
+    justify-content: left;
+  }
+
+  .login-body .login-wrapper .login-panel {
+    display: block;
+    margin-top: 10%;
+  }
+
+  .login-body .login-wrapper .login-panel .logo {
+    margin-bottom: 10%;
+  }
+}
+
+/*estilo para circulos semaforos*/
+.widget-overview-box .overview-icon {
+  display: inline-block !important;
+  border-radius: 50% !important;
+  width: 3.5em !important;
+  height: 3.5rem !important;
+  line-height: 3.5rem !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.buttonretroceder:hover {
+  color: #17aac0;
+}
+
+.descprincipal:hover {
+  color: #163347;
+}
+
+/* box on hover semaforos*/
+.boxSemaforo {
+  transition: all 0.2s ease-in-out;
+}
+
+.boxSemaforo:hover {
+  transform: scale(1.05);
+  z-index: 9999;
+  box-shadow: 2px 2px 2px #6c757d6b;
+}
+
+// SECCION
+
+.p-fieldset .p-fieldset-content {
+  padding-top: 0.1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.p-card {
+  padding-bottom: 1rem !important;
+  margin-bottom: 0.1rem !important;
+}
+
+.p-card .p-card-body {
+  padding-top: 0.1rem !important;
+}
+
+.p-datatable .p-datatable-tbody>tr>td {
+  padding-top: 0rem !important;
+  padding-left: 0.2rem !important;
+  padding-bottom: 0rem !important;
+  padding-right: 0.2rem !important;
+}
+
+.input {
+  text-transform: uppercase;
+  float: right;
+}
+
+// .strong { float: right; }
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  padding: 0.2rem 1rem !important;
+}
+
+.p-datepicker table td {
+  padding: 0.1rem !important;
+}
+
+.p-datepicker table td>span {
+  width: 2rem !important;
+  height: 2rem !important;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+  padding: 0.1rem !important;
+}
+
+.botonesSeccion {
+  margin-bottom: 0.8rem !important;
+  margin-top: 0.5rem !important;
+}
+
+.seccionAuditoria {
+  margin-bottom: 1rem !important;
+}
+
+.p-grid {
+  margin-top: 0rem !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+.p-panelmenu .p-panelmenu-header>a {
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+  padding-left: 0.6rem !important;
+  padding-right: 0.1rem !important;
+  font-size: 12px !important;
+}
+
+.p-panelmenu .p-panelmenu-header>a .p-panelmenu-icon {
+  margin-right: 0.5rem !important;
+  font-size: 8px !important;
+}
+
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
+  padding: 0.3rem !important;
+  font-size: 12px !important;
+  margin-left: 1.3rem !important;
+}
+
+.p-panelmenu-icon {
+  order: 1 !important; // to be the first item on right side.
+}
+
+.p-menuitem-text {
+  flex-grow: 1 !important; // to fill the whole space and push the icon to the end
+}
+
+.p-panelmenu .p-panelmenu-header>a .p-panelmenu-icon {
+  margin-right: 0rem !important;
+}
+
+.p-panelmenu .p-panelmenu-header>a .p-menuitem-icon {
+  // margin-right: 0.01rem !important;
+}
+
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-icon {
+  margin-right: 0.4rem !important;
+  width: 1rem;
+  text-align: center;
+}
+
+.botonGrilla {
+  height: 1rem !important;
+}
+
+.p-datatable .p-paginator-bottom {
+  font-size: 11px !important;
+}
+
+.p-paginator .p-paginator-first,
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next,
+.p-paginator .p-paginator-last {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: #e3f2fd00;
+  color: #001aff;
+  font-weight: bold;
+}
+
+input.ng-untouched.ng-pristine.p-inputtext.p-component.ng-star-inserted {
+  width: 100%;
+}
+
+.sinespacioanchoKPI {
+  padding: 0rem !important;
+  margin: 0rem !important;
+}
+
+//MEDIA SCREEN SOLO PARA KPI INICIO
+@media screen and (min-width: 41em) {
+  .textochicoKPI {
+    font-size: 0.5rem !important;
+  }
+}
+
+@media screen and (min-width: 85.375em) {
+  .textochicoKPI {
+    font-size: 0.7rem !important;
+  }
+}
+
+@media screen and (min-width: 90em) {
+  .textochicoKPI {
+    font-size: 0.9rem !important;
+  }
+}
+
+//MEDIA SCREEN SOLO PARA KPI FIN
+.p-paginator .p-paginator-pages .p-paginator-page {
+  margin: 0rem !important;
+}
+
+.p-fluid .p-inputnumber .p-inputnumber-input {
+  text-align: right;
+}
+
+input:invalid {
+  border: 1px solid rgb(221, 0, 0) !important;
+  outline: none;
+}
+
+input:valid {
+  border: 1px solid #ced4da !important;
+  outline: none;
+}
+
+textarea:invalid {
+  border: 1px solid rgb(221, 0, 0) !important;
+  outline: none;
+}
+
+textarea:valid {
+  border: 1px solid #ced4da !important;
+  outline: none;
+}
+
+textarea {
+  display: flex;
+  margin-left: 1px;
+}
+
+@mixin clearfix() {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin border-box() {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+$teamSecondaryTextColor: #aeb0b5;
+/*Chat*/
+$messagefromBorderColor: #4aa564;
+$messageownBorderColor: #e31c3d;
+$messageBgColor: #f4f4f4;
+$messageTimeTextColor: #aeb0b5;
+$messageBorderColor: #d6d7d9;
+$messageIconColor: #d6d7d9;
+
+.chat {
+
+  .p-panel-content {
+    padding: 0;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+
+    li {
+      padding: 16px 0;
+      @include clearfix();
+      font-size: 0;
+
+      .message-meta {
+        font-size: 14px;
+        width: 160px;
+        @include border-box();
+        display: inline-block;
+        vertical-align: top;
+        padding: 8px;
+        text-align: left;
+
+        img {
+          width: 48px;
+          height: 48px;
+          display: block;
+        }
+
+        .name {
+          font-weight: 600;
+        }
+
+        .time {
+          color: $teamSecondaryTextColor;
+          display: block;
+        }
+      }
+
+      .message {
+        font-size: 14px;
+        @include border-box();
+        width: calc(100% - 160px);
+        padding: 12px;
+        background-color: $messageBgColor;
+        display: inline-block;
+        vertical-align: top;
+      }
+
+      &.message-from {
+        .message-meta {
+          border-left: 4px solid $messagefromBorderColor;
+
+          img {
+            float: left;
+            margin-right: 8px;
+          }
+        }
+      }
+
+      &.message-own {
+        .message-meta {
+          border-right: 4px solid $messageownBorderColor;
+
+          img {
+            float: right;
+            margin-left: 8px;
+          }
+        }
+      }
+    }
+  }
+
+  .write-message {
+    border-top: 1px solid $messageBorderColor;
+    margin-top: 10px;
+    position: relative;
+
+    .i1 {
+      font-size: 24px;
+      color: $messageIconColor;
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      margin-top: -14px;
+    }
+
+    .i2 {
+      font-size: 24px;
+      color: $messageIconColor;
+      position: absolute;
+      left: 50px;
+      top: 50%;
+      margin-top: -14px;
+    }
+
+    input {
+      @include border-box();
+      border: 0 none;
+      width: 100%;
+      height: 40px;
+      font-size: 10px;
+      padding-left: 90px;
+
+      &:focus {
+        outline: 0 none;
+      }
+    }
+  }
+
+  .p-checkbox .p-checkbox-box .p-checkbox-icon {
+    transition-duration: 0.2s;
+    color: black !important;
+    font-size: 14px;
+  }
+
+
+}
+
+.grillaIngresoValorNumerico {
+  background-color: #85BB65 !important;
+}

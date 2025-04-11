@@ -1,0 +1,197 @@
+<p-blockUI [blocked]="bloquearPag">
+  <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-confirmDialog #c key="confirm">
+  <p-footer>
+    <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+      (click)="c.accept()"></button>
+    <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded" (click)="c.reject()"></button>
+  </p-footer>
+</p-confirmDialog>
+
+<p-card>
+
+  <div class="row">
+    <div class="col-sm-4">
+      <h4 class="titulonuevo">Persona</h4>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class="col-sm-2" style="background-color: transparent;"></div>
+    <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+      <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+        (click)="coreBuscar()"></button>
+      <button pButton icon="fa fa-file" type="button" title="Nuevo" label="Nuevo" class="p-button-secondary"
+        (click)="coreNuevo()"></button>
+        <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+        styleClass="p-button-text p-button-secondary" [model]="ltsExportar"></p-splitButton>
+    </div>
+  </div>
+
+  <p-fieldset legend="Información Consulta">
+    <div class="row" style="padding: 10px;">
+      <div class="col">
+        <label class="label">Tipo de Persona </label>
+        <p-dropdown #myTipoPersona placeholder="Tipo Persona" [options]="lstTipoPersona"
+          [(ngModel)]="filtro.TipoPersona" (onChange)="selectedItemTipoPersona($event)"
+          [style]="{'background-color':'rgb(247, 247, 208)'}" (keydown)="validarTeclaEnter($event)">
+        </p-dropdown>
+      </div>
+      <div class="col">
+        <label class="label">Tipo Documento</label>
+        <p-dropdown #myselect placeholder="Seleccione" [options]="lstTipoDocumento" [(ngModel)]="filtro.TipoDocumento"
+          (keydown)="validarTeclaEnter($event)" [disabled]="editarTipoDocumento">
+        </p-dropdown>
+      </div>
+      <div class="col">
+        <label class="label">Nro.Documento</label>
+        <input #myDocumento pInputText type="text" style="width:100%; height: 30px;" [(ngModel)]="filtro.Documento"
+          maxlength="80" (keypress)="defaultBuscar($event)" />
+      </div>
+      <div class="col">
+        <label class="label">Nombre</label>
+        <input pInputText type="text" placeholder="" style="width:100%; height: 30px; text-transform: uppercase;"
+          [(ngModel)]="filtro.NombreCompleto" (keydown)="validarTeclaEnter($event)" />
+      </div>
+
+      <div class="col">
+        <label class="label">Estado</label>
+        <p-dropdown [options]="lstEstados" [(ngModel)]="filtro.Estado" [style]="{'width':'100%','text-transform': 'uppercase'}"
+          (keydown)="validarTeclaEnter($event)">
+        </p-dropdown>
+      </div>
+    </div>
+  </p-fieldset>
+
+  <br>
+
+  <p-fieldset legend="Detalle">
+    <div class="col">
+
+
+      <!--NEW-->
+      <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true" [value]="lstPersona"
+        [sortOrder]="1" sortField="numeropersona" (onLazyLoad)="grillaCargarDatos($event)"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" selectionMode="single"
+        [(selection)]="registroSeleccionado" [rowsPerPageOptions]="[15,30,50]" [showCurrentPageReport]="true"
+        [loading]="loading" [scrollable]="true" scrollHeight="300px" (onRowSelect)="onRowSelect($event)">
+      <ng-template pTemplate="header">
+          <tr>
+              <th class="tablaHeaderAccion3 label" ALIGN="center">Acciones</th>
+              <th pSortableColumn="numeropersona" class="label" ALIGN="center" style="width: 4rem">
+                  Nro<p-sortIcon field="numeropersona"> </p-sortIcon>
+              </th>
+              <th pSortableColumn="NombreCompleto" class="label" ALIGN="center"
+                  style="width: 15rem; text-align: center">
+                  Nombre<p-sortIcon field="NombreCompleto"> </p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="TipoDocumento" ALIGN="center" style="width: 12rem; text-align: center;">
+                Tipo Documento<p-sortIcon field="TipoDocumento"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="Documento" ALIGN="center" style="width: 8rem; text-align: center;">
+                Documento<p-sortIcon field="Documento"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="Estado" ALIGN="center" style="width:6rem; text-align: center;">
+                Estado<p-sortIcon field="Estado"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="Telefono" ALIGN="center" style="width: 8rem; text-align: center;">
+                Telef<p-sortIcon field="Telefono"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="CorreoElectronico" ALIGN="center" style="width: 20rem; text-align: center;">
+                Email<p-sortIcon field="CorreoElectronico"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="TotalUbigeo" ALIGN="center" style="width: 20rem; text-align: center;">
+                Ubigeo<p-sortIcon field="TotalUbigeo"></p-sortIcon>
+              </th>
+              <th class="label" pSortableColumn="TipoPersona" ALIGN="center" style="width: 15rem; text-align: center;">
+                Tipo de Persona<p-sortIcon field="TipoPersona"></p-sortIcon>
+              </th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData>
+          <tr [pSelectableRow]="rowData">
+              <td class="tablaColumnaAccion3">
+                <span class="p-column-title">Acción</span>
+                <table>
+                    <tr >
+                        <th>
+                            <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                                class="p-button-rounded p-button-text" title="Editar"
+                                (click)="coreEditar(rowData)"></button>
+                        </th>
+                        <th>
+                            <button pButton pRipple type="button" icon="fad fa-search"
+                                (click)="coreVer(rowData)" class="p-button-rounded p-button-text"
+                                title="Ver"></button>
+                        </th>
+                        <th>
+                            <button *ngIf="rowData.Estado != 'I'" pButton pRipple type="button" icon="fad fa-minus-circle"
+                                (click)="coreinactivar(rowData)" class="p-button-rounded p-button-text"
+                                title="Inactivar"></button>
+                        </th>
+                    </tr>
+                </table>
+            </td>
+              <td class="tablaColumnaCodigoChico text-center" style="width: 4rem;">
+                  <span class="p-column-title">Nro</span>
+                  {{ rowData.numeropersona }}
+              </td>
+              <td class="tablaColumnaCodigoChico text-center" style="width: 15rem;">
+                  <span class="p-column-title">Nombre</span>
+                  {{ rowData.NombreCompleto |uppercase}}
+              </td>
+
+              <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 12rem;" >
+                  <span class="p-column-title">Tipo Documento</span>
+                  {{ rowData.desTipoDocumento |uppercase}}
+              </td>
+
+              <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 8rem;" >
+                  <span class="p-column-title">Documento</span>
+                  {{ rowData.Documento |uppercase}}
+              </td>
+
+              <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;" >
+                  <span class="p-column-title">Estado</span>
+                  <label *ngIf="rowData.Estado == 'A'" class="tablaEstadoActivo">ACTIVO</label>
+              <label *ngIf="rowData.Estado == 'I'" class="tablaEstadoInactivo">INACTIVO</label>
+              </td>
+
+              <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 8rem;" >
+                  <span class="p-column-title">Telef</span>
+                  {{ rowData.Telefono |uppercase}}
+              </td>
+              <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 20rem;" >
+                <span class="p-column-title">Email</span>
+                {{ rowData.CorreoElectronico |uppercase}}
+            </td>
+            <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 20rem;" >
+              <span class="p-column-title">Ubigeo</span>
+              {{ rowData.DescUbigeo |uppercase}}
+          </td>
+          <td  class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 15rem;" >
+            <span class="p-column-title">Tipo de Persona</span>
+             <!-- {{rowData.EsCliente=="N"?
+                    rowData.EsEmpleado=="N"?
+                    rowData.EsOtro=="N"? 
+                    rowData.EsProveedor=="N"?
+                    "":"PROVEEDOR":"OTROS":"EMPLEADO":"CLIENTE"  |uppercase}} -->
+            {{rowData.tipoPersonaC}}  
+            </td>
+
+
+
+
+          </tr>
+      </ng-template>
+  </p-table>
+
+    </div>
+  </p-fieldset>
+
+</p-card>
+<p-toast position="bottom-center" key="bc"></p-toast>
+
+<ngx-persona-mantenimiento></ngx-persona-mantenimiento>

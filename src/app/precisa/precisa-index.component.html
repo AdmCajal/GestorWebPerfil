@@ -1,0 +1,20 @@
+<ngx-one-column-layout>
+
+  <nb-menu [items]="menu" autoCollapse="true"></nb-menu>
+
+  <router-outlet>
+    <p-confirmDialog #c key="confirm" [baseZIndex]="10000">
+
+      <p-footer>
+        <button pButton type="button" icon="" label="Quiero continuar" class="ui-button-rounded ui-button-danger"
+          (click)="c.accept()"></button>
+
+        <button pButton type="button" icon="" label="Cerrar sesión" class="ui-button-rounded "
+          (click)="c.reject()"></button>
+
+      </p-footer>
+
+    </p-confirmDialog>
+  </router-outlet>
+
+</ngx-one-column-layout>

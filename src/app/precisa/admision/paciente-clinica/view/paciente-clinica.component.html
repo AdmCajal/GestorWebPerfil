@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="es">
+<nb-card style="background-color: transparent;" accent="warning" class="col-sm-12">
+    <p-blockUI [blocked]="bloquearPag">
+        <img src="assets\img\ZZ5H.gif" style="width: 5%">
+    </p-blockUI>
+    <nb-card-header style="background-color: transparent; margin-top: 0px;">
+        <div class="row">
+            <div class="col-sm-3">
+                <br>
+                <h4 class="titulonuevo">Admisión Clínica</h4>
+            </div>
+            <div [class]="colCard1" style="background-color: transparent;"></div>
+
+            <div [class]="colCard2" style="background-color: transparent;" aria-orientation="horizontal">
+                <nb-card class="col-sm-12 fondocard" style="padding: 2px; margin-bottom: -10px; margin-top: 5px;">
+                    <div class="row" aria-orientation="horizontal">
+                        <br>
+                        <button (click)="btnNuevo()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                                src="assets/img/nuevo1.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">Nuevo</label> </button>
+                        <br>
+                        <button (click)="btnEditar()" style="color: #2B4E64; padding: 0px;" class="col button btn"
+                            *ngIf="verBtnAnular"><img src="assets/img/editar.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">Editar</label></button>
+                        <br>
+                        <!-- <button (click)="ValiCamposVacios()" style="color: #2B4E64; padding: 0px;"
+                            class="col button btn"><img src="assets/img/guardar.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">PROBANDO BOTON</label></button>
+                        <br> -->
+                        <button (click)="ValidarGuardar(admision)" style="color: #2B4E64; padding: 0px;"
+                            class="col button btn" [disabled]="!disableBtnGuardar"><img src="assets/img/guardar.ico"
+                                style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">Guardar</label></button>
+                        <br>
+                        <button (click)="AnularAdmision(admision)" style="color: #2B4E64; padding: 0px;"
+                            class="col button btn" *ngIf="verBtnAnular"><img src="assets/img/ico_anular.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">Anular</label></button>
+                        <br>
+                        <button (click)="imprimir()" style="color: #2B4E64; padding: 0px;" class="col button btn"
+                            *ngIf="verBtnAnular"><img src="assets/img/imprimir.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                                flex: 0 0 30%;max-width: 30%;"><br>
+                                <label style="font-size: 10px;font-weight: bold">Imprimir</label></button>
+                        <br>
+                        <button (click)="BuscarOA()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                                src="assets/img/buscaroa.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br>
+                            <label style="font-size: 10px;font-weight: bold">Buscar OA</label></button>
+                        <br>
+                        <!-- <button (click)="imprimirCodigo()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                                src="assets/img/barcodes_40531.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;" ><br><label
+                                style="font-size: 10px;font-weight: bold">Imprimir Código</label></button>
+                        <br> -->
+                        <!-- <button (click)="Correo()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                                src="assets/img/correo.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;" ><br><label
+                                style="font-size: 10px;font-weight: bold">Correo</label></button>
+                        <br> -->
+                        <button style="color: #2B4E64; padding: 0px;" class="col button btn"
+                            (click)="MultiPersona()"><img src="assets/img/paciente.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                            flex: 0 0 30%;max-width: 30%;"><br><label
+                                style="font-size: 10px;font-weight: bold">Paciente</label></button>
+                        <br>
+                    </div>
+                </nb-card>
+            </div>
+
+        </div>
+    </nb-card-header>
+
+    <nb-card-body style="background-color: transparent; margin-top: 0px;">
+        <!-- <form [formGroup]="validarAdmision"> -->
+        <div class="row">
+            <nb-card class="col-sm-12 fondocard2 bordercard">
+                <p-divider align="left">
+                    <div class="p-d-inline-flex p-ai-center">
+                        <i class="pi pi-bars p-mr-2"></i>
+                        <b>&nbsp;Paciente</b>
+                     
+                    </div>
+                </p-divider>
+
+                <div class="row" style="padding: 10px;">
+
+                    <div class="col-sm-3 ">
+                        <div class="form-group">
+                            <label for="documento" class="label">Paciente</label>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" id="documento" name="documento"
+                                    class="hoverDisabled  size-large  col-4 status-basic shape-rectangle nb-transition"
+                                    style="width:100%" [(ngModel)]="filtro.Documento"
+                                    (keydown)="validarTeclaEnterPaciente($event)"
+                                    [disabled]="editarCampoDocumento" />&nbsp;
+                                <input pInputText type="text" disabled
+                                    class="hoverDisabled  size-medium col-8 status-basic shape-rectangle nb-transition"
+                                    style="width:100%; height:30px" [(ngModel)]="filtro.NombreCompleto" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline" type="button" id="button-addon2"
+                                        style=" height:30px; margin-left:-32px" (click)="limpiarPersona()"
+                                        [disabled]="editarCampos">x</button>
+                                </div>                         
+                                <button (click)="verSelectorPaciente()" pButton icon="fa fa-search" class="botonbuscar"
+                                    type="button" title="Buscar Paciente"></button>                       
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Historia Clínica</label>
+                                <!-- <div *ngIf="historiaField.touched && historiaField.invalid">
+                                        <p class="caption status-danger" *ngIf="historiaField.hasError('required')">
+                                            *
+                                        </p>
+                                    </div> -->
+                            </div>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text"
+                                    class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    [disabled]="editarCampos" [(ngModel)]="filtro.CodigoHC" />
+                                <button pButton icon="fas fa-file-medical-alt" type="button" title="Historia Clínica"
+                                    style="background-color: #ffc72f; border-color:#ffc72f ;"
+                                    [disabled]="true"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Fecha Nacimiento</label>
+                            <input pInputText type="date"
+                                class="hoverDisabled  size-large  col-8 status-basic shape-rectangle nb-transition"
+                                style="width:100%"/>
+                        </div>
+                    </div> -->
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Sexo</label>
+                            <div class="p-inputgroup">
+                                <p-dropdown [options]="lstSexo" [(ngModel)]="filtro.Sexo" [disabled]="true"
+                                    [style]="{'width':'85%'}" [filter]="true"></p-dropdown>
+                                <button pButton icon="fas fa-venus-mars" type="button" title="Género"
+                                    style="background-color: #ffc72f; border-color:#ffc72f ;"
+                                    [disabled]="true"></button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label for="inputLastName" class="label">Fecha Nacimiento / Edad</label>
+                        <div class="p-inputgroup">
+                            <p-calendar [disabled]="true" [(ngModel)]="filtro.FechaNacimiento"
+                                [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" dateFormat="dd/mm/yy">
+                            </p-calendar>&nbsp;
+                            <input pInputText type="text"
+                                class="hoverDisabled  size-large  col-3 status-basic shape-rectangle nb-transition "
+                                style="width:100%; height:30px;" [(ngModel)]="filtro.Edad" [disabled]="true" />
+                            <button pButton icon="fas fa-calendar-alt" type="button" title="Datos"
+                                style="background-color: #ffc72f; border-color:#ffc72f ;" [disabled]="true"></button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Correo</label>
+                            <div class="p-inputgroup">
+                                <input pInputText type="email" disabled
+                                    class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                    style="width:100%; height: 30px;" [(ngModel)]="filtro.CorreoElectronico"
+                                    [disabled]="true" />
+                                <button pButton icon="fas fa-at" type="button" title="Correo"
+                                    style="background-color: #ffc72f; border-color:#ffc72f ;"
+                                    [disabled]="true"></button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <label for="inputLastName" class="label">Comentario</label>
+                        <textarea pInputText type="text" placeholder="" [style]="{'width':'100%'}"
+                            [(ngModel)]="filtro.Comentario" [disabled]="true"></textarea>
+
+                    </div>
+                </div>
+            </nb-card>
+        </div>
+
+
+        <div class="row">
+
+            <nb-card class="col-sm-12 fondocard2 bordercard">
+                <p-divider align="left">
+                    <div class="p-d-inline-flex p-ai-center">
+                        <i class="pi pi-bars p-mr-2"></i>
+                        <b>&nbsp;Datos de la Atención</b>
+                    </div>
+                </p-divider>
+
+                <div class="row" style="padding: 10px;">
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">N° Petición</label>
+                            <input pInputText type="text" disabled [(ngModel)]="filtro.NroPeticion"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:100%; height: 30px;" [disabled]="editarCamposAutomaticos" />
+                   
+                            <label for="inputLastName" class="label">Orden Externa</label>
+                            <input pInputText type="text" disabled [(ngModel)]="filtro.OrdenSinapa"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:100%; height: 30px;" [disabled]="editarCamposAutomaticos" />
+
+                            <div class="p-inputgroup">
+                                <label for="ordenAtencion" class="label">Orden Atención</label>
+                            </div>
+                            <input pInputText type="text" disabled [(ngModel)]="filtro.OrdenAtencion" id="ordenAtencion"
+                                name="ordenAtencion"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                [disabled]="editarCampoOA" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="cmp" class="label">Médico</label>
+                         
+                            </div>
+                            <div class="p-inputgroup">
+                                <div class="p-inputgroup">
+                                    <input pInputText type="text" (keydown)="validarEnterMedico($event)" id="cmp"
+                                        name="cmp"
+                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                        style="width:70%; background-color: rgb(247, 247, 208); height: 30px;"
+                                        [(ngModel)]="filtro.CMP" [disabled]="editarCampoMedico" />
+                                    &nbsp;
+                                   
+                                    <input pInputText type="text"
+                                        class="hoverDisabled  size-medium col-9 status-basic shape-rectangle nb-transition"
+                                        style="width:130%; background-color: rgb(247, 247, 208); height: 30px;"
+                                        [disabled]="true" [(ngModel)]="filtro.Busqueda" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline" type="button" id="button-addon2"
+                                            style=" height:30px; margin-left:-32px" (click)="limpiarMedico()"
+                                            [disabled]="editarCampos">x</button>
+                                    </div>
+                                </div>
+
+                                <button (click)="verSelectorMedico()" pButton icon="fa fa-search" class="botonbuscar"
+                                    type="button" title="Buscar Cliente" [disabled]="editarCampos"></button>
+                                <button pButton icon="fa fa-user-plus" class="botonbuscar" type="button"
+                                    (click)="crearMedico()" title="Buscar Cliente" [disabled]="editarCampos"></button>
+                            </div>
+
+                            <div class="p-inputgroup">
+                                <label for="idAseguradora" class="label">Aseguradoras</label>
+
+                            </div>
+                            <div class="p-inputgroup">
+                                <div class="p-inputgroup">
+                                    <input pInputText type="text" (keydown)="validarEnterAseguradora($event)"
+                                        id="idAseguradora" name="idAseguradora"
+                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                        style="width:70%; background-color: rgb(247, 247, 208); height: 30px;"
+                                        [(ngModel)]="filtro.IdAseguradora" [disabled]="editarCampoAseguradora" />
+                                    <!-- <input pInputText type="text"
+                                        class="hoverDisabled  size-large  col-3 status-basic shape-rectangle nb-transition"
+                                        style="width:100%; background-color: rgb(247, 247, 208); height: 30px;" [(ngModel)]="dta.IdAseguradora" /> -->
+                                    &nbsp;
+                                    <input pInputText type="text"
+                                        class="hoverDisabled  size-medium col-9 status-basic shape-rectangle nb-transition"
+                                        style="width:130%; background-color: rgb(247, 247, 208); height: 30px;"
+                                        [(ngModel)]="filtro.NombreEmpresa" [disabled]="true" />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline" type="button" id="button-addon2"
+                                            style=" height:30px; margin-left:-32px" (click)="limpiarAseguradora()"
+                                            [disabled]="editarCampos">x</button>
+                                    </div>
+                                </div>
+
+                                <button (click)="verSelectorAseguradora()" pButton icon="fa fa-search"
+                                    class="botonbuscar" type="button" title="Buscar Aseguradora"
+                                    [disabled]="editarCampos"></button>
+                                <button pButton icon="fa fa-user-plus" (click)="crearAseguradora()" class="botonbuscar"
+                                    type="button" title="Buscar Aseguradora" [disabled]="editarCampos"></button>
+                            </div>
+
+                            <label for="documentoFiscal" class="label">Empresa</label>
+                            <div class="p-inputgroup">
+                                <div class="p-inputgroup">
+                                    <input pInputText type="text" (keydown)="validarEnterEmpresa($event)"
+                                        id="documentoFiscal" name="documentoFiscal"
+                                        class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                        style="width:70%; height: 30px;" [(ngModel)]="filtro2.DocumentoFiscal"
+                                        [disabled]="editarCampoEmpresa" />
+                                    &nbsp;
+                                    <input pInputText type="text"
+                                        class="hoverDisabled  size-medium col-9 status-basic shape-rectangle nb-transition"
+                                        style="width:130%; height: 30px;" [(ngModel)]="filtro2.NombreCompleto"
+                                        [disabled]="true" />
+                                     <div class="input-group-append">
+                                        <button class="btn btn-outline" type="button" id="button-addon2"
+                                            style=" height:30px; margin-left:-32px" (click)="limpiarEmpresa()"
+                                            [disabled]="editarCampos">x</button>
+                                    </div>
+                                </div>
+
+                                <button (click)="verSelectorEmpresa()" pButton icon="fa fa-search" class="botonbuscar"
+                                    type="button" title="Buscar Empresa" [disabled]="editarCampos"></button>
+                                <button pButton icon="fa fa-user-plus" class="botonbuscar" type="button"
+                                    (click)="crearEmpresa()" title="Nueva Empresa" [disabled]="editarCampos"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Cliente</label>
+                                <!-- <div *ngIf="clienteField.touched && clienteField.invalid">
+                                        <p class="caption status-danger" *ngIf="clienteField.hasError('required')">
+                                            *
+                                        </p>
+                                    </div> -->
+                            </div>
+                            <p-dropdown [options]="lstcliente" [disabled]="editarCampos" [filter]="true"
+                                [style]="{'background-color':'rgb(247, 247, 208)'}" [(ngModel)]="filtro.comboCliente">
+                            </p-dropdown>
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Procedencia</label>
+                                <!-- <div *ngIf="procedenciaField.touched && procedenciaField.invalid">
+                                        <p class="caption status-danger" *ngIf="procedenciaField.hasError('required')">
+                                            *
+                                        </p>
+                                    </div> -->
+                            </div>
+                            <p-dropdown [options]="lstprocedencia" [(ngModel)]="filtro.IdEspecialidad" [filter]="true"
+                                [disabled]="editarCampos" [style]="{'background-color':'rgb(247, 247, 208)'}">
+                                <!-- [disabled]="editarCampos" [style]="{'background-color':'rgb(247, 247, 208)'}" (onChange)="selectedItemProcedencia($event)"> -->
+                            </p-dropdown>
+                            <label for="inputLastName" class="label">Sede Empresa</label>
+                            <p-dropdown [(ngModel)]="filtro.IdSedeEmpresa" [options]="lstSedeEmpresa" [filter]="true"
+                                [disabled]="editarCampos">
+                            </p-dropdown>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <label for="inputLastName" class="label">Servicio</label>
+                                <!-- <div *ngIf="servicioField.touched && servicioField.invalid">
+                                        <p class="caption status-danger" *ngIf="servicioField.hasError('required')">
+                                            *
+                                        </p>
+                                    </div> -->
+                            </div>
+                            <p-dropdown [options]="lstServicio" [disabled]="editarCampoSevicio"
+                                [style]="{'background-color':'rgb(247, 247, 208)'}" [filter]="true"
+                                (onChange)="selectedItemServicio($event)" [(ngModel)]="filtro.ClasificadorMovimiento">
+                            </p-dropdown>
+
+                            <label for="inputLastName" class="label">Tipo Atención</label>
+                            <p-dropdown [options]="lstTipoAtencion" [(ngModel)]="filtro.TipoAtencion"
+                                (onChange)="selectedItemTipoAtencion($event)" [disabled]="editarCampos" [filter]="true">
+                            </p-dropdown>
+
+                            <div class="p-inputgroup">
+
+                                <label for="inputLastName" class="label">Tipo Orden</label>
+                                <!-- <div *ngIf="tipoOrdenField.touched && tipoOrdenField.invalid">
+                                        <p class="caption status-danger" *ngIf="tipoOrdenField.hasError('required')">
+                                            *
+                                        </p>
+                                    </div> -->
+                            </div>
+                            <p-dropdown placeholder="Seleccione " [style]="{'background-color':'rgb(247, 247, 208)'}"
+                                [disabled]="editarCampos" [options]="lstTipoOrden" [(ngModel)]="filtro.TipoOrden"
+                                [filter]="true">
+                            </p-dropdown>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="inputLastName" class="label">Tipo Paciente</label>
+                                      <p-dropdown [disabled]="editarCampos" [options]="lstTipoOperacion" [filter]="true"
+                                [style]="{'background-color':'rgb(247, 247, 208)'}" [(ngModel)]="filtro.TipoOperacionID"
+                                (onChange)="selectedItemTipoPaciente($event)">
+              
+                            </p-dropdown>
+
+
+                            <label for="inputLastName" class="label">N° Cama</label>
+                            <input pInputText type="text" disabled [(ngModel)]="filtro.Cama"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:100%; height: 30px;" [disabled]="editarCampoNroCama" />
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+
+                        <label for="observacionAlta" class="label">Comentario Atención</label>
+                        <textarea pInputText type="text" placeholder="Ingrese comentario de la atención"
+                            id="observacionAlta" name="observacionAlta" [style]="{'width':'100%'}"                      
+                            [(ngModel)]="filtro.ObservacionAlta"
+                            class=" input-full-width size-large status-basic shape-round nb-transition "
+                            [disabled]="editarCampos"></textarea>
+                    </div>
+                </div>
+
+            </nb-card>
+        </div>
+        <div class="row">
+
+            <nb-card class="col-sm-12 fondocard2 bordercard">
+                <p-divider align="left">
+                    <div class="p-d-inline-flex p-ai-center">
+                        <i class="pi pi-bars p-mr-2"></i>
+                        <b>&nbsp;Detalle de Pruebas</b>
+                    </div>
+                </p-divider>
+                <div class="row " style="padding: 10px;">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <div class="p-inputgroup">
+                                <span class="p-float-label">
+                                    <input pInputText type="text" id="codigoComponente"
+                                        class=" size-large status-basic shape-rectangle nb-transition"
+                                        style="width:100%" [(ngModel)]="filtro.CodigoComponente"
+                                        (keydown)="validarTeclaEnterExamen($event)" [disabled]="editarDetallePrueba" />
+
+                                    <!-- (keypress)="esCodigoExamenValido($event)"  -->
+                                    <label for="codigoComponente" class="label">Código Prueba</label>
+                                </span>
+
+                                <button (click)="verSelectorExamen()" pButton icon="fa fa-search" type="button"
+                                    title="Buscar Prueba" class="botonbuscar" [disabled]="editarDetallePrueba">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">           
+                        <button pButton icon="fa fa-minus-circle" type="button" title="Anular Prueba"
+                            class="botonbuscar" (click)="AnularDetallePrueba()"
+                            [disabled]="!registroSeleccionado || !registroSeleccionado.length"></button>
+
+
+                        <button pButton icon="fa fa-trash-alt" type="button" title="Quitar Prueba"
+                            (click)="ValidarQuitarDetallePrueba()"
+                            [disabled]="!registroSeleccionado || !registroSeleccionado.length"
+                            class="botonbuscar"></button>    
+
+                    </div>
+                    <div class="col-sm-8">
+                        <label class="tituloconsentimiento">{{filtro.consentimiento}}</label>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="col">
+                            <p-table #dt [rows]="contarExamenes" [paginator]="true" [rowHover]="true"
+                                [responsive]="true" [sortOrder]="1" [value]="lstListarXAdmision"
+                                (onLazyLoad)="grillaCargarDatos($event)"
+                                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                                [showCurrentPageReport]="true" selectionMode="single"
+                                [(selection)]="registroSeleccionado" [loading]="loading" [scrollable]="true"
+                                scrollHeight="200px" [style]="{width:'100%'}" [rowsPerPageOptions]="[15,30,50]"
+                                [totalRecords]="cantidad">
+                                <ng-template pTemplate="colgroup">
+                                    <colgroup>
+                                        <col style="width:50px">
+                                    </colgroup>
+                                </ng-template>
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th style="width: 2.25em">
+                                            <p-tableHeaderCheckbox [disabled]="editarDetallePrueba">
+                                            </p-tableHeaderCheckbox>
+                                        </th>
+                                        <th style="width: 5rem;" class="label" pSortableColumn="numeroXadmision">N°
+                                            <p-sortIcon field="numeroXadmision"></p-sortIcon>
+                                        </th>
+
+                                        <th style="width: 8rem;" class="label" pSortableColumn="CodigoComponente">Código
+                                            <p-sortIcon field="CodigoComponente"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 12rem;" class="label" pSortableColumn="Descripcion">Prueba /
+                                            Examen<p-sortIcon field="Descripcion">
+                                            </p-sortIcon>
+                                        </th>
+                                        <th style="width: 8rem;" class="label" pSortableColumn="Cantidad">Cantidad
+                                            <p-sortIcon field="Cantidad"></p-sortIcon>
+                                        </th>
+                                        <th style="width: 8rem;" class="label" pSortableColumn="ValorEmpresa">Precio
+                                            <p-sortIcon field="ValorEmpresa">
+                                            </p-sortIcon>
+                                        </th>
+
+                                        <th style="width: 8rem;" class="label" pSortableColumn="ValorEmpresa">Total
+                                            <p-sortIcon field="ValorEmpresa">
+                                            </p-sortIcon>
+                                        </th>
+                                        <th style="width: 8rem;" class="label" pSortableColumn="Estado">Estado
+                                            <p-sortIcon field="Estado">
+                                            </p-sortIcon>
+                                        </th>
+                                        <th style="width: 5rem;" class="label" pSortableColumn="Sexo">Sexo
+                                            <p-sortIcon field="Sexo">
+                                            </p-sortIcon>
+                                        </th>
+
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData>
+
+                                    <tr>
+                                        <td style="width:50px">
+                                            <p-tableCheckbox [value]="rowData" [disabled]="editarCampos">
+                                            </p-tableCheckbox>
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 5rem;" ALIGN="center">
+                                            {{rowData.numeroXadmision}}
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 8rem;" ALIGN="center">
+                                            {{rowData.CodigoComponente}}
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 12rem;" ALIGN="center">
+                                            {{rowData.Descripcion}}
+                                        </td>
+                                        <td pEditableColumn class="tablaColumnaCodigoChico" style="width: 8rem;"
+                                            ALIGN="center">
+                                            <p-cellEditor>
+                                                <ng-template pTemplate="input">
+                                                    <input pInputText type="number" [disabled]="editarCantidad"
+                                                        (keypress)="esCantidad($event)" (blur)="OnBlurMethod()"
+                                                        (keydown)="enterCantidad($event)" [(ngModel)]="rowData.Cantidad"
+                                                        style="width:100%; height: 30px;" required>
+                                                </ng-template>
+                                                <ng-template pTemplate="output">
+                                                    {{rowData.Cantidad}}
+                                                </ng-template>
+                                            </p-cellEditor>
+
+                                            <!-- {{rowData.Cantidad}} -->
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 8rem;" ALIGN="center">
+                                            {{rowData.Valor | currency: 'S/'}}
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 8rem;" ALIGN="center">
+                                            {{rowData.ValorEmpresa | currency: 'S/'}}
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 8rem;" ALIGN="center">
+                                            {{rowData.EstadoAdm}}
+                                
+                                        </td>
+                                        <td class="tablaColumnaCodigoChico" style="width: 5rem;" ALIGN="center">
+                                            {{rowData.Sexo}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="footer">
+                                    <tr>
+                                        <td colspan="2" class="text-right" rowspan="2">Total :</td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            {{cantidad}}</td>
+                                        <td>{{lastYearTotal | currency: 'S/'}}</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </nb-card>
+
+        </div>
+
+        <div class="row">
+            <nb-card class="col-sm-12 fondocard2 bordercard">
+                <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                    [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+            </nb-card>
+        </div>
+
+    </nb-card-body>
+
+
+
+</nb-card>
+<p-dialog [(visible)]="verReporteModal" [draggable]="false" [baseZIndex]="10000" [resizable]="false" [modal]="true"
+    showEffect="fade" hideEffect="size" [breakpoints]="{'950px': '75vw'}" header="Informe Principal"
+    [style]="{'width':'900px', minWidth: '200px'}">
+    <div style="width: 100%; height: 450px">
+        <ng2-pdfjs-viewer #pdfViewerActividades></ng2-pdfjs-viewer>
+    </div>
+</p-dialog>
+</html>
+<ngx-aseguradora-mantenimiento></ngx-aseguradora-mantenimiento>
+<ngx-aseguradora-buscar></ngx-aseguradora-buscar>
+<ngx-medico-mantenimiento></ngx-medico-mantenimiento>
+<ngx-medico-buscar></ngx-medico-buscar>
+<ngx-persona-mantenimiento></ngx-persona-mantenimiento>
+<ngx-persona-buscar></ngx-persona-buscar>
+<ngx-examen-buscar></ngx-examen-buscar>
+<ngx-empresa-buscar></ngx-empresa-buscar>
+<ngx-paciente-clinica-buscarOA></ngx-paciente-clinica-buscarOA>
+<ngx-paciente-clinica-buscarPaciente></ngx-paciente-clinica-buscarPaciente>

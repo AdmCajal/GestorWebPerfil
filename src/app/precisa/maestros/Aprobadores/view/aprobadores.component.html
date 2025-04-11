@@ -1,0 +1,139 @@
+<nb-card>
+    <nb-card-header>
+        <nav class="fixed">
+            <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+        </nav>
+        <div class="row">
+            <div class="col-sm-2">
+                <h4 class="titulonuevo"></h4>
+            </div>
+            <div class="col-sm-10" style="background-color: transparent;">
+                <div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <p-fieldset legend="Información Consulta">
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-7">
+                    <label for="inputLastName" class="label">Usuario</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" placeholder="" [style]="{'width':'50px'}" />
+                        <div class="col-sm-4">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:100%" />&nbsp;
+                        </div>
+                        <p-button styleClass="p-button-primary" type="button" title="Buscar"
+                            (click)="verSelectorUsuario()">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </p-button>
+                        <button pButton type="button" title="Limpiar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 10 13">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Estado</label>
+                    <p-dropdown placeholder="Todos"></p-dropdown>
+                </div>
+            </div>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Detalle">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                [sortOrder]="-1" sortField="tipousuario" [value]="dto"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                [showCurrentPageReport]="true">
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <th pSortableColumn="tipousuario">Nro<p-sortIcon field="tipousuario"> </p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="Perfil">Id.Usuario<p-sortIcon field="Perfil"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="VaEstado">Persona<p-sortIcon field="VaEstado"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="VaEstado">Porcentaje<p-sortIcon field="VaEstado"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="VaEstado">Estado<p-sortIcon field="VaEstado">
+                            </p-sortIcon>
+                        </th>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-asignarPerfil>
+                    <tr>
+                        <td class="tablaColumnaAccion3">
+                            <span class="p-column-title">Acción</span>
+                            <table>
+                                <tr>
+                                    <th>
+                                        <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                                            class="p-button-rounded p-button-text" title="Editar"
+                                            (click)="coreEditar(asignarPerfil)"></button>
+                                    </th>
+                                    <th>
+                                        <button pButton pRipple type="button" icon="fad fa-search"
+                                            (click)="coreVer(asignarPerfil)" class="p-button-rounded p-button-text"
+                                            title="Ver"></button>
+                                    </th>
+                                    <th>
+                                        <button pButton pRipple type="button" icon="fad fa-minus-circle"
+                                            class="p-button-rounded p-button-text" title="Inactivar"></button>
+                                    </th>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>{{asignarPerfil.CodigoTabla}}</td>
+
+                        <td>{{asignarPerfil.Descripcion}}</td>
+
+                        <td>
+                            <span>{{asignarPerfil.Nombre}}</span>
+                        </td>
+                        <td>{{asignarPerfil.CodigoTabla}}</td>
+
+
+
+
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-fieldset>
+    </nb-card-body>
+
+
+</nb-card>
+<ngx-aprobadores-buscar></ngx-aprobadores-buscar>
+<ngx-aprobadores-mantenimiento></ngx-aprobadores-mantenimiento>

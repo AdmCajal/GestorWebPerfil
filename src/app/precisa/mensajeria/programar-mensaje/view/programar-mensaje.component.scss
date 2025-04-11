@@ -1,0 +1,31 @@
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.custom-file-upload:hover {
+  background-color: #0069d9;
+}
+
+#file-input-1,
+#file-input-2,
+#file-input-3,
+#file-input-4 {
+  display: none;
+}
+
+:host ::ng-deep {
+  .p-calendar .p-datepicker {
+    width: 100% !important;
+    min-width: 12rem !important;
+  }
+}

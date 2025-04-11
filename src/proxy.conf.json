@@ -1,0 +1,8 @@
+{
+    "/api/*": {   
+     "target": "https://precisa.pe/ServiciosRest/ProyectoServices",     
+      "pathRewrite": { "^/api": "" },
+      "secure": true,
+      "changeOrigin": true
+    }
+  }

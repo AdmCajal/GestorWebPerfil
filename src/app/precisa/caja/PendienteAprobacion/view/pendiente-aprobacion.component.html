@@ -1,0 +1,229 @@
+<nb-card fixed>
+    <nb-card-header>
+        <nav class="fixed">
+            <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+        </nav>
+    </nb-card-header>
+
+    <nb-card-body>
+        <!-- <p-divider align="left" [ngStyle]="{'padding-left': '15px','padding-right': '15px'}">
+            <div class="p-d-inline-flex p-ai-center">
+                <i class="pi pi-bars p-mr-2"></i>
+                <b>&nbsp;Pendiente de Aprobación</b>
+            </div>
+        </p-divider> -->
+        <p-fieldset legend="Informacion Consulta">
+
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-8">
+                    <label for="inputLastName" class="label">Paciente</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" placeholder="" [style]="{'width':'50px'}" />
+                        <div class="col-sm-4">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:100%" />&nbsp;
+                        </div>
+                        <p-button styleClass="p-button-primary" type="button" title="Buscar" (click)="verSelectorPacientes()">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </p-button>
+                        <button pButton type="button" title="Limpiar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 10 13">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                                </path>
+                            </svg>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Servicio</label>
+                        <p-dropdown placeholder="--Clasificador--"></p-dropdown>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-8">
+                    <label for="inputLastName" class="label">Aprobador</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" placeholder="" [style]="{'width':'50px'}" />
+                        <div class="col-sm-4">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:100%" />&nbsp;
+                        </div>
+                        <p-button styleClass="p-button-primary" type="button" title="Buscar">
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-search" viewBox="0 0 16 16">
+                                <path
+                                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                            </svg>
+                        </p-button>
+                        <button pButton type="button" title="Limpiar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 10 13">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                                </path>
+                            </svg>
+                        </button>
+
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Tipo Admisión</label>
+                        <p-dropdown placeholder="--Todos--"></p-dropdown>
+                    </div>
+                </div>
+
+
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Nro Petición</label>
+                        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                            [maxFractionDigits]="0">
+                        </p-inputNumber>
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Tipo Paciente</label>
+
+                        <p-dropdown placeholder="--Todos--"></p-dropdown>
+
+
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Sede</label>
+                    <p-dropdown placeholder="--Clinica--"></p-dropdown>
+                </div>
+
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                </div>
+
+
+
+
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Fecha Inicial
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                        [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder='' [monthNavigator]="true"
+                        [yearNavigator]="true"></p-calendar>
+                    <button pButton type="button" title="Limpiar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 10 13">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                            </path>
+                        </svg>
+                    </button>
+
+                </div>
+
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+
+                        <label for="inputLastName" class="label">Fecha Final
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                            [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                        <button pButton type="button" title="Limpiar">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 10 13">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z">
+                                </path>
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </p-fieldset>
+        <br>
+
+        <p-fieldset legend="Detalle de Liquidación">
+            <div class="col" style="OVERFLOW-X: scroll">
+                <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                    [sortOrder]="-1" sortField="tipousuario"
+                    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                    [showCurrentPageReport]="true">
+
+                    <ng-template pTemplate="header">
+                        <tr>
+
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Nro<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+
+                            <th style="width: 10rem;" pSortableColumn="Perfil">Fecha Admisión<p-sortIcon field="Perfil"></p-sortIcon>
+                            </th>
+
+                            <th style="width: 10rem;" pSortableColumn="VaEstado">Tipo Admisión<p-sortIcon field="VaEstado"></p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Nro.Petición<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Paciente<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Historia Clínica<p-sortIcon field="tipousuario">
+                                </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">OA Clínica<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Total<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+                            <th style="width: 10rem;" pSortableColumn="tipousuario">Estado<p-sortIcon field="tipousuario"> </p-sortIcon>
+                            </th>
+
+
+
+
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-asignarPerfil>
+                        <tr>
+
+                            <td>{{asignarPerfil.tipousuario}}</td>
+
+                            <td>{{asignarPerfil.Perfil}}</td>
+
+                            <td>
+                                <span>{{asignarPerfil.VaEstado}}</span>
+                            </td>
+                            <td>
+                                <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                                    placeholder="Asignar Perfil"></p-dropdown>
+                            </td>
+
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-fieldset>
+    </nb-card-body>
+
+</nb-card>
+<ngx-pendiente-aprobacion-detalle></ngx-pendiente-aprobacion-detalle>
+<ngx-pendiente-aprobacion-buscar></ngx-pendiente-aprobacion-buscar>
+

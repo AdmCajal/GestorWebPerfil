@@ -1,0 +1,76 @@
+<p-blockUI [blocked]="bloquearPag">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+
+
+
+    <ng-template pTemplate="content">
+        <p-fieldset class="col-sm-12" legend=" ">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Compañia</label>
+                        <p-dropdown [options]="lstCompania" [(ngModel)]="dto.CompaniaCodigo"
+                            (onChange)="selectedItemcompania($event)" [baseZIndex]="20000" appendTo="body"
+                            [disabled]="isNuevo" [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                            [filter]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Sucursal</label>
+                        <p-dropdown [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                            [options]="lstSucursal" [(ngModel)]="dto.IdSede" [baseZIndex]="20000" appendTo="body"
+                            [disabled]="isNuevo" (onChange)="cargarComboPrograma()" [filter]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Programa</label>
+                        <p-dropdown [options]="lstPrograma" [(ngModel)]="dto.IdProyecto" [baseZIndex]="20000"
+                            appendTo="body" [disabled]="isNuevo"
+                            [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}" [filter]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Manzana</label>
+                        <input pInputText type="text"
+                            class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                            [(ngModel)]="dto.Nombre" [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                            maxlength="15" [disabled]="puedeEditar" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Estado</label>
+                        <p-dropdown [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                            [baseZIndex]="20000" appendTo="body" [options]="lstEstados" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.Estado">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+        </p-fieldset>
+        <br>
+        <div class="row">
+            <p-fieldset legend="Auditoria">
+                <ngx-auditoria [creacionUsuario]="UsuarioCreacion" [creacionFecha]="fechaCreacion"
+                    [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+            </p-fieldset>
+        </div>
+        <!--Botón-->
+        <div class="row mt-5 d-flex justify-content-end mr-1">
+            <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+                (click)="coreGuardar()" type="submit"></p-button>
+        </div>
+    </ng-template>
+
+</p-dialog>

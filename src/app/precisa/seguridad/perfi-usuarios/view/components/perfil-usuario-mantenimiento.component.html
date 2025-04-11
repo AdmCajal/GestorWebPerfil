@@ -1,0 +1,58 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="1001">
+  <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+  [style]="{width: '1250px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000" (onHide)="btnCerrar()">
+
+  <ng-template pTemplate="content">
+    <br>
+    <p-fieldset legend="Auditoria">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="inputLastName" class="label">Perfil</label>
+            <input pInputText type="text" [(ngModel)]="dto.perfil" [disabled]="isNuevo"
+              class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+              [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}" />
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group">
+            <label for="inputLastName" class="label">Estado</label>
+            <p-dropdown [disabled]="puedeEditar" [(ngModel)]="dto.estado" [options]="lstEstados"
+            [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"  class="tablaCompletaIzquieda">
+            </p-dropdown>
+          </div>
+        </div>
+        <div class="col-sm-6">
+        </div>
+      </div>
+    </p-fieldset>
+    <br>
+    <p-fieldset legend="Opciones de Menú">
+      <div class="row" style="padding: 10px;">
+        <div class="col-sm-4">
+          <p>Menú General</p>
+          <p-tree [value]="perfiles" [draggableNodes]="!puedeEditar" [droppableNodes]="!puedeEditar" droppableScope="server1"
+            draggableScope="files"></p-tree>
+        </div>
+        <div class="col-sm-4">
+          <p>Perfil</p>
+          <p-tree [value]="perfilesAsignados" [draggableNodes]="!puedeEditar" [droppableNodes]="!puedeEditar" droppableScope="files"
+            draggableScope="server1"></p-tree>
+        </div>
+      </div>
+    </p-fieldset>
+    <br>
+    <p-fieldset legend="Auditoria">
+      <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+        [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+    </p-fieldset>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <p-button label="Guardar" icon="pi pi-save" *ngIf="!puedeEditar" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+      (click)="saveProduct($event)" badgeClass="p-badge-danger"></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast key="mr" [baseZIndex]="1003"></p-toast>

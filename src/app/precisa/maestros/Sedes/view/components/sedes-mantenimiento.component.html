@@ -1,0 +1,83 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="1001">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Información General">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Código</label>
+                        <input pInputText type="text"
+                            [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}" [disabled]="puedeEditar"
+                            (ngModelChange)="dto.SedCodigo = $event.toUpperCase()" [(ngModel)]="dto.SedCodigo"
+                            maxlength="4" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Telefono</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            pKeyFilter="hex" (keypress)="esTelefesCeluValido($event)" [(ngModel)]="dto.Telefono"
+                            maxlength="9" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Sucursal</label>
+                        <input pInputText type="text"
+                            [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.SedDescripcion" maxlength="60" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Dirección</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            (ngModelChange)="dto.Direccion = $event.toUpperCase()" [(ngModel)]="dto.Direccion"
+                            maxlength="80" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Compañia</label>
+                        <p-dropdown [options]="lstCompania" [(ngModel)]="dto.IdEmpresa" [disabled]="puedeEditar"
+                            [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Estado</label>
+                        <p-dropdown [options]="lstEstados" [(ngModel)]="dto.SedEstado" [disabled]="puedeEditar"
+                           
+                            [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <br>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="coreGuardar()"></p-button>
+    </ng-template>
+
+</p-dialog>
+<p-toast key="bc" [baseZIndex]="2000"></p-toast>

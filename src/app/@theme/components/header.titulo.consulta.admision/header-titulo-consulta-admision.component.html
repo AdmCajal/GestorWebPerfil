@@ -1,0 +1,62 @@
+
+<div class="header-container">
+  
+  <div class="logo-container">
+    <nb-actions size="small">
+    <nb-action
+    class="control-item"
+    icon="browser-outline"
+    matRipple
+  ></nb-action>
+    </nb-actions>
+    <H5>{{objTitulo.menuSeguridad.titulo}}</H5>
+  </div>
+
+</div> 
+
+<div class="header-container">
+  <nb-actions size="small">
+    <nb-action
+    icon="search-outline"
+    matRipple
+    (click)="buscar()"
+    [matRippleUnbounded]="true"
+    [matRippleCentered]="true"
+    nbTooltip="Buscar" nbTooltipPlacement="top" nbTooltipStatus="primary"
+  ></nb-action>
+  
+
+    <nb-action
+    
+      icon="browser-outline"
+      matRipple
+      (click)="recargar()"
+      [matRippleUnbounded]="true"
+      [matRippleCentered]="true"
+      nbTooltip="Imprimir Codigo" nbTooltipPlacement="top" nbTooltipStatus="success"
+    ></nb-action>
+    <nb-action
+      icon="map-outline"
+      matRipple
+      (click)="recargar()"
+      [matRippleUnbounded]="true"
+      [matRippleCentered]="true"
+      nbTooltip="Const At." nbTooltipPlacement="top" nbTooltipStatus="warning"
+    ></nb-action>
+
+  
+
+    <nb-action
+
+      icon="download-outline"
+      matRipple
+      nbTooltip="Imprimir" nbTooltipPlacement="top" nbTooltipStatus="info"
+      [matRippleUnbounded]="true"
+      [matRippleCentered]="true"
+    ></nb-action>
+
+  </nb-actions>
+
+</div>
+
+

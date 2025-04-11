@@ -1,0 +1,178 @@
+<nb-card>
+
+
+
+
+    <nb-card-body>
+        <p-divider align="left" [ngStyle]="{'padding-left': '15px','padding-right': '15px'}">
+            <div class="p-d-inline-flex p-ai-center">
+                <i class="pi pi-bars p-mr-2"></i>
+                <b>&nbsp;Pendiente por facturar</b>
+            </div>
+        </p-divider>
+
+
+
+        <div class="row" style="padding: 10px;">
+
+           
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Paciente</label>
+                    <div class="p-inputgroup">
+                        <input pInputText type="text" disabled class="hoverDisabled" style="width:100%" />
+                        <button pButton icon="fa fa-binoculars" type="button" title="Buscar Cliente"></button>
+
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Sede</label>
+                    <p-dropdown placeholder="Todos"></p-dropdown>
+                </div>
+                <!-- <div class="col-sm-4">
+                <th pSortableColumn="checkbox" scope="col"><input type="checkbox" ></th>
+            </div> -->
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Servicio</label>
+                    <p-dropdown placeholder="Clasificador"></p-dropdown>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Nro.Petición</label>
+                    <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                        [maxFractionDigits]="0">
+                    </p-inputNumber>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Orden Atención</label>
+                    <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                        [maxFractionDigits]="0">
+                    </p-inputNumber>
+                </div>
+                <div class="col-sm-4">
+                    <label for="inputLastName" class="label">Fecha Inicial
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                        [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder='' [monthNavigator]="true"
+                        [yearNavigator]="true"></p-calendar>
+                </div>
+
+            
+
+
+            
+            <div class="col-sm-4">
+                <label for="inputLastName" class="label">Tipo Admisión</label>
+                <p-dropdown placeholder="Todos"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+
+                <label for="inputLastName" class="label">Historia Clínica</label>
+                <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0"
+                    [maxFractionDigits]="0">
+                </p-inputNumber>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputLastName" class="label">Estado</label>
+                <p-dropdown placeholder="Todos"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputLastName" class="label">Fecha Final
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </label>
+                <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}" [showIcon]="true"
+                    [showTime]="true" yearRange="2000:2030" placeholder='' [monthNavigator]="true"
+                    [yearNavigator]="true"></p-calendar>
+            </div>
+
+
+
+
+
+
+            <div class="col-sm-4">
+                <label for="inputLastName" class="label">Coaseguro</label>
+                <p-dropdown placeholder="Todos"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label for="inputLastName" class="label">Flat.Movilidad</label>
+                <p-dropdown placeholder="Todos"></p-dropdown>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+        <br>
+
+        <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+            [sortOrder]="-1" sortField="tipousuario"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+            [showCurrentPageReport]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+
+                    <th pSortableColumn="tipousuario">Nro.<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="Perfil">Fecha Admi.<p-sortIcon field="Perfil"></p-sortIcon>
+                    </th>
+
+                    <th pSortableColumn="VaEstado">Tipo Adm.<p-sortIcon field="VaEstado"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Nro.Petición<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Paciente<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Historia Clínica<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">OA. Clínica<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Coa Seguro<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Estado<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Est.Seguro<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+                    <th pSortableColumn="tipousuario">Est.Mov<p-sortIcon field="tipousuario"> </p-sortIcon>
+                    </th>
+
+
+
+
+
+
+
+
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-asignarPerfil>
+                <tr>
+
+                    <td>{{asignarPerfil.tipousuario}}</td>
+
+                    <td>{{asignarPerfil.Perfil}}</td>
+
+                    <td>
+                        <span>{{asignarPerfil.VaEstado}}</span>
+                    </td>
+                    <td>
+                        <p-dropdown appendTo="body" [options]="perfilesAsignar" [filter]="true"
+                            placeholder="Asignar Perfil"></p-dropdown>
+                    </td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+    </nb-card-body>
+
+</nb-card>

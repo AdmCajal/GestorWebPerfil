@@ -1,0 +1,167 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="10000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '1200px', minWidth: '250px'}" [header]="acciones" [position]="position" [maximizable]="true"
+    [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <div class="row">
+            <br>
+            <p-fieldset legend="Información General" class="col-sm-6 ">
+                <div class="row" style="padding: 15px;">
+                    <div class="col-sm-12" aria-orientation="horizontal" style="background-color:white;">
+                        <div class="form-group">
+                            <label for="documento" class="label">Empleado</label>
+                            <div class="p-inputgroup">
+                                <input pInputText type="text" id="documento" name="documento"
+                                    class="hoverDisabled  size-large  col-4 status-basic shape-rectangle nb-transition"
+                                    style="width:100%" [(ngModel)]="dtoEmpleado.Documento"
+                                    (keydown)="validarTeclaEnterPaciente($event)"
+                                    style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"
+                                    [disabled]="editarCampoDocumento" [disabled]="true" />&nbsp;
+                                <input pInputText type="text"  [disabled]="true" 
+                                    class="hoverDisabled  size-medium col-8 status-basic shape-rectangle nb-transition"
+                                    style="width:100%; height:30px" [(ngModel)]="dtoEmpleado.NombreCompleto" />
+                                <!-- <div class="input-group-append">
+                                        <button class="btn btn-outline" type="button" id="button-addon2"
+                                            style=" height:30px; margin-left:-32px" (click)="limpiarPersona()"
+                                            [disabled]="editarCampos">x</button>
+                                    </div> -->
+                                <button pButton icon="fad fa-minus-circle" type="button" title="Limpiar"
+                                    (click)="limpiarPersona()" [disabled]="isEditarPersona">
+                                </button>
+                                <button (click)="verSelectorPaciente()" pButton icon="fa fa-search" class="botonbuscar"
+                                    type="button" title="Buscar Persona" [disabled]="isEditarPersona"></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" aria-orientation="horizontal" style="background-color:white;">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="label">Fecha de Inicio</label>
+                                <p-calendar [monthNavigator]="true" [(ngModel)]="dtoEmpleado.FechaInicioContrato"
+                                    [yearNavigator]="true" [maxDate]="maxDate"
+                                    [style]="{'width':'100%'}"
+                                    [inputStyle]="{'background-color':'rgb(247, 247, 208)', 'width':'80%'}"
+                                    yearRange="1901:2200" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"  [disabled]="puedeEditar"
+                                    [yearNavigator]="true"  (onClose)="selectedItemFechaNacimiento(dto.FechaNacimiento)">
+                                </p-calendar>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="label">Fecha de Fin</label>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [style]="{'width':'100%'}"
+                                    yearRange="1901:2200" [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy"
+                                    [yearNavigator]="true" [(ngModel)]="dtoEmpleado.FechaFinContrato"
+                                    [disabled]="puedeEditar">
+                                </p-calendar>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" aria-orientation="horizontal" style="background-color:white;">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="label">Compañia</label>
+                                <p-dropdown placeholder="Seleccione" [options]="lstCompania" [disabled]="puedeEditar"
+                                    [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                                    [(ngModel)]="dtoEmpleado.CompaniaSocio">
+                                </p-dropdown>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="label">Cargo</label>
+                                <p-dropdown placeholder="Seleccione" [options]="lstCargo" [disabled]="puedeEditar"
+                                    [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                                    [(ngModel)]="dtoEmpleado.Cargo">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-fieldset>
+
+            <p-fieldset legend="Información Adicional" class="col-sm-6">
+                <div class="row" style="padding: 15px;">
+                    <div class="col-sm-12" aria-orientation="horizontal" style="background-color:white;">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="p-inputgroup">
+                                    <label class="label">Email</label>
+                                </div>
+                                <div class="p-inputgroup">
+                                    <input pInputText type="email" [(ngModel)]="dtoEmpleado.CorreoInterno"
+                                        placeholder=""
+                                        [style]="{'width':'100%','background-color': 'rgb(247, 247, 208)'}"
+                                        [disabled]="puedeEditar" />
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="p-inputgroup">
+                                    <label class="label">Teléfono </label>
+                                </div>
+                                <div class="p-inputgroup">
+                                    <input #myTelefono pInputText type="text"
+                                        style="width:100%;  background-color: rgb(247, 247, 208); height: 30px;"
+                                        [disabled]="puedeEditar" [(ngModel)]="dtoEmpleado.Telefono" minlength="1"
+                                        maxlength="15" (keypress)="esTelefesCeluValido($event)"
+                                         maxlength="9"/>
+
+
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="p-inputgroup">
+                                    <label class="label">Dirección</label>
+                                </div>
+                                <div class="p-inputgroup">
+                                    <input pInputText type="text" [(ngModel)]="dtoEmpleado.Direccion"
+                                        [style]="{'width':'100%'}"
+                                        [disabled]="true" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-inputgroup">
+                                    <label class="label">Fecha de Cese</label>
+                                </div>
+                                <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1901:2200"
+                                    [locale]="es" [showIcon]="true" dateFormat="dd/mm/yy" [yearNavigator]="true"
+                                    [(ngModel)]="dtoEmpleado.FechaCese" [style]="{'width':'100%'}"
+                                    [disabled]="puedeEditar">
+                                </p-calendar>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="p-inputgroup">
+                                    <label class="label">Estado</label>
+                                </div>
+                                <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar"
+                                    [style]="{'width':'100%','text-transform': 'uppercase'}"
+                                    [(ngModel)]="dtoEmpleado.Estado">
+                                </p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </p-fieldset>
+        </div>
+
+        <br>
+        <br>
+
+        <p-fieldset legend="Auditoria" s>
+            <div class="col-sm-12">
+                <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                    [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+            </div>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" (click)="coreGuardar()" styleClass="p-button-primary"
+            [disabled]="editarCampos" type="submit"></p-button>
+    </ng-template>
+
+</p-dialog>
+<p-toast></p-toast>
+<ngx-persona-buscar></ngx-persona-buscar>
+<ngx-persona-mantenimiento></ngx-persona-mantenimiento>
+<p-toast key="bc" [baseZIndex]="10001"></p-toast>

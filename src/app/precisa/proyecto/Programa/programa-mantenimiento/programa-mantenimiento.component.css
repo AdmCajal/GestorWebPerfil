@@ -1,0 +1,14 @@
+.label-icon{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.label-icon span{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1px;
+    padding-right: 2px;
+    padding-left: 2;
+    border: 0.1px solid rgb(182, 181, 181);
+}

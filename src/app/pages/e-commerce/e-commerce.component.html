@@ -1,0 +1,86 @@
+<!-- <nb-card style="background-color: transparent;" accent="warning" class="col-sm-12">
+  <nb-card-header style="background-color: transparent; margin-top: 0px;"> -->
+
+<div class="dsc-carousel" [ngStyle]="{'min-height': finalHeight}">
+  <div class="dsc-carousel__btns">
+    <button pButton icon="fa fa-chevron-circle-left" (click)="setBack()"
+      style="background-color: transparent; border-color:transparent;">
+    </button>
+    <button pButton icon="fa fa-chevron-circle-right" (click)="setNext()"
+      style="background-color: transparent; border-color:transparent;">
+    </button>
+    <!-- <i class=" fa fa-chevron-circle-left" (click)="setBack()"></i> -->
+    <!-- <i class="fa fa-chevron-circle-right" (click)="setNext()"></i> -->
+  </div>
+  <div class="dsc-carousel__content">
+    <ng-container *ngFor="let section of items;">
+      <div class="dsc-carousel__content-item"
+        [ngStyle]="{'background-image':'url(' + section.image + ')', 'height': 'auto', 'max-width': '100%', 'margin-left': section.marginLeft + '%'}">
+        <h1>{{section.title.first}}<span>{{section.title.second}}</span></h1>
+        <p>{{section.subtitle}}</p>
+      </div>
+    </ng-container>
+  </div>
+  <div class="dsc-carousel__steps">
+    <div class="dsc-carousel__steps-step
+    dsc-carousel__steps-step-{{currentPosition === item.id ? 'active': ''}}" *ngFor="let item of items"
+      (click)="setCurrentPosition(item.id)">
+    </div>
+  </div>
+</div>
+
+<!-- <nb-card-header style="background-color: transparent; margin-top: 0px;">
+    <div class="row" aria-orientation="horizontal">
+      <p-fieldset legend="Estadisticas de atenciones del mes en Curso">
+        <div class="row" aria-orientation="horizontal">
+          <div class="col">
+            <ngx-profit-card></ngx-profit-card>
+          </div>
+          <div class="col">
+            <ngx-earning-card></ngx-earning-card>
+          </div>
+        </div>
+        <ngx-traffic-reveal-card></ngx-traffic-reveal-card>
+      </p-fieldset>
+    </div>
+  </nb-card-header> -->
+<!-- </nb-card-header>
+</nb-card> -->
+<!-- <div class="row">
+  <div class="col-xxl-5">
+    <div class="row">
+      <div class="col-md-6">
+        <ngx-profit-card></ngx-profit-card>
+      </div>
+      <div class="col-md-6">
+        <ngx-earning-card></ngx-earning-card>
+      </div>
+    </div>
+
+    <ngx-traffic-reveal-card></ngx-traffic-reveal-card>
+  </div>
+
+  <div class="col-xxl-7">
+    <ngx-ecommerce-charts></ngx-ecommerce-charts>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-9">
+    <ngx-country-orders></ngx-country-orders>
+  </div>
+
+  <div class="col-xxl-3">
+    <ngx-progress-section></ngx-progress-section>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xxl-9">
+    <ngx-ecommerce-visitors-analytics></ngx-ecommerce-visitors-analytics>
+  </div>
+
+  <div class="col-xxl-3">
+    <ngx-user-activity></ngx-user-activity>
+  </div>
+</div> -->

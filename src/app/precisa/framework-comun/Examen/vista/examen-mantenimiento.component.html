@@ -1,0 +1,108 @@
+<p-blockUI [blocked]="bloquearPag">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+  </p-blockUI>
+  <p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+    <ng-template pTemplate="content">
+        <p-fieldset legend="Datos">
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Clasificación</label>
+                        <p-dropdown [options]="lstClasificacion" [filter]="true" [(ngModel)]="filtro.IdClasificacion"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Código Componente</label>
+                        <input pInputText type="text" placeholder=""
+                            style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"  [(ngModel)]="filtro.CodigoComponente"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Clasificador de Negocio</label>
+                        <p-dropdown [options]="lstServicio" [filter]="true"  [(ngModel)]="filtro.ClasificadorMovimiento"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Descripción</label>
+                        <textarea pInputTextarea style="width: 100%" rows="1" cols="30" maxlength="800" [(ngModel)]="filtro.Descripcion"></textarea>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Abreviatura</label>
+                        <input pInputText type="text" placeholder="" style="width:100%; background-color: rgb(247, 247, 208); height: 30px;"  [(ngModel)]="filtro.Abreviatura"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Tiempo</label>
+                        <p-dropdown [options]="lstTiempo" [filter]="true" [(ngModel)]="filtro.IdUnidadMedida">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Dias de entrega</label>
+                        <input pInputText type="text" placeholder="" style="width:100%; background-color: rgb(247, 247, 208); height: 30px;" [(ngModel)]="filtro.TiempoMuestra"/>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Centro Costo</label>
+                        <p-dropdown [options]="lstCentroCosto" [filter]="true" [(ngModel)]="filtro.CentroCosto"></p-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Cuenta Venta Comercial</label>
+                        <p-dropdown [options]="lstVenta" [filter]="true" [(ngModel)]="filtro.CuentaVentaComercial"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Sexo</label>
+                        <p-dropdown [options]="lstSexo" [filter]="true" [(ngModel)]="filtro.Sexo"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Estado</label>
+                        <p-dropdown [options]="lstEstado" [filter]="true" [(ngModel)]="filtro.Estado"></p-dropdown>
+
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Condiciones Pre-Analíticas</label>
+                        <textarea pInputTextarea style="width: 100%" rows="3" cols="30" maxlength="800" [(ngModel)]="filtro.ClasificadorMovimiento"></textarea>
+                    </div>
+                </div>
+
+            </div>
+        </p-fieldset>
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="saveProduct($event)"></p-button>
+    </ng-template>
+
+
+
+    <!-- <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+        type="submit"   (click)="saveProduct($event)" ></p-button>
+    </ng-template> -->
+
+
+
+
+</p-dialog>
+<p-toast></p-toast>

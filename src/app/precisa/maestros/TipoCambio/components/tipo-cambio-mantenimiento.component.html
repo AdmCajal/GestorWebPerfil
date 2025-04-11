@@ -1,0 +1,92 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="1000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{'width': '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Datos">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Moneda DE</label>
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                            <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda" [options]="lstMoneda"
+                                [(ngModel)]="dto.MonedaCodigo"
+                                [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Fecha</label>
+                        <p-calendar [locale]="es" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+                            dateFormat="dd/mm/yy" [(ngModel)]="dto.FechaCambio" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" yearRange="2000:2030" [readonlyInput]="true" [style]="{'width':'100%'}"
+                            [maxDate]="maxDate" [minDate]="minDate" [disabled]="true">
+                        </p-calendar>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Venta</label>
+                        <p-inputNumber [locale]="locale" [(ngModel)]="dto.FactorVenta" mode="decimal"
+                            [disabled]="puedeEditar" [inputStyle]="{'width':'100%','text-align': 'left', 'background-color':'rgb(247, 247, 208)'}"
+                            [style]="{'width':'100%'}" [maxFractionDigits]="3" [minFractionDigits]="3"    (keydown)="formatearDecimales($event)">
+                        </p-inputNumber>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Compra</label>
+                        <p-inputNumber [locale]="locale" [(ngModel)]="dto.FactorCompra" mode="decimal"
+                            [disabled]="puedeEditar"
+                            [inputStyle]="{'width':'100%','text-align': 'left', 'background-color':'rgb(247, 247, 208)'}"
+                            [style]="{'width':'100%'}" [maxFractionDigits]="3" [minFractionDigits]="3" (keydown)="formatearDecimales($event)">
+                        </p-inputNumber>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Estado</label>
+                        <div class="p-inputgroup" [style]="'min-width: 100%'">
+                            <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                            <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda" [options]="lstEstados"
+                                [(ngModel)]="dto.Estado"
+                                [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Cambio Referencial</label>
+                        <p-inputNumber [locale]="locale" [(ngModel)]="dto.Factor" mode="decimal"
+                            [disabled]="puedeEditar"
+                            [inputStyle]="{'width':'100%','text-align': 'left', 'background-color':'rgb(247, 247, 208)'}"
+                            [style]="{'width':'100%'}" [maxFractionDigits]="3" [minFractionDigits]="3" (keydown)="formatearDecimales($event)">
+                        </p-inputNumber>
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" *ngIf="!puedeEditar" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="coreGuardar()"></p-button>
+    </ng-template>
+</p-dialog>
+<p-toast key="bc" [baseZIndex]="2000"></p-toast>

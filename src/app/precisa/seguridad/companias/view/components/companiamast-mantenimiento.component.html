@@ -1,0 +1,163 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="9000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000"
+    (onHide)="btnCerrar()">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Información General">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="label">Razon Social</label>
+                    <div class="p-inputgroup">
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" (keydown)="validarEnterEmpresa($event)"
+                                [disabled]="editarCampoEmpresa" [(ngModel)]="dto.personadoc"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:70%; background-color: rgb(247, 247, 208); height: 30px;" />
+                            &nbsp;
+                            <input pInputText type="text"
+                                class="hoverDisabled  size-medium col-9 status-basic shape-rectangle nb-transition"
+                                [(ngModel)]="dto.DescripcionCorta"
+                                style="width:130%; background-color: rgb(247, 247, 208); height: 30px;"
+                                [disabled]="true" />
+                            <div class="input-group-append">
+                                <button pButton icon="fad fa-minus-circle" type="button" title="Limpiar"
+                                    (click)="limpiarEmpresaRUC()" [disabled]="editarCampoEmpresa">
+                                </button>
+                            </div>
+                        </div>
+
+                        <button (click)="verSelectorRuc()" pButton icon="fal fa-search" class="botonbuscar"
+                            [disabled]="editarCampoEmpresa" type="button" title="Buscar Empresa"></button>
+                        <button (click)="crearPersonaEmpresa()" pButton icon="fal fa-user-plus" class="botonbuscar"
+                            [disabled]="puedeEditar" type="button" title="Nueva Empresa"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="label">Representante</label>
+                    <div class="p-inputgroup">
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" (keydown)="validarTeclaEnterRepresentante($event)"
+                                [(ngModel)]="dto.DocumentoFiscal" [disabled]="editarrepresen"
+                                class="hoverDisabled size-large status-basic shape-rectangle nb-transition"
+                                style="width:70%; background-color: rgb(247, 247, 208); height: 30px;" />
+                            &nbsp;
+                            <input pInputText type="text" [(ngModel)]="dto.RepresentanteLegal"
+                                class="hoverDisabled  size-medium col-9 status-basic shape-rectangle nb-transition"
+                                style="width:130%; background-color: rgb(247, 247, 208); height: 30px;"
+                                [disabled]="true" />
+
+                            <div class="input-group-append">
+                                <button pButton icon="fad fa-minus-circle" type="button" title="Limpiar"
+                                    (click)="limpiarDocumento()" [disabled]="puedeEditar">
+                                </button>
+                            </div>
+                        </div>
+                        <button (click)="verSelectorDocumento()" pButton icon="fal fa-search" class="botonbuscar"
+                            [disabled]="puedeEditar" type="button" title="Buscar Representante"></button>
+                        <button (click)="crearPersonaRepresentate()" pButton icon="fal fa-user-plus" class="botonbuscar"
+                            [disabled]="puedeEditar" type="button" title="Nueva Representante"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label class="label">Pagina Web</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.DireccionComun" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Departamento</label>
+                        <p-dropdown [options]="lstDepartamento" [disabled]="puedeEditar" [(ngModel)]="dto.CodDep"
+                            (onChange)="selectedItemDepartamento($event)"> </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label class="label">Correo</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.DireccionAdicional" />
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Provincia</label>
+                        <p-dropdown [options]="lstProvincia" [disabled]="puedeEditar" [(ngModel)]="dto.CodPro"
+                            (onChange)="selectedItemProvincia($event)"> </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Telefono</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            pKeyFilter="hex" [(ngModel)]="dto.Telefono1" (keypress)="esTelefesCeluValido($event)"
+                            maxlength="9" />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Estado</label>
+                        <p-dropdown [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"
+                            [style]="{'width':'100%','text-transform': 'uppercase', 'background-color':'rgb(247, 247, 208)'}">
+                        </p-dropdown>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label">Distrito</label>
+                        <p-dropdown [options]="lstDistrito" [disabled]="puedeEditar" [(ngModel)]="dto.CodDis">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="p-inputgroup">
+                        <button *ngIf="dto.DescripcionPSF !=null" pButton icon="fad fa-minus-circle" type="button" title="Eliminar Imagen"
+                            (click)="eliminarImagen()" [disabled]="puedeEditar">
+                        </button>
+                        <input pInputText type="text" [(ngModel)]="dto.DescripcionPSF" [style]="{'width':'100%'}"
+                            [disabled]="true" />
+                        <button pButton pRipple type="button" icon="fa fa-upload" title="Importar" title="Subir Archivo"
+                            (click)="subirArchivo(fileUpload)" [disabled]="puedeEditar"></button>
+                        <button pButton type="button" icon="pi pi-image" label="Show"
+                            (click)="coreVerImagen(dto)"></button>
+
+                        <input #fileUpload type="file" id="fileUpload" name="fileUpload" class="form-control"
+                            style="display:none" (change)="exportar($event)" accept="image/*">
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="coreGuardar($event)"></p-button>
+    </ng-template>
+
+</p-dialog>
+<p-toast key="bc" [baseZIndex]="4000"></p-toast>
+<ngx-persona-buscar></ngx-persona-buscar>
+<ngx-empresa-buscar></ngx-empresa-buscar>
+<ngx-lotes-imagen></ngx-lotes-imagen>
+<ngx-persona-mantenimiento></ngx-persona-mantenimiento>

@@ -1,0 +1,96 @@
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+
+        <p-fieldset legend="Modelo de Examenes Asignados">
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Ruc del Cliente</label>
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" style="width:100%" (keydown)="validarTeclaEnter($event)" (keypress)="esRUCValido($event)"  [(ngModel)]="filtro.Codigo" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Cliente</label>
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" style="width:100%" (keydown)="validarTeclaEnter($event)" [(ngModel)]="filtro.Nombre" />
+                            <button pButton icon="fa fa-binoculars" type="button" title="Buscar"
+                                (click)="coreBuscar()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Resultados">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true" [sortOrder]="-1"
+                sortField="numeroClienteRuc" [value]="listClienteRuc" [sortOrder]="1"
+                (onLazyLoad)="grillaCargarDatos($event)"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                [showCurrentPageReport]="true" selectionMode="single" [scrollable]="true" scrollHeight="200px"
+                [style]="{width:'100%'}" [rowsPerPageOptions]="[15,30,50]" >
+                <ng-template pTemplate="colgroup">
+                    <colgroup>
+                        <col style="width:75px">
+                    </colgroup>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="label">Acción</th>
+                        <th class="label" style="width: 5rem;" pSortableColumn="numeroClienteRuc">Nro<p-sortIcon field="numeroClienteRuc">
+                            </p-sortIcon>
+                        </th>
+                        <th class="label" style="width: 5rem;" pSortableColumn="Persona">Codigo<p-sortIcon field="Persona">
+                            </p-sortIcon>
+                        </th>
+
+                        <th class="label" style="width: 20rem;" pSortableColumn="empresa">Cliente<p-sortIcon field="empresa">
+                            </p-sortIcon>
+                        </th>
+
+                        <th class="label" style="width: 10rem;" pSortableColumn="Documento">Ruc<p-sortIcon field="Documento">
+                            </p-sortIcon>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td class="tablaColumnaAccion3">
+                            <span class="p-column-title">Acción</span>
+                            <table>
+                                <tr [pSelectableRow]="rowData">
+                                    <td class="tablaColumnaAccion1">
+                                        <span class="p-column-title">Acción</span>
+                                        <button pButton icon="pi pi-check" type="button"
+                                            class="p-button-rounded p-button-text botonGrilla"
+                                            (click)="coreSeleccionar(rowData)" title="Seleccionar"></button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico" style="width: 5rem;" ALIGN="center">
+                            {{rowData.numeroClienteRuc}}
+                        </td>
+
+                        <td class="tablaColumnaCodigoChico" style="width: 5rem;" ALIGN="center">{{rowData.Persona}}</td>
+
+                        <td class="tablaColumnaCodigoChico" style="width: 20rem;" ALIGN="center">{{rowData.empresa}}</td>
+
+                        <td class="tablaColumnaCodigoChico" style="width: 10rem;" ALIGN="center">{{rowData.Documento}}</td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-fieldset>
+
+    </ng-template>
+</p-dialog>

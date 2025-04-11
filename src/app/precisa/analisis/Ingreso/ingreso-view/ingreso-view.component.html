@@ -1,0 +1,209 @@
+<p-blockUI [blocked]="bloquearPag">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-confirmDialog #c key="confirm">
+    <p-footer>
+        <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+            (click)="c.accept()"></button>
+        <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded"
+            (click)="c.reject()"></button>
+    </p-footer>
+</p-confirmDialog>
+<p-card>
+    <div class="row">
+        <div class="col-sm-4">
+            <h4 class="titulonuevo">Ingreso</h4>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="col-sm-2" style="background-color: transparent;"></div>
+        <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+            <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+                (click)="coreBuscar()"></button>
+            <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+                styleClass="p-button-text p-button-secondary" [model]="ltsExportar"></p-splitButton>
+        </div>
+    </div>
+    <p-fieldset legend="Información Consulta">
+        <div class="row">
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Compañia</label>
+                <p-dropdown [(ngModel)]="filtro.CompaniaCodigo" [options]="lstCompania"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label class="label">Tipo de Comprobante:</label>
+                    <p-dropdown [disabled]="puedeEditar" [options]="lstTipoComprobante"
+                        [style]="{'width':'100%','text-transform': 'uppercase'}" [(ngModel)]="filtro.TipoComprobante"
+                        class="tablaCompletaIzquieda" (onChange)="SeleccioneTipoComprobante($event)">
+                    </p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label class="label">Serie:</label>
+                <p-dropdown [disabled]="puedeEditar" [options]="lstSerie"
+                    [style]="{'width':'100%','text-transform': 'uppercase'}" class="tablaCompletaIzquieda"
+                    [(ngModel)]="filtro.SerieComprobante">
+                </p-dropdown>
+
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">N° Comprobante</label>
+                <input pInputText type="text" placeholder="" style="width:100%; height: 30px;"
+                    [(ngModel)]="filtro.NumeroComprobante" />
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Cliente</label>
+                <input pInputText type="text" placeholder="" style="width:100%; height: 30px;"
+                    [(ngModel)]="filtro.Cliente" />
+            </div>
+            <div class="col-sm-4">
+                <label for="inputOrdAten" class="label">Forma de Pago</label>
+                <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda" [options]="lstTipoPago"
+                    [(ngModel)]="filtro.FormaPago" [style]="{'width':'100%','text-transform': 'uppercase'}">
+                </p-dropdown>
+            </div>
+            <div class="col-sm-4">
+                <label class="label">Fecha Inicio</label>
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [style]="{ width: '100%' }"
+                    [inputStyle]="{ width: '100%' }" yearRange="1940:2200" [locale]="es"
+                    [(ngModel)]="filtro.FechaEmision" dateFormat="dd/mm/yy" [showIcon]="true">
+                </p-calendar>
+            </div>
+            <div class="col-sm-4">
+                <label class="label">Fecha Fin</label>
+                <p-calendar [monthNavigator]="true" [yearNavigator]="true" [style]="{ width: '100%' }"
+                    [inputStyle]="{ width: '100%' }" yearRange="1940:2200" [locale]="es"
+                    [(ngModel)]="filtro.FechaVencimiento" dateFormat="dd/mm/yy" [showIcon]="true">
+                </p-calendar>
+            </div>
+
+
+        </div>
+    </p-fieldset>
+
+    <br>
+    <p-fieldset legend="Detalle">
+
+        <p-table id="contenido" #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true "
+        [style]="{ width: '100%'}" [sortOrder]="1" sortField="num" [value]="lstComprobante"
+        selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[15,30,50]" [showCurrentPageReport]="true" [scrollable]="true" scrollHeight="300px">
+
+<!--         <p-table id="contenido" #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="num"
+            [value]="lstComprobante" [responsive]="true" [sortOrder]="1" sortField="num" [(selection)]="seleccion"
+            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [scrollable]="true"
+            selectionMode="single" [rowsPerPageOptions]="[15, 30, 50]" [showCurrentPageReport]="true"
+            [scrollable]="true" scrollHeight="300px"> -->
+
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="tablaHeaderAccion3 label" ALIGN="center">Acciones</th>
+                    <th pSortableColumn="FechaEmision" class="label" ALIGN="center"
+                        style="width: 6rem; text-align: center">
+                        Fecha<p-sortIcon field="FechaEmision"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="DescripcionCorta" ALIGN="center"
+                        style="width: 13rem; text-align: center;">
+                        Compañia<p-sortIcon field="DescripcionCorta"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="Cliente" ALIGN="center"
+                        style="width: 13rem; text-align: center;">
+                        Cliente<p-sortIcon field="Cliente"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="TipoComprobante" ALIGN="center"
+                        style="width: 10rem; text-align: center;">
+                        Tipo Comprobante<p-sortIcon field="TipoComprobante"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="SerieComprobante" ALIGN="center"
+                        style="width: 6rem; text-align: center;">
+                        Serie<p-sortIcon field="SerieComprobante"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="NumeroComprobante" ALIGN="center"
+                        style="width: 6rem; text-align: center;">
+                        Numero<p-sortIcon field="NumeroComprobante"></p-sortIcon>
+                    </th>
+                    <th class="label" pSortableColumn="NomFormaPago" ALIGN="center"
+                        style="width: 10rem; text-align: center;">
+                        Forma Pago<p-sortIcon field="NomFormaPago"></p-sortIcon>
+                    </th>
+                    <th pSortableColumn="MontoTotal" class="label" ALIGN="center"
+                        style="width: 7rem; text-align: center;">
+                        MontoTotal<p-sortIcon field="MontoTotal"></p-sortIcon>
+                    </th>
+
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData>
+                <tr [pSelectableRow]="rowData">
+                    <td class="tablaColumnaAccion3">
+                        <span class="p-column-title">Acción</span>
+                        <table>
+                            <tr>
+                                <th>
+                                    <button pButton pRipple type="button" [disabled]="isVer" icon="fad fa-search"
+                                        (click)="coreVer(rowData)" class="p-button-rounded p-button-text"
+                                        title="Ver"></button>
+                                </th>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class=" tablaColumnaCodigoChico text-center" style="width: 6rem;">
+                        <span class="p-column-title">Fecha </span>
+                        {{ rowData.FechaEmision | date : "dd/MM/yyyy" }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 13rem;">
+                        <span class="p-column-title">Compañia</span>
+                        {{ rowData.DescripcionCorta | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 13rem;">
+                        <span class="p-column-title">Cliente</span>
+                        {{ rowData.Cliente | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10em;">
+                        <span class="p-column-title">Tipo Comprobante</span>
+                        {{ rowData.TipoComprobante | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+                        <span class="p-column-title">Serie</span>
+                        {{ rowData.SerieComprobante | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 6rem;">
+                        <span class="p-column-title">Numero</span>
+                        {{ rowData.NumeroComprobante | uppercase }}
+                    </td>
+
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 10rem;">
+                        <span class="p-column-title">Forma Pago</span>
+                        {{ rowData.NomFormaPago | uppercase }}
+                    </td>
+                    <td class=" tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 7rem;">
+                        <span class="p-column-title">Monto Total</span>
+                        {{ rowData.MontoTotal | number:'1.2-2'}}
+                    </td>
+
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="paginatorleft">
+                <p style="display: flex; justify-content: center;">
+                    TOTAL: {{ingresoTotal | number:'1.2-2'}} &nbsp;</p>
+            </ng-template>
+
+        </p-table>
+    </p-fieldset>
+
+
+</p-card>
+<p-toast key="bc" [baseZIndex]="4000"></p-toast>
+<ngx-interes-pagar></ngx-interes-pagar>
+<ngx-control-pagar></ngx-control-pagar>
+<ngx-ingreso-mantenimiento></ngx-ingreso-mantenimiento>

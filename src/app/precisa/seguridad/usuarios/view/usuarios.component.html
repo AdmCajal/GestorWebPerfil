@@ -1,0 +1,172 @@
+<p-blockUI [blocked]="bloquearPag">
+  <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+
+<nb-card>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-4">
+        <h4 class="titulonuevo">Usuarios</h4>
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="col-sm-2" style="background-color: transparent;"></div>
+      <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+        <button pButton icon="fa fa-search" type="button" title="Buscar" label="Buscar" class="p-button-secondary"
+          (click)="coreBuscar()"></button>
+        <button pButton icon="fa fa-file" type="button" title="Nuevo" label="Nuevo" class="p-button-secondary"
+          (click)="coreNuevo()"></button>
+        <p-splitButton label="Exportar" icon="fa fa-file-pdf" (onClick)="exportExcel()"
+          styleClass="p-button-text p-button-secondary" [model]="ltsExportar">
+        </p-splitButton>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <p-fieldset legend="Información Consulta" (keyup.enter)="coreBuscar()">
+      <div class="row" style="padding: 10px;">
+        <!-- <div class="col-sm-4">
+            <label class="label">Perfil</label>
+            <p-dropdown  [options]="lstPerfil" [(ngModel)]="filtro.PERFIL" [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown> -->
+        <!-- <p-dropdown  placeholder="Seleccione" [options]="lstPerfil"
+              [(ngModel)]="filtro.PERFIL" [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown> -->
+        <!--</div>-->
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label class="label">Perfil</label>
+            <p-dropdown [options]="lstPerfil" [style]="{ 'height': '30px','text-transform': 'uppercase'}"
+              [(ngModel)]="filtro.PERFIL"> </p-dropdown>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Usuario</label>
+          <input #myDocumento pInputText type="text" style="width:100%; height: 30px; text-transform: uppercase;"
+            [(ngModel)]="filtro.USUARIO" />
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Nombre</label>
+          <input pInputText type="text" placeholder="" style="width:100%; height: 30px; text-transform: uppercase;"
+            [(ngModel)]="filtro.NOMBRECOMPLETO" />
+        </div>
+        <!-- <div class="col-sm-4">
+            <label for="inputLastName" class="label">Estado</label>
+            <p-dropdown [options]="lstEstados"
+           [(ngModel)]="filtro.ESTADO" [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+          </div> -->
+        <div class="col-sm-4">
+          <label for="inputOrdAten" class="label">Estado</label>
+          <p-dropdown [options]="lstEstados" [(ngModel)]="filtro.ESTADO"
+            [style]="{'width':'100%','text-transform': 'uppercase'}"></p-dropdown>
+        </div>
+      </div>
+    </p-fieldset>
+
+    <br>
+
+    <p-fieldset legend="Información Consulta" (keyup.enter)="coreBuscar()">
+      <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="num" [value]="lstUsuarios"
+        [responsive]="true" [sortOrder]="1" sortField="num"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+        [rowsPerPageOptions]="[15,30,50]" [showCurrentPageReport]="true" [scrollable]="true" scrollHeight="300px">
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="tablaHeaderCheckBox">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th class="tablaHeaderAccion3 label" ALIGN="center">Acciones</th>
+            <th pSortableColumn="num" class="label" ALIGN="center" style="width: 3rem;  ">Nro <p-sortIcon field="num">
+              </p-sortIcon>
+            </th>
+            <th pSortableColumn="FechaCreacion" class="label" ALIGN="center" style="width: 8rem;  ">Fecha<p-sortIcon
+                field="FechaCreacion"></p-sortIcon>
+            </th>
+            <th pSortableColumn="USUARIO" class="label" ALIGN="center" style="width: 8rem;  ">Usuario<p-sortIcon
+                field="USUARIO"></p-sortIcon>
+            </th>
+            <th pSortableColumn="NOMBRECOMPLETO" class="label" ALIGN="center" style="width: 10rem;  ">Nombre <p-sortIcon
+                field="NOMBRECOMPLETO"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DesTipoUsuario" class="label" ALIGN="center" style="width: 5rem;  ">Tipo<p-sortIcon
+                field="DesTipoUsuario"></p-sortIcon>
+            </th>
+            <th pSortableColumn="PERFIL" class="label" ALIGN="center" style="width: 5rem;  ">Perfil<p-sortIcon
+                field="PERFIL"></p-sortIcon>
+            </th>
+            <th pSortableColumn="DesEstado" class="label" ALIGN="center" style="width: 5rem;  ">Estado<p-sortIcon
+                field="DesEstado"></p-sortIcon>
+            </th>
+
+
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData>
+          <tr>
+            <td class="tablaColumnaCheckBox">
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
+            <td class="tablaColumnaAccion3">
+              <span class="p-column-title">Acción</span>
+              <table>
+                <tr>
+                  <th>
+                    <button pButton pRipple type="button" icon="fad fa-pencil-alt"
+                      class="p-button-rounded p-button-text" title="Editar" (click)="coreEditar(rowData)"></button>
+                  </th>
+                  <th>
+                    <button pButton pRipple type="button" icon="fad fa-search" (click)="coreVer(rowData)"
+                      class="p-button-rounded p-button-text" title="Ver"></button>
+                  </th>
+                  <th>
+                    <button pButton pRipple type="button" icon="fad fa-minus-circle" *ngIf="rowData.ESTADO == 'A' "
+                      (click)="coreinactivar(rowData)" class="p-button-rounded p-button-text"
+                      title="Inactivar"></button>
+                  </th>
+                </tr>
+              </table>
+            </td>
+            <td class="tablaColumnaCodigoChico text-center" style="width: 3rem;">
+              <span class="p-column-title">Nro</span>
+              {{rowData.num}}
+            </td>
+            <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+              <span class="p-column-title">Fecha</span>
+              {{rowData.FechaCreacion | date: 'dd/MM/yyyy'}}
+            </td>
+            <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+              <span class="p-column-title">Usuario</span>
+              <span>{{rowData.USUARIO|uppercase}}</span>
+            </td>
+            <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 10rem;">
+              <span class="p-column-title">Usuario</span>
+              <span>{{rowData.NOMBRECOMPLETO|uppercase}}</span>
+            </td>
+            <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+              <span class="p-column-title">Tipo</span>
+              <span>{{rowData.DesTipoUsuario|uppercase}}</span>
+            </td>
+            <td class="tablaColumnaCodigoChico text-center" ALIGN="center" style="width: 5rem;">
+              <span class="p-column-title">Perfil</span>
+              <span>{{rowData.PERFIL|uppercase}}</span>
+            </td>
+            <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 5rem;">
+              <span class="p-column-title">Estado</span>
+              <span>{{rowData.DesEstado|uppercase}}</span>
+            </td>
+
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-fieldset>
+  </nb-card-body>
+</nb-card>
+<ngx-usuarios-mantenimiento></ngx-usuarios-mantenimiento>
+<p-toast key="bc" [baseZIndex]="3000"></p-toast>
+<p-confirmDialog #c key="confirm">
+  <p-footer>
+    <button pButton type="button" icon="fa fa-check" label="Si" class="ui-button-rounded ui-button-danger"
+      (click)="c.accept()"></button>
+    <button pButton type="button" icon="fa fa-close" label="No" class="ui-button-rounded" (click)="c.reject()"></button>
+  </p-footer>
+</p-confirmDialog>

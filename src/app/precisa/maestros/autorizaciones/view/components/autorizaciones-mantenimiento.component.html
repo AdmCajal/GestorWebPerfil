@@ -1,0 +1,135 @@
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Datos">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Titular</label>
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:60px" />&nbsp;
+                            <input pInputText type="text" disabled class="hoverDisabled"
+                                style="width:100%; height: 30px;" />
+                            <button pButton icon="fa fa-binoculars" type="button" title="Buscar Empleado"></button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Paciente</label>
+                        <div class="p-inputgroup">
+                            <input pInputText type="text" disabled class="hoverDisabled" style="width:60px" />&nbsp;
+                            <input pInputText type="text" disabled class="hoverDisabled"
+                                style="width:100%; height: 30px;" />
+                            <button pButton icon="fa fa-binoculars" type="button" title="Buscar Empleado"></button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="p-grid ui-fluid" style="margin-top: 20px;">
+                        <div class="p-field p-col-12">
+                            <label for="inputLastName" class="label">Observación</label>
+                            <textarea pInputTextarea style="width: 100%" rows="3" cols="30" maxlength="800"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <br>
+                <br>
+                <br>
+
+
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="p-field p-col-10">
+                        <label for="inputLastName" class="label">Fecha Inicio</label>
+                        <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" [showTime]="true" yearRange="2000:2010" placeholder=''
+                            [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                        <label for="inputLastName" class="label">Fecha Fin</label>
+                        <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                            [showIcon]="true" [showTime]="true" yearRange="2000:2010" placeholder=''
+                            [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                        <br>
+                        <br>
+                        <nb-checkbox status="success">Asume Titular</nb-checkbox>
+                        <br>
+                        <nb-checkbox status="success">Aplica Descuento</nb-checkbox>
+                        <br>
+                        <label for="inputLastName" class="label">Estado</label>
+                        <!-- <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar" [(ngModel)]="dto.Estado"></p-dropdown> -->
+                        <p-dropdown placeholder="Seleccione" [options]="lstEstados" [disabled]="puedeEditar">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </p-fieldset>
+
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+
+
+
+    <!-- <p-fieldset legend="Auditoria" >
+            <div class="row">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="inputFirstName" class="label">Usuario</label>
+                    <input type="text" disabled nbInput fullWidth id="inputFirstName" [(ngModel)]="dto.UsuarioCreacion">
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="inputLastName" class="label">Fecha Creación</label>
+                   
+                    <p-calendar [monthNavigator]="true" [style]="{ width:'100%' }" disabled  [yearNavigator]="true" yearRange="1940:2200" [locale]="es" 
+                    [showIcon]="true" dateFormat="dd/mm/yy"  
+                    [(ngModel)]="dto.FechaCreacion"  ></p-calendar>
+
+
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                      <label for="inputLastName" class="label">Fecha Modificación</label>
+                      <p-calendar [monthNavigator]="true" [style]="{ width:'100%' }" disabled  [yearNavigator]="true" yearRange="1940:2200" [locale]="es" 
+                      [showIcon]="true" dateFormat="dd/mm/yy"  
+                      [(ngModel)]="dto.FechaModificacion"  ></p-calendar>
+  
+                    </div>
+                  </div>
+              </div>
+        </p-fieldset> -->
+
+
+
+
+
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="saveProduct($event)"></p-button>
+    </ng-template>
+
+
+
+
+
+
+</p-dialog>
+<p-toast></p-toast>

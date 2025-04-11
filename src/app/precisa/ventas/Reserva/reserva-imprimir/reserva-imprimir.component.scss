@@ -1,0 +1,72 @@
+
+    .boleta {
+        .col-boleta {
+
+            .img-boleta {
+                img {
+                    width: 77% !important; 
+                    background: transparent;
+                }
+            }
+
+            .titulos-boleta {
+                p {
+                    margin: 0px;
+                }
+        
+            }
+
+            .tabla-boleta {
+                table {
+                    tr {
+                        border: 1px solid black;
+                        border-radius: 15px;
+        
+                        td {
+                            height: 100%;
+                        }
+        
+                        #td {
+                            border-top: 1px solid black;
+                        }
+                    }
+                }
+            }
+
+            .cuerpo-boleta {
+                p {
+                    text-align: justify;
+                    font-size: 20px;
+                    line-height: normal;
+                }
+        
+            }
+
+            .datos-boleta {
+                p {
+                    text-align: justify;
+                    font-size: 20px;
+                    line-height: normal;
+                }
+        
+            }
+            .firmas-boleta{
+                display: flex;
+                justify-content: left;
+                p{
+                    width: 200px;
+                    border-top: 1px solid black;
+                    text-align: justify;
+                    font-size: 20px;
+                    line-height: normal;
+                }
+            }
+            .nota-boleta{
+                p{
+                    text-align: justify;
+                    font-size: 20px;
+                    line-height: normal;
+                }
+            }
+        }
+    }

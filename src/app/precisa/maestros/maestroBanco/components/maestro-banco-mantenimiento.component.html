@@ -1,0 +1,88 @@
+<p-blockUI [blocked]="bloquearPag" [baseZIndex]="2000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+</p-blockUI>
+
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="1000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Información General">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Código</label>
+                        <input pInputText type="text"
+                            [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}"
+                            [disabled]="puedeEditarpk" [(ngModel)]="dto.Banco" maxlength="4" />
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Nombre</label>
+                        <input pInputText type="text"
+                            [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.DescripcionCorta" maxlength="60" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Email</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.CorreoElectronico" />
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Nombre Completo</label>
+                        <input pInputText type="text"
+                            [style]="{'background-color':'rgb(247, 247, 208)', 'width':'100%'}" [disabled]="puedeEditar"
+                            [(ngModel)]="dto.DescripcionLarga" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Estado</label>
+                        <div class="p-inputgroup">
+                            <span class="p-inputgroup-addon"><i class="pi pi-align-justify"></i></span>
+                            <p-dropdown [disabled]="puedeEditar" class="tablaCompletaIzquieda" [options]="lstEstados"
+                                [(ngModel)]="dto.Estado"
+                                [style]="{'width':'100%','text-transform': 'uppercase', 'background-color':'rgb(247, 247, 208)'}"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="label">Telefono</label>
+                        <input pInputText type="text" [style]="{'width':'100%'}" [disabled]="puedeEditar"
+                            pKeyFilter="hex" [(ngModel)]="dto.Telefono" (keypress)="esTelefesCeluValido($event)"
+                            maxlength="9" />
+                    </div>
+                </div>
+            </div>
+            <br>
+        </p-fieldset>
+        <br>
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria [creacionUsuario]="usuario" [creacionFecha]="fechaCreacion"
+                [modificacionFecha]="fechaModificacion"></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" *ngIf="!puedeEditar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="coreGuardar()"></p-button>
+    </ng-template>
+
+</p-dialog>
+<p-toast key="bc" [baseZIndex]="2000"></p-toast>

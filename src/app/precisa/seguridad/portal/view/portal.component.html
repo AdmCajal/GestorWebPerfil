@@ -1,0 +1,53 @@
+<nb-card>
+  <nb-card-header>
+
+  <nav class="fixed">
+    <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+    
+  </nav>
+</nb-card-header>
+<nb-card-body>
+
+  <p-fieldset legend="Información Consulta">
+  <div class="row" style="padding: 10px;">
+
+
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label for="inputLastName" class="label">Logo</label>
+        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0" [maxFractionDigits]="0">
+        </p-inputNumber>
+
+        <label for="inputLastName" class="label">Imagen</label>
+        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0" [maxFractionDigits]="0">
+        </p-inputNumber>
+        <label for="inputLastName" class="label">Dirección</label>
+        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0" [maxFractionDigits]="0">
+        </p-inputNumber>
+        <label for="inputLastName" class="label">Teléfono</label>
+        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0" [maxFractionDigits]="0">
+        </p-inputNumber>
+        <label for="inputLastName" class="label">Correo</label>
+        <p-inputNumber mode="decimal" [style]="{'width':'100%'}" [minFractionDigits]="0" [maxFractionDigits]="0">
+        </p-inputNumber>
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+  </div>
+</p-fieldset>
+<br>
+<p-fieldset legend="Auditoria">
+  <ngx-auditoria></ngx-auditoria>
+</p-fieldset>
+
+</nb-card-body>
+</nb-card>

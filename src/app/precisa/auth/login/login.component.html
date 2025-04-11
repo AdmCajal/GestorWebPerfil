@@ -1,0 +1,83 @@
+<div class="container-fluid containerSesion">
+  <div class="row">
+    <div class="col-sm-4 login-section-wrapper" style="background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center; width: 100%; padding-top: 10px;">
+      <div class="brand-wrapper">
+        <img src="assets\images\logo_final2.png" class=""
+          style="width:60%; background: transparent; text-align: right; margin-left: 40%;">
+      </div>
+      <div class="login-wrapper my-auto" style="padding-bottom: 50%;">
+        <h1 class="login-title text-center">PERFIL WEB</h1>
+
+        <form aria-labelledby="title" [formGroup]="loginForm" style="padding-top: 10%;">
+
+          <div class="form-control-group" style="margin-bottom: 1rem;">
+            <label class="label" for="input-email">Número de documento:</label>
+
+            <div class="p-inputgroup">
+              <span class="input-group-text" style="border-radius: 1.25rem; border-color: #222b45;"><i
+                  class="mdi mdi-account-tie" style="color: rgb(184, 11, 11)"></i></span>
+              <input nbInput fullWidth class="form-control" formControlName="usuario" fieldSize="medium"
+                (keydown)="validarTeclaEnter($event)">
+            </div>
+            <div *ngIf="usuarioField.touched && usuarioField.invalid">
+              <p class="caption status-danger" *ngIf="usuarioField.hasError('required')">
+                Este campo es requerido
+              </p>
+            </div>
+          </div>
+          <br>
+          <div class="form-control-group" style="margin-bottom: 1rem;">
+            <span style="justify-content: space-between;display: flex;">
+              <label class="label" for="input-password">Contraseña:</label>
+            </span>
+            <div class="p-inputgroup">
+              <span class="input-group-text" style="border-radius: 1.25rem; border-color: #222b45;"><i
+                  class="mdi mdi-lock-outline" style="color: rgb(196, 15, 15);"></i></span>
+              <input nbInput fullWidth type="password" [type]="hide ? 'password':'text'" class="form-control"
+                fieldSize="medium" formControlName="clave" autocomplete="on" (keydown)="validarTeclaEnter($event)">
+              <div class="input-group-append">
+                <span type="button" class="material-icons" matSuffix (click)=" hide = !hide">
+                  {{hide ? 'visibility':'visibility_off'}}
+                </span>
+              </div>
+            </div>
+            <div *ngIf="passwordField.touched && passwordField.invalid">
+              <p class="caption status-danger" *ngIf="passwordField.hasError('required')">
+                Este campo es requerido
+              </p>
+            </div>
+          </div>
+          <br>
+
+          <div class="form-control-group" style="margin-bottom: 1rem;">
+            
+          </div>
+          <button nbButton fullWidth type="submit" (click)="login()" status="" size="medium" class="buttons">
+            Iniciar Sesión
+          </button>
+        </form>
+        <br>
+        <br>
+        <ul class="another-action" aria-label="Register">
+          <li (click)="resetearClave()">
+            <a class="forgot-password caption-2"
+              style="float:left; font-size: 13px; font-weight: bold;">&nbsp;&nbsp;Actualizar
+              contraseña</a>
+          </li>
+          <br>
+          <li (click)="recupearClave()">
+            <a class="forgot-password caption-2" style="float:left; font-size: 13px; font-weight: bold;">¿Olvidaste tu
+              contraseña?</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-sm-8 px-0 d-none d-sm-block">
+      <img src="assets\img\fondo.jpg" alt="login image" class="login-img">
+    </div>
+  </div>
+</div>
+<ngx-request-password></ngx-request-password>
+<ngx-reset-password></ngx-reset-password>

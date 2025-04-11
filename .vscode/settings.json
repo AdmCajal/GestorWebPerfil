@@ -1,0 +1,10 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "tslint.enable": false,
+    "npm-scripts.showStartNotification": false,
+    "console-ninja.autoClearLogViewerOnFileChanges": true,
+    "console-ninja.toolsToEnableSupportAutomaticallyFor": {
+        "live-server": true,
+        "live-preview": true
+    }
+}

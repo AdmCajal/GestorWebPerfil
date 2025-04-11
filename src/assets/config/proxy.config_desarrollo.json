@@ -1,0 +1,7 @@
+{
+  "env": "development",
+  "proxy.precisa": "http://104.211.62.150/RestServices/",
+  "proxy.soa": "http://104.211.62.150/RestServices/",
+  "proxy.reporte": "http://104.211.62.150/RestServices/",
+  "recursos.precisa": "Probando"
+}

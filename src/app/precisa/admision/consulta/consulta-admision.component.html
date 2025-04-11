@@ -1,0 +1,254 @@
+<nb-card style="background-color: transparent;" accent="warning" class="col-sm-12">
+  <p-blockUI [blocked]="bloquearPag" [baseZIndex]="10000">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+  </p-blockUI>
+  <nb-card-header>
+    <div class="row">
+      <div class="col-sm-4">
+        <br>
+        <h4 class="titulonuevo">Consulta Admisión</h4>
+      </div>
+      <div class="col-sm-2" style="background-color: transparent;"></div>
+      <div class="col-sm-6" style="background-color: transparent;" aria-orientation="horizontal">
+        <div class="colCard2 " style=" left: 76%;   position: fixed;   z-index: 2000;" aria-orientation="horizontal">
+          <nb-card class="col-sm-12 fondocard" style="padding:0px 10px; margin-bottom: -10px; margin-top: 5px;">
+          <div class="row" aria-orientation="horizontal">
+            <br>
+            <br>
+            <button (click)="coreBuscar()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/buscaroa.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                flex: 0 0 30%;max-width: 30%;"><br>
+                <label style="font-size: 10px;font-weight: bold">Buscar</label>
+            </button>
+            <br>
+            <button (click)="editarConsultaAdmision(dte)" style="color: #2B4E64; padding: 0px;"
+              class="col button btn"><img src="assets/img/editar.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+              flex: 0 0 30%;max-width: 30%;"><br>
+              <label style="font-size: 10px;font-weight: bold">Editar</label></button>
+            <br>
+            <button (click)="verConsultaDetalle()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/ico_detalle2.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+              flex: 0 0 30%;max-width: 30%;"><br>
+              <label style="font-size: 10px;font-weight: bold">Detalle</label></button>
+            <br>
+            <button (click)="imprimir(dte)" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/imprimir.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+              flex: 0 0 30%;max-width: 30%;"><br><label
+                style="font-size: 10px;font-weight: bold">Imprimir</label></button>
+            <br>
+            <button (click)="traerXadmision()" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/ico_anular.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                flex: 0 0 30%;max-width: 30%;"><br><label
+                style="font-size: 10px;font-weight: bold">Anular</label></button>
+            <br>  
+            <button (click)="Correo(dte)" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/correo.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+          flex: 0 0 30%;max-width: 30%;"><br>
+          <label style="font-size: 10px;font-weight: bold">Correo</label></button>
+            <br>
+            <button (click)="constAt(dte)" style="color: #2B4E64; padding: 0px;" class="col button btn"><img
+                src="assets/img/folder_114373.ico" style="filter: drop-shadow(5px 5px 7px #444);width: 30%;
+                flex: 0 0 30%;max-width: 30%;"><br>
+                <label style="font-size: 10px;font-weight: bold">Const
+                AT</label></button>
+            <br>
+          </div>
+        </nb-card>
+      </div> 
+    </div>     
+    </div> 
+    <br>
+
+    <nb-card class="col-sm-12 fondocard2 bordercard" style="margin-top: -10px;">
+      <p-divider align="left">
+        <div class="p-d-inline-flex p-ai-center">
+          <i class="pi pi-bars p-mr-2"></i>
+          <b>&nbsp;Información Consulta</b>
+        </div>
+      </p-divider>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="inputPaciente" class="label">Paciente</label>
+            <div class="p-inputgroup">
+              <input pInputText type="text" id="inputPaciente"
+                class="hoverDisabled  size-large  col-4 status-basic shape-rectangle nb-transition" style="width:100%"
+                [(ngModel)]="filtro.Documento" [disabled]="editarCampoDocumento"
+                (keydown)="validarTeclaEnter($event)" />&nbsp;
+              <input pInputText type="text"
+                class="hoverDisabled  size-medium col-8 status-basic shape-rectangle nb-transition"
+                style="width:100%; height:30px" [(ngModel)]="filtro.NombreCompleto" [disabled]="true" />
+              <div class="input-group-append">
+                <button class="btn btn-outline" type="button" id="button-addon2" style=" height:30px; margin-left:-32px"
+                  (click)="limpiarPersona()">x</button>
+              </div>
+
+              <button (click)="verSelectorPaciente()" pButton icon="fa fa-search" class="botonbuscar" type="button"
+                title="Buscar Paciente"></button>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <label class="label">Rango de Fecha</label>
+          <div class="p-inputgroup">
+            <p-calendar [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="filtro.FechaAdmision"
+              [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" yearRange="1940:2200" [locale]="es"
+              dateFormat="dd/mm/yy" [showIcon]="true">
+            </p-calendar>&nbsp;
+            <p-calendar [monthNavigator]="true" [yearNavigator]="true" [(ngModel)]="filtro.FechaCreacion"
+              [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" yearRange="1940:2200" [locale]="es"
+              dateFormat="dd/mm/yy" [showIcon]="true">
+
+            </p-calendar>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <label class="label">Tipo Servicio</label>
+          <p-dropdown [options]="lstservicio" [(ngModel)]="filtro.ClasificadorMovimiento"
+            [style]="{'background-color':'rgb(247, 247, 208)'}" [filter]="true"></p-dropdown>
+        </div>
+
+        <div class="col-sm-4">
+          <label for="inputLastName" class="label">Sede</label>
+          <p-dropdown placeholder="--Seleccione--" value="" [options]="lstsedes" [(ngModel)]="filtro.IdSede"
+            [filter]="true">
+          </p-dropdown>
+        </div>
+
+        <div class="col-sm-4">
+          <label for="inputOrdAten" class="label">Orden de Atención</label>
+          <input pInputText type="text" placeholder="" style="width:100%; height: 30px;"
+            [(ngModel)]="filtro.OrdenAtencion" id="inputOrdAten" />
+        </div>
+        <div class="col-sm-4">
+ 
+          <label for="inputPeticion" class="label">N° Petición</label>
+          <input pInputText type="text" placeholder="" style="width:100%; height: 30px;"
+            [(ngModel)]="filtro.NroPeticion" id="inputPeticion" />
+        </div>
+
+        <div class="col-sm-12"> <label></label></div>
+        <br>
+      </div>
+
+    </nb-card>
+
+    <nb-card class="col-sm-12 fondocard2 bordercard" style="margin-top: -10px;">
+      <p-divider align="left">
+        <div class="p-d-inline-flex p-ai-center">
+          <i class="pi pi-bars p-mr-2"></i>
+          <b>&nbsp;Detalle</b>
+        </div>
+      </p-divider>
+      <div class="row">
+        <div class="col-sm-12">
+
+          <div class="col">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" [responsive]="true" [sortOrder]="1"
+              sortField="numeroAdmision" [value]="lstConsultaAdmision" (onLazyLoad)="grillaCargarDatos($event)"
+              currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+              [showCurrentPageReport]="true" selectionMode="single" [(selection)]="registroSeleccionado"
+              (onRowSelect)="onRowSelect($event)" [loading]="loading" [scrollable]="true" scrollHeight="200px"
+              [style]="{width:'100%'}" [rowsPerPageOptions]="[15,30,50]">
+
+              <ng-template pTemplate="colgroup">
+                <colgroup>
+                  <col style="width:75px">
+                </colgroup>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr>
+                  <th style="width: 5rem;" pSortableColumn="numeroAdmision" class="label">N°<p-sortIcon
+                      field="numeroAdmision">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 8rem;" pSortableColumn="FechaAdmision" class="label">Fecha Admisión<p-sortIcon
+                      field="FechaAdmision">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 8rem;" pSortableColumn="Tipo" class="label"> Tipo Admisión<p-sortIcon field="Tipo">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 8rem;" pSortableColumn="NroPeticion" class="label">N° Petición<p-sortIcon
+                      field="NroPeticion">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 15rem; " pSortableColumn="NombreCompleto" class="label"> Paciente<p-sortIcon
+                      field="NombreCompleto">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 8rem;" pSortableColumn="OrdenAtencion" class="label">OA Clínica<p-sortIcon
+                      field="OrdenAtencion">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 8rem;" pSortableColumn="OrdenSinapa" class="label">Ord. Externa<p-sortIcon
+                      field="OrdenSinapa">
+                    </p-sortIcon>
+                  </th>
+                  <th style="width: 7rem;" pSortableColumn="Estado" class="label">Estado<p-sortIcon field="Estado">
+                    </p-sortIcon>
+                  </th>
+
+                  <th style="width: 8rem;" pSortableColumn="HistoriaClinica" class="label">Historia Clínica<p-sortIcon
+                      field="HistoriaClinica">
+                    </p-sortIcon>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData>
+                <tr [pSelectableRow]="rowData">
+
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 5rem;">
+                    {{rowData.numeroAdmision}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.FechaAdmision| date: 'dd/MM/yyyy HH:mm'}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.Tipo}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.NroPeticion}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 15rem;">
+                    {{rowData.NombreCompleto}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.OrdenAtencion}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.OrdenSinapa}}
+                  </td>
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 7rem;">
+                    {{rowData.DesEstado}}    
+                 </td>
+
+                  <td class="tablaColumnaCodigoChico" ALIGN="center" style="width: 8rem;">
+                    {{rowData.HistoriaClinica}}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </nb-card>
+
+  </nb-card-header>
+
+</nb-card>
+
+<p-dialog [(visible)]="verReporteModal" [draggable]="false" [baseZIndex]="10000" [resizable]="false" [modal]="true"
+  showEffect="fade" hideEffect="size" [breakpoints]="{'950px': '75vw'}" header="Informe Principal"
+  [style]="{'width':'900px', minWidth: '200px'}">
+
+  <div style="width: 100%; height: 450px">
+    <ng2-pdfjs-viewer #pdfViewerActividades></ng2-pdfjs-viewer>
+  </div>
+
+</p-dialog>
+<ngx-persona-buscar></ngx-persona-buscar>
+<ngx-consulta-detalle></ngx-consulta-detalle> 
+<ngx-reporte-vista></ngx-reporte-vista>

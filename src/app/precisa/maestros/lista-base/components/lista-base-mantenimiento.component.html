@@ -1,0 +1,111 @@
+<p-dialog [(visible)]="dialog" [draggable]="false" [modal]="true" [resizable]="false" [breakpoints]="{'950px': '75vw'}"
+    [style]="{width: '850px'}" [header]="acciones" [position]="position" [maximizable]="true" [baseZIndex]="10000">
+
+    <ng-template pTemplate="content">
+        <br>
+        <p-fieldset legend="Datos">
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="inputLastName" class="label">Moneda</label>
+                        <p-dropdown placeholder="Todos"></p-dropdown>
+                        <label for="inputLastName" class="label">Tipo Lista</label>
+                        <p-dropdown placeholder="Todos"></p-dropdown>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-sm-4">
+                    <div class="p-grid ui-fluid" style="margin-top: 10px;">
+                        <div class="p-field p-col-12">
+                            <label for="inputLastName" class="label">Código</label>
+                            <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" />
+                            <label for="inputLastName" class="label">Descripción</label>
+                            <input pInputText type="text" placeholder="" [style]="{'width':'100%'}" />
+                            <label for="inputLastName" class="label">Fecha Inicio</label>
+                            <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                            <label for="inputLastName" class="label">Fecha Fin</label>
+                            <p-calendar class="calendar_size" dateFormat="dd/mm/yy" [ngStyle]="{'width': '100%'}"
+                                [showIcon]="true" [showTime]="true" yearRange="2000:2030" placeholder=''
+                                [monthNavigator]="true" [yearNavigator]="true"></p-calendar>
+                            <label for="inputLastName" class="label">Estado</label>
+                            <p-dropdown placeholder="Todos"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <br>
+
+
+
+
+        </p-fieldset>
+        <br>
+
+        <!-- <p-fieldset legend="">
+            <p-table #dt [rows]="15" [paginator]="true" [rowHover]="true" dataKey="tipousuario" [responsive]="true"
+                [sortOrder]="-1" sortField="tipousuario"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                [showCurrentPageReport]="true">
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nro.</th>
+
+                        <th pSortableColumn="">Descripción<p-sortIcon field="Documento"></p-sortIcon>
+                        </th>
+
+                        <th pSortableColumn="">Tipo Admisión<p-sortIcon field="IdOr"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Tipo Paciente<p-sortIcon field="Paterno"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Empresa<p-sortIcon field="Materno"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Sede<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Factor<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="">Estado<p-sortIcon field="Nombre"></p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr>
+                        <td class="">
+                        </td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+        </p-fieldset> -->
+        <p-fieldset legend="Auditoria">
+            <ngx-auditoria></ngx-auditoria>
+        </p-fieldset>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar" type="submit"
+            (click)="saveProduct($event)"></p-button>
+    </ng-template>
+
+
+
+    <!-- <ng-template pTemplate="footer">
+        <p-button label="Guardar" icon="pi pi-save" styleClass="p-button-primary" [disabled]="puedeEditar"
+        type="submit"   (click)="saveProduct($event)" ></p-button>
+    </ng-template> -->
+
+
+
+
+</p-dialog>
+<p-toast></p-toast>

@@ -1,0 +1,58 @@
+<p-blockUI [blocked]="bloquearPag">
+    <img src="assets\img\ZZ5H.gif" style="width: 5%">
+  </p-blockUI>
+  <!DOCTYPE html>
+  <html lang="es">
+  <nb-card style="background-color: transparent;" accent="warning" class="col-sm-12">
+    <nb-card-header>
+        <nav class="fixed">
+            <ngx-header-titulo [objTitulo]="objetoTitulo"></ngx-header-titulo>
+        </nav>
+        <div class="row">
+            <div class="col-sm-2">
+                <h4 class="titulonuevo"></h4>
+            </div>
+            <div class="col-sm-10" style="background-color: transparent;">
+                <div>
+                </div>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <p-fieldset legend="Información Consulta">
+            <div class="row" style="padding: 10px;">
+                <div class="p-inputgroup">
+                    <input pInputText type="text" [(ngModel)]="nombrearchivo" [style]="{'width':'100%'}"
+                        [disabled]="true" />
+                    <button pButton pRipple type="button" icon="fa fa-upload" label="Importar" title="Importar"
+                        title="Subir Archivo" (click)="subirArchivo(fileUpload)"></button>
+                    <input #fileUpload type="file" id="fileUpload" name="fileUpload" class="form-control"
+                        style="display:none" (change)="exportar($event)"
+                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                </div>
+            </div> 
+        <br>       
+            <div class="row" style="padding: 10px;">
+                <div class="col-sm-4">
+                    <p>Servidor</p>         
+                    <p-tree [value]="files2" [draggableNodes]="true" [droppableNodes]="true" droppableScope="files" draggableScope="server2"></p-tree>
+                </div>
+                  <div class="col-sm-4">
+                    <p>Ruta Personal</p>               
+                    <p-tree selectionMode="single" [(selection)]="selectedFiles"
+                    (onNodeSelect)="nodeSelect($event)" [value]="files4" [draggableNodes]="true" [droppableNodes]="true" droppableScope="server2" draggableScope="server1"></p-tree>
+                </div>          
+                <div class="col-sm-4">
+                    <p>Ruta Compartir</p>              
+                    <p-tree [value]="files3" [draggableNodes]="true" [droppableNodes]="true" droppableScope="server1" draggableScope="files"></p-tree>
+                </div>
+            
+
+            </div>
+        </p-fieldset>
+    </nb-card-body>
+
+
+</nb-card>
+<ngx-tipo-trabajador-mantenimiento></ngx-tipo-trabajador-mantenimiento>
