@@ -1,0 +1,16 @@
+{
+    "coloresPortal": {
+        "cabecera": {
+            "background": "#326fd1",
+            "icono":"rgb(255,255,255)"
+        },
+        "login": {
+            "backgroundFormulario": "rgb(244,241,234,0.95)",
+            "borderTop": "#009A3D"
+        },
+        "access": {
+            "backgroundFormulario": "rgb(244,241,234)",
+            "bordeTop": "#009A3D"
+        }
+    }
+}

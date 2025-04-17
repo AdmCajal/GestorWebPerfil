@@ -1,0 +1,21 @@
+{
+  "imagenesPortal": {
+    "cabecera": {
+      "logo": "assets/portalWeb/images/configuracion/iconos/icono-sanna.png",
+      "sizeImg": 3,
+      "usuario": "https://th.bing.com/th/id/R.70853c64e4a4711b22448c5712e314e0?rik=EfuQmlPuOyKm%2fg&pid=ImgRaw&r=0"
+    },
+    "login": {
+      "background": "rgb(255,255,255)",
+      "tipoback": "color",
+      "logo": "assets/portalWeb/images/configuracion/logos/logo-sanna.png",
+      "sizeImg": 8
+    },
+    "access": {
+      "background": "rgb(90,40,255)",
+      "tipoback": "color",
+      "logo": "",
+      "base": "assets/portalWeb/images/access/asset-access.svg"
+    }
+  }
+}

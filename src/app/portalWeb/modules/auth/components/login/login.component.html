@@ -1,0 +1,64 @@
+<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-[100vw] overflow-hidden bg-login "
+    [style]="fondoLogin">
+
+    <div class="flex flex-column align-items-center justify-content-center">
+        <div
+            [ngStyle]="{ 'border-radius': '56px', 'padding': '0.3rem', 'background': 'linear-gradient(180deg, ' + coloresConfig.borderTop + ' 10%, rgba(33, 150, 243, 0) 30%)' }">
+            <!-- surface-card -->
+            <div class="w-full  py-8 px-5 sm:px-8 bg-Formulario"
+                [ngStyle]="{'border-radius':'56px', 'background-color': coloresConfig.backgroundFormulario + ' '}">
+                <div class="text-center mb-5">
+                    <img [src]="imagenesConfig.logo" alt="Image" height="{{imagenesConfig.sizeImg}}"
+                        [style]="{'height': imagenesConfig.sizeImg+'rem'}" class="mb-3">
+                    <div class="text-900 text-3xl font-medium mb-3"> </div>
+                    <span class="text-600 font-medium">Inicie sesión para continuar</span>
+                </div>
+
+                <div>
+                    <form [formGroup]="LoginForm" (ngSubmit)="btnIniciarSesion()">
+                        <div class="flex flex-column mb-5">
+                            <label for="email1" class="block text-900 text-xl font-medium mb-2">Usuario:</label>
+                            <input id="email1" type="mail" placeholder="" pInputText class="w-full  mb-1"
+                                style="padding:1rem" formControlName="correo" autocomplete="off">
+
+                            <span class="text-red-600"
+                                *ngIf="LoginForm.get('correo')?.hasError('required') && LoginForm.get('correo')?.touched">
+                                El correo es obligatorio.
+                            </span>
+
+                        </div>
+                        <div class="flex flex-column mb-5">
+                            <label for="password1" class="block text-900 font-medium text-xl mb-2">Contraseña</label>
+                            <input id="password1" type="password" placeholder="" pInputText class="w-full  mb-1"
+                                style="padding:1rem" formControlName="contrasenia" autocomplete="off">
+
+
+                            <span class="text-red-600"
+                                *ngIf="LoginForm.get('contrasenia')?.hasError('required') && LoginForm.get('contrasenia')?.touched">
+                                La contraseña es obligatoria.
+                            </span>
+                        </div>
+
+                        <div class="flex align-items-center justify-content-end mb-5 gap-5">
+
+                            <div class="flex align-items-center font-medium">
+
+                                <a class="link-recuperar">Recuperar cuenta <i class="pi pi-external-link"
+                                        style="font-size: 0.7rem"></i></a>
+                            </div>
+                        </div>
+                        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" *ngIf="bloquearComponente" />
+                        <button pButton pRipple label="Iniciar Sesión" class="w-full p-3 text-xl"  *ngIf="!bloquearComponente"
+                            style="background-color: var(--p-green-600); color: white; border-color: var(--blue-600);"
+                            [disabled]="!LoginForm.valid"></button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<p-toast position="bottom-center" key="lgmsg"></p-toast>
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-center"></p-toast>

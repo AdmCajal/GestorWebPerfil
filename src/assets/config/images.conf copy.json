@@ -1,0 +1,19 @@
+{
+  "imagenesPortal":{
+    "cabecera": {
+      "logo": "assets/portalCpe/images/massive/logos/logo_massive.svg",
+      "usuario": "https://th.bing.com/th/id/R.6b0022312d41080436c52da571d5c697?rik=4kYwQ1H0Af8lGw&riu=http%3a%2f%2fassets.stickpng.com%2fimages%2f585e4bcdcb11b227491c3396.png&ehk=qIyBqqHtuGh6Q4AT6rdJLjmcvimJ9e8r05TLahpkS0o%3d&risl=&pid=ImgRaw&r=0"
+    },
+    "login": {
+      "background": "rgb(90,40,255)",
+      "tipoback":"image",
+      "logo": "assets/portalCpe/images/pago-efectivo/logo-pago_efectivo_login.svg"
+    },
+    "access": {
+      "background": "rgb(90,40,255)",
+      "tipoback":"color",
+      "logo": "assets/portalCpe/images/pago-efectivo/logo-pago_efectivo_login.svg",
+      "base": "assets/portalCpe/images/access/asset-access.svg"
+    }
+  }
+}

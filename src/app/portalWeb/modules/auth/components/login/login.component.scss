@@ -1,0 +1,42 @@
+#footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #eaeaea;
+  padding: 10px;
+  font-size: 1.2rem;
+}
+
+.bg-login {
+  // background-image: url("/assets/portalCpe/images/pago-efectivo/marca-pago_efectivo.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+}
+
+.bg-Formulario {
+  border-radius: 56px !important;
+}
+
+:host :ng-deep {
+  .p-checkbox .p-checkbox-box {
+    background-color: white;
+  }
+
+  .p-checkbox .p-checkbox-box.p-highlight {
+    background-color: var(--blue-600) !important;
+    color: white !important;
+    border-color: var(--blue-600) !important;
+  }
+}
+
+.link-recuperar {
+  cursor: pointer;
+
+  &:hover {
+    font-size: 1.1rem;
+  }
+}
