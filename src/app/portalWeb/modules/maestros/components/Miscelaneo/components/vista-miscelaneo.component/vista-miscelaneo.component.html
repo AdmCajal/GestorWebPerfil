@@ -1,38 +1,27 @@
-<div class="card">
-    <h3>{{'Búsqueda De ' + breadcrumb}} </h3>
-    <div class="flex flex-col">
-        <hr *ngIf="!bloquearComponente" class="mb-2 mt-0">
-        <p-progressbar mode="indeterminate" class="mb-2 mt-0" [style]="{ height: '1px' }" *ngIf="bloquearComponente" />
-    </div>
+<section class="card">
+    <app-cabecera-vista [componente]="this"></app-cabecera-vista>
 
     <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
-            <label for="name1">usuario</label>
-            <input pInputText id="name1" type="text" formControlName="usuario" />
+
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Compañia</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="estado"
+                placeholder="Seleccione una opción"></p-dropdown>
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
-            <label for="name1">Nombre</label>
-            <input pInputText id="name1" type="text" formControlName="nombres" />
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Tipo</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="estado"
+                placeholder="Seleccione una opción"></p-dropdown>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="name1">Estado</label>
             <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="estado"
                 placeholder="Seleccione una opción"></p-dropdown>
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
-            <label for="name1">Fecha Creación</label>
-        </div>
-
-        <div class="flex pt-4 pr-4 col-12 justify-content-end align-items-center">
-            <p-button type="button" label="Limpiar filtros" title="Limpiar filtros" icon="pi pi-times" class="pr-2"
-                severity="danger" (onClick)="btnLimpiarFiltros()" />
-            <p-button type="button" label="Buscar" title="Buscar" icon="pi pi-search" [loading]="bloquearComponente"
-                (onClick)="btnBuscar()" />
-        </div>
     </form>
-</div>
+</section>
 
-<div class="card">
+<section class="card">
     <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
         [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
@@ -41,31 +30,37 @@
         <ng-template #caption>
             <div class="flex">
                 <p class="text-align-center mb-0 text-xl font-semibold flex align-items-end">Resultados de Búsqueda:</p>
-              
             </div>
         </ng-template>
         <ng-template #header>
             <tr>
-                <th>Nro Documento</th>
-                <th>Usuario</th>
-                <th>Correo Electrónico</th>
-                <th>Estado</th>
                 <th>Acciones</th>
+                <th>Compañia</th>
+                <th>Tipo</th>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Estado</th>
             </tr>
         </ng-template>
         <ng-template #body let-data>
             <tr>
-                <td> <i title="Editar Usuario" class="pi pi-arrow-right text-yellow-500 mr-2"
-                        style="cursor: pointer;"></i>
-                    {{data.nroDocumento | uppercase}}</td>
-                <td>{{data.nombres | uppercase}}</td>
-                <td>{{data.correoElectronico | uppercase}}</td>
-                <td>{{data.estadoNombre | uppercase}}</td>
                 <td>
-                    <p-button title="Ver Usuario" icon="pi pi-eye" severity="info" rounded outlined class="mr-1" />
+                    <p-button title="Ver Usuario" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
+                        (onClick)="btnMantenimientoFormulario('VER',data)" />
                     <p-button title="Inactivar Usuario" icon="pi pi-unlock" severity="warn" rounded outlined
                         class="ml-1" />
                 </td>
+                <td> <i title="Editar Usuario" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
+                        (click)="btnMantenimientoFormulario('EDITAR',data)"></i>
+                    {{data.nroDocumento | titlecase}}</td>
+                <td>{{data.nombres | titlecase}}</td>
+                <td>{{data.correoElectronico | lowercase}}</td>
+                <td [style]="{'white-space':'nowrap'}">
+                    <p-tag [icon]="'pi ' + obtenerIconoEstado(data.estado)"
+                        [severity]="obtenerColorEstado(data.estado) || 'info'" [value]="data.estadoDesc">
+                    </p-tag>
+                </td>
+
             </tr>
         </ng-template>
         <ng-template #emptymessage>
@@ -79,4 +74,5 @@
             </tr>
         </ng-template>
     </p-table>
-</div>
+</section>
+<app-mantenimiento-usuario (msjMantenimiento)="rptaMantenimiento($event)"></app-mantenimiento-usuario>

@@ -70,6 +70,10 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { MessageService } from 'primeng/api';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ScrollTopModule } from 'primeng/scrolltop';
+import { CabeceraVistaComponent } from './components/cabecera-vista-component/cabecera-vista-component';
+import { LogModificacionesComponent } from './components/log-modificaciones-component/log-modificaciones-component';
 
 @NgModule({
   declarations: [
@@ -143,7 +147,11 @@ import { MessageService } from 'primeng/api';
     ProgressBarModule,
     FullCalendarModule,
     IconFieldModule,
-    InputIconModule
+    InputIconModule,
+    DatePickerModule,
+    ScrollTopModule,
+    CabeceraVistaComponent,
+    LogModificacionesComponent
   ],
   exports: [
     FormsModule,
@@ -222,7 +230,11 @@ import { MessageService } from 'primeng/api';
     FullCalendarModule,
     //Componentes
     IconFieldModule,
-    InputIconModule
-  ], providers: [DatePipe,MessageService],
+    InputIconModule,
+    DatePickerModule,
+    ScrollTopModule,
+    CabeceraVistaComponent,
+    LogModificacionesComponent
+  ], providers: [DatePipe, MessageService],
 })
 export class ComponentesCompartidosModule { }

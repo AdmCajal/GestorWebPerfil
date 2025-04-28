@@ -28,5 +28,6 @@ export const API_PORTAL_ROUTES = {
 
     USUARIO: {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListaUsuario`,
+        LISTAR_PERFIL: `${API_CUERPO.SEGURIDAD}/ListarComboPerfil`,
     }
 }

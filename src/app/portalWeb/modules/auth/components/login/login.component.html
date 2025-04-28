@@ -1,17 +1,17 @@
-<div class="surface-ground flex align-items-center justify-content-center min-h-screen min-w-[100vw] overflow-hidden bg-login "
+<div class="fondo-login surface-ground flex align-items-center justify-content-center md:justify-content-start min-h-screen min-w-[100vw] overflow-hidden bg-login md:p-8"
     [style]="fondoLogin">
 
     <div class="flex flex-column align-items-center justify-content-center">
-        <div
-            [ngStyle]="{ 'border-radius': '56px', 'padding': '0.3rem', 'background': 'linear-gradient(180deg, ' + coloresConfig.borderTop + ' 10%, rgba(33, 150, 243, 0) 30%)' }">
+        <div class="caja-login"
+            [ngStyle]="{ 'background':  coloresConfig.borderTop }">
             <!-- surface-card -->
             <div class="w-full  py-8 px-5 sm:px-8 bg-Formulario"
-                [ngStyle]="{'border-radius':'56px', 'background-color': coloresConfig.backgroundFormulario + ' '}">
+                [ngStyle]="{'border-radius':'0px', 'background-color': coloresConfig.backgroundFormulario + ' '}">
                 <div class="text-center mb-5">
                     <img [src]="imagenesConfig.logo" alt="Image" height="{{imagenesConfig.sizeImg}}"
                         [style]="{'height': imagenesConfig.sizeImg+'rem'}" class="mb-3">
                     <div class="text-900 text-3xl font-medium mb-3"> </div>
-                    <span class="text-600 font-medium">Inicie sesión para continuar</span>
+                    <span class="text-800 font-bold">Inicie sesión para continuar</span>
                 </div>
 
                 <div>
@@ -60,5 +60,4 @@
 </div>
 
 
-<p-toast position="bottom-center" key="lgmsg"></p-toast>
-<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-center"></p-toast>
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-left"></p-toast>

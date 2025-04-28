@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { permisosGuard } from '../../core/guards/permisos.guard';
+import { DashBoardGeneral } from './dashboard-general/dashboard-general.component';
 
 
 export default [
-    { path: 'co_usuariomantenimiento', loadChildren: () => import('./components/usuario/usuario.routes') },
+    { path: '', component: DashBoardGeneral },
 ] as Routes;

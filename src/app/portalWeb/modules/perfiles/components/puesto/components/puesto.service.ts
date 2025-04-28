@@ -9,7 +9,7 @@ import { ResponseApi } from '../../../../../core/models/response/response.model'
 @Injectable({
     providedIn: 'root'
 })
-export class UsuarioService {
+export class PuestoService {
     private apiUrl: string = "";
 
     constructor(private _http: HttpClient, private _encryptService: EncryptService, private _configService: ConfigService) { }
@@ -19,6 +19,19 @@ export class UsuarioService {
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {
                 this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR}`;
+                return this._http.post<ResponseApi>(this.apiUrl, filtro);
+            }),
+            catchError(error => {
+                console.error(`Error al buscar usuarios. ${error}`);
+                return throwError(error);
+            })
+        )
+    }
+
+    obtenerPerfiles(filtro: any): Observable<any> {
+        return from(this._configService.UrlApiPortal()).pipe(
+            switchMap(apiUrl => {
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR_PERFIL}`;
                 return this._http.post<ResponseApi>(this.apiUrl, filtro);
             }),
             catchError(error => {

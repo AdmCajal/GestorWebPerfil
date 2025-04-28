@@ -1,0 +1,6 @@
+export const ACCION_MANTENIMIENTO = {
+    AGREGAR: 1,
+    ACTUALIZAR: 2,
+    ELIMINAR: 3,
+    ESTADO: 3
+}

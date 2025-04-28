@@ -1,0 +1,157 @@
+<div class="flex md:flex-nowrap flex-wrap justify-content-between gap-2">
+
+    <section class="card md:w-2 w-12 h-auto">
+        <h5> Asignación de puesto</h5>
+        <form class="flex flex-wrap" [formGroup]="filtroForm">
+            <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                <label for="name1">Compañia</label>
+                <input pInputText id="name1" type="text" formControlName="usuario" />
+            </div>
+            <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                <label for="name1">Empleado</label>
+                <input pInputText id="name1" type="text" formControlName="nombres" />
+            </div>
+            <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                <label for="name1">Gerencia</label>
+                <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                    formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+            </div>
+            <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                <label for="name1">Responsable</label>
+                <input pInputText id="name1" type="text" formControlName="nombres" />
+            </div>
+            <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                <label for="name1">Puesto</label>
+                <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                    formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+            </div>
+            <div class="flex justify-content-center col-12">
+                <p-button icon="pi pi-check" label="Asignar puesto" raised />
+            </div>
+        </form>
+    </section>
+
+    <section class="card md:w-7 w-12 h-auto">
+        <h5>Aplicativos </h5>
+        <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
+            [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
+            currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" responsiveLayout="scroll"
+            [showCurrentPageReport]="true" [rowsPerPageOptions]="[ 5,10, 25, 50]">
+            <ng-template #header>
+                <tr>
+                    <th>Aplicativo</th>
+                    <th>Sucursal</th>
+                    <th>Centro Costo</th>
+                    <th>Perfil</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-data>
+                <tr>
+                    <td>
+                        <p-button title="Ver Usuario" icon="pi pi-eye" severity="info" rounded outlined class="mr-1" />
+                        <p-button title="Inactivar Usuario" icon="pi pi-unlock" severity="warn" rounded outlined
+                            class="ml-1" />
+                    </td>
+                    <td> <i title="Editar Usuario" class="pi pi-arrow-right text-yellow-500 mr-2"
+                            style="cursor: pointer;"></i>
+                        {{data.nroDocumento | titlecase}}</td>
+                    <td>{{data.nombres | titlecase}}</td>
+                    <td>{{data.correoElectronico | lowercase}}</td>
+                    <td [style]="{'white-space':'nowrap'}">
+                        <p-tag [icon]="'pi ' + obtenerIconoEstado(data.estado)"
+                            [severity]="obtenerColorEstado(data.estado) || 'info'" [value]="data.estadoDesc">
+                        </p-tag>
+                    </td>
+
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="8">No se encontró información.</td>
+                </tr>
+            </ng-template>
+            <ng-template #loadingbody>
+                <tr>
+                    <td colspan="8">Cargando información. Espere por favor...</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <br>
+        <p-fieldset [styleClass]="'w-12'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
+            <div class="flex flex-column">
+                <div class="flex">
+                    <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
+                    <div class="w-11 ml-1">
+                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4
+                            días
+                        </div>
+                        <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
+                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong>
+                            2025-04-07
+                            12:34:04</div>
+                    </div>
+                </div>
+                <p-divider align="center" type="dotted">
+                    <b>28 de enero de 2025</b>
+                </p-divider>
+            </div>
+        </p-fieldset>
+    </section>
+    <section class="card md:w-3 w-12 h-auto">
+        <h5>Usuarios con mismo puesto </h5>
+        <div class="flex flex-wrap gap-3 max-h-28rem justify-content-center" style=" overflow: auto">
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+            <div class="card-puesto flex p-5 w-5">
+                <p-avatar icon="pi pi-user" class="mr-2" size="large" shape="circle" />
+                <div class="flex flex-column gap-2 w-10 ml-3">
+                    <span>Juan Cardenas</span>
+                    <span>Médico</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <span> ㅤ</span>
+</div>

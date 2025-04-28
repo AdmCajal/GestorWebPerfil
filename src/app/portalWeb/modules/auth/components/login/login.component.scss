@@ -18,7 +18,7 @@
 }
 
 .bg-Formulario {
-  border-radius: 56px !important;
+  border-radius: 1rem !important;
 }
 
 :host :ng-deep {
@@ -39,4 +39,15 @@
   &:hover {
     font-size: 1.1rem;
   }
+}
+
+.caja-login {
+  padding: 8rem 5rem;
+
+  @media (max-width: 768px) { // Ajuste para dispositivos móviles
+    padding: 24rem 6rem;  }
+}
+.fondo-login{
+  @media (max-width: 768px) { // Ajuste para dispositivos móviles
+    background: white !important  }
 }

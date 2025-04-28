@@ -6,8 +6,8 @@
       "usuario": "https://th.bing.com/th/id/R.70853c64e4a4711b22448c5712e314e0?rik=EfuQmlPuOyKm%2fg&pid=ImgRaw&r=0"
     },
     "login": {
-      "background": "rgb(255,255,255)",
-      "tipoback": "color",
+      "background": "assets/portalWeb/images/configuracion/fondos/img-fondo-login.jpg",
+      "tipoback": "image",
       "logo": "assets/portalWeb/images/configuracion/logos/logo-sanna.png",
       "sizeImg": 8
     },

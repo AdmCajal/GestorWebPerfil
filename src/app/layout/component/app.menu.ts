@@ -28,7 +28,6 @@ export class AppMenu {
     }
     ngOnInit() {
         this.model = [{ items: [...this._menuLayoutService.obtenerMenuFormateado()] }];
-        console.log(this.model)
         /* [
             {
                 label: 'Home',

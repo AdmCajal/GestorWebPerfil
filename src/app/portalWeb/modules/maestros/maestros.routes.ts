@@ -3,5 +3,5 @@ import { permisosGuard } from '../../core/guards/permisos.guard';
 
 
 export default [
-    { path: 'co_usuariomantenimiento', loadChildren: () => import('./components/usuario/usuario.routes') },
+    { path: 'co_miscelaneomantenimiento', loadChildren: () => import('./components/Miscelaneo/miscelaneo.routes') },
 ] as Routes;

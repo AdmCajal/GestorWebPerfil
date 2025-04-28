@@ -8,6 +8,7 @@ import { LayoutService } from '../service/layout.service';
 import { catchError, forkJoin, of, tap } from 'rxjs';
 import { ConfigService } from '../../portalWeb/security/services/config.service';
 import { ComponentesCompartidosModule } from '../../portalWeb/shared/componentes-compartidos.module';
+import { SecurityService } from '../../portalWeb/security/services/Security.service';
 
 @Component({
     selector: 'app-topbar',
@@ -28,7 +29,7 @@ import { ComponentesCompartidosModule } from '../../portalWeb/shared/componentes
            
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content justify-align-center">
-                <span class="text-xl align-content-center">  {{'Geampier A. Santamaría de la Cruz' | titlecase }}</span>
+                <span class="text-xl align-content-center">  {{usuario.NombreCompleto | titlecase }}</span>
                 <p-avatar image="{{usuario.contenidoImagen || imagenesConfig.usuario}}" class="mr-2"  (click)="op.toggle($event)"
                 shape="circle"></p-avatar>
                    
@@ -45,12 +46,12 @@ import { ComponentesCompartidosModule } from '../../portalWeb/shared/componentes
                     <p-avatar image="{{usuario.contenidoImagen || imagenesConfig.usuario}}" (click)="op.toggle($event)" styleClass="mr-2"
                         size="large" shape="circle"></p-avatar>
                     <div class="">
-                        <h4 class="mt-0 mb-0" >{{'Geampier A. Santamaría de la Cruz' | titlecase }}</h4>
-                        <span>{{usuario.correo | titlecase }}</span>
+                        <h4 class="mt-0 mb-0" >{{usuario.NombreCompleto | titlecase }}</h4>
+                        <span><b>N° de documento: </b> {{ usuario.Documento | titlecase }}</span>
                     </div>
                 </div>
-                <hr>
-                <button [ngStyle]="{'padding':'0px', 'text-align': 'left', 'width': '100%'}" pButton pRipple label="Perfil" type="button" routerLink="/panel/perfil" icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-text"></button>
+                <!-- <hr> -->
+                <!-- <button [ngStyle]="{'padding':'0px', 'text-align': 'left', 'width': '100%'}" pButton pRipple label="Perfil" type="button" routerLink="/panel/perfil" icon="pi pi-user" class="p-button-rounded p-button-secondary p-button-text"></button> -->
                 <hr>
                 <button [ngStyle]="{'padding':'0px', 'text-align': 'left', 'width': '100%'}" pButton pRipple label="Cerrar Sesión" type="button" routerLink="/auth/cerrarsesion" icon="pi pi-sign-out" class="p-button-rounded p-button-secondary p-button-text"></button>
             </div>
@@ -66,8 +67,12 @@ export class AppTopbar {
 
     usuario: any = {};
 
-    constructor(public layoutService: LayoutService, private _configService: ConfigService, private renderer: Renderer2,
+    constructor(public layoutService: LayoutService,
+        private _configService: ConfigService,
+        private renderer: Renderer2,
         private _Router: Router,
+        private _SecurityService: SecurityService,
+
         private el: ElementRef) { this.configuracionInicialFormulario(); }
 
     toggleDarkMode() {
@@ -77,11 +82,15 @@ export class AppTopbar {
     configuracionInicialFormulario(): void {
         forkJoin({
             imagenes: this._configService.imagenesConfig(),
-            colores: this._configService.coloresConfig()
+            colores: this._configService.coloresConfig(),
+            usuario: this._SecurityService.obtenerUsuarioLogueado()
+
         }).pipe(
-            tap(({ imagenes, colores }) => {
+            tap(({ imagenes, colores, usuario }) => {
                 this.imagenesConfig = imagenes.cabecera;
                 this.coloresConfig = colores.login;
+                this.usuario = usuario;
+                console.log(this.usuario)
             }),
             catchError(error => {
                 console.error(`Error al obtener la configuración de formulario app topbar. ${error}`);

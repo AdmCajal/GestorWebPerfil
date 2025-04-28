@@ -4,3 +4,7 @@
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
 @import 'primeflex/primeflex.css';
+
+td {
+    padding: 0.3rem 1rem !important;
+  }

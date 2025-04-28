@@ -5,8 +5,8 @@
             "icono":"rgb(255,255,255)"
         },
         "login": {
-            "backgroundFormulario": "rgb(244,241,234,0.95)",
-            "borderTop": "#009A3D"
+            "backgroundFormulario": "rgb(244,244,244)",
+            "borderTop": "rgb(0,154,61,0.5)"
         },
         "access": {
             "backgroundFormulario": "rgb(244,241,234)",

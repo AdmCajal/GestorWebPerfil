@@ -100,8 +100,7 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
             tap(({ imagenes, colores }) => {
                 this.imagenesConfig = imagenes.login;
                 this.coloresConfig = colores.login;
-                this.fondoLogin = this.imagenesConfig.tipoback == 'image' ? `background-image: url('${this.imagenesConfig.background}') !important` : `background-color: ${this.imagenesConfig.background} !important`;
-
+                this.fondoLogin = this.imagenesConfig.tipoback == 'image' ? `background-image: url('${this.imagenesConfig.background}')` : `background-color: ${this.imagenesConfig.background} !important`;
                 const div = this.el.nativeElement.querySelector('.bg-Formulario');
                 this.renderer.setStyle(div, 'border-radius', '56px');
                 this.renderer.setStyle(div, 'background', this.coloresConfig.backgroundFormulario + ' !important');
@@ -118,6 +117,8 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
 
     btnIniciarSesion(): void {
         this.bloquearComponente = true;
+        this.LoginForm.disable();
+
         const { correo, contrasenia } =
             this.LoginForm.value;
 
@@ -168,18 +169,24 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
                     location.reload();
                 }
             }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                console.error(`Error al iniciar sesión. ${error}`);
+                if(error.message.includes('Http failure response')){
+                    this.MensajeToastComun('notification', 'error', 'Sin respuesta de inicio de sesión', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
+                }else{
+                    this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                }
+                console.error(`Error al iniciar sesión. ${JSON.stringify(error)}`);
                 return of(null);
             }),
             finalize(() => {
                 this.bloquearComponente = false;
+                this.LoginForm.enable();
             })
         ).subscribe();
     }
 
     obtenerDatosMaestros(): void {
         this.bloquearComponente = true;
+        this.LoginForm.disable();
 
         this._AuthService.obtenerDatosMaestros().pipe(
             tap((consultaRepsonse: ResponseApi) => {
@@ -195,6 +202,7 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
             }),
             finalize(() => {
                 this.bloquearComponente = false;
+                this.LoginForm.enable();
             })
         ).subscribe();
     }

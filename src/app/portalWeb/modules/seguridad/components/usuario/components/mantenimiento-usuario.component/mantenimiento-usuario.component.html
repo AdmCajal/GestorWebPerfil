@@ -1,0 +1,74 @@
+<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [(visible)]="visualizarForm"
+    [position]="position" [styleClass]="'w-4'" [maximizable]="true">
+    <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-3 col-12 ">
+            <label for="name1">N° Documento</label>
+            <input pInputText id="name1" type="text" formControlName="nroDocumento" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-9 col-12 ">
+            <label for="name1">Nombres</label>
+            <input pInputText id="name1" type="text" formControlName="nombres" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Perfil</label>
+            <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                formControlName="perfil" placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Tipo Usuario</label>
+            <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Correo Electrónico</label>
+            <input pInputText id="name1" type="text" formControlName="correoElectronico" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Contraseña</label>
+            <input pInputText id="name1" type="text" formControlName="contrasenia" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Confirmar Contraseña</label>
+            <input pInputText id="name1" type="text" formControlName="contraseniaConfirmacion" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="expiraPass"><p-checkbox value="S" inputId="expiraPass" formControlName="expirarContrasenia" />
+                ¿Expirar Contraseña?
+            </label>
+            <p-datepicker appendTo="body" formControlName="fechaExpiracion" [styleClass]="'col-12 p-0'"
+                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                *ngIf="mantenimientoForm.get('expirarContrasenia')?.value == 'S'" />
+        </div>
+
+
+    </form>
+
+    <div class="flex flex-wrap justify-content-between">
+        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
+            <div class="flex flex-column">
+                <div class="flex">
+                    <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
+                    <div class="w-11 ml-1">
+                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4 días
+                        </div>
+                        <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
+                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong> 2025-04-07
+                            12:34:04</div>
+                    </div>
+                </div>
+                <p-divider align="center" type="dotted">
+                    <b>28 de enero de 2025</b>
+                </p-divider>
+            </div>
+        </p-fieldset>
+    </div>
+    <ng-template #footer>
+
+        <div class="gap-2">
+            <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
+                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+            <p-button icon="pi pi-{{accion == 'AGREGAR' ? 'plus':'pencil'}}" class="ml-2" label="{{accion | titlecase}}"
+                raised *ngIf="accion != 'VER'" />
+        </div>
+    </ng-template>
+</p-dialog>

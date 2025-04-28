@@ -1,26 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AppFloatingConfigurator } from '../../../../../../../layout/component/app.floatingconfigurator';
-import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { UsuarioService } from '../usuario.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
-import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
+import { HostListener } from '@angular/core';
+import { UsuarioService } from '../../seguridad/components/usuario/components/usuario.service';
+import { MenuLayoutService } from '../../../core/services/menu.layout.service';
+import { ResponseApi } from '../../../core/models/response/response.model';
+import { ComponentesCompartidosModule } from '../../../shared/componentes-compartidos.module';
+import { LayoutService } from '../../../../layout/service/layout.service';
 
 @Component({
     selector: 'app-access',
     standalone: true,
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
-    templateUrl: './busqueda-usuario.component.html',
-    styleUrls: ['./busqueda-usuario.component.scss'],
+    templateUrl: './dashboard-general.component.html',
+    styleUrls: ['./dashboard-general.component.scss'],
 })
-export class BusquedaUsuario implements OnInit {
+export class DashBoardGeneral implements OnInit {
     bloquearComponente = false;
 
     breadcrumb: string | undefined;
@@ -35,7 +36,10 @@ export class BusquedaUsuario implements OnInit {
         private _UsuarioService: UsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
-        private _MenuLayoutService: MenuLayoutService
+        private _MenuLayoutService: MenuLayoutService,
+        public _Router: Router,
+        private _LayoutService: LayoutService,
+
     ) { this.filtroForm = new FormGroup({}); }
 
     ngOnInit(): void {
@@ -43,13 +47,17 @@ export class BusquedaUsuario implements OnInit {
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
+        this.esconderMenu();
     }
-
+    esconderMenu() {
+        this._LayoutService.onMenuToggle();
+    }
     estructuraForm(): void {
         this.filtroForm = this._fb.group({
             usuario: [{ value: '', disabled: this.bloquearComponente }],
             nombres: [{ value: '', disabled: this.bloquearComponente }],
             estado: [{ value: '', disabled: this.bloquearComponente }],
+            rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
 
@@ -64,6 +72,8 @@ export class BusquedaUsuario implements OnInit {
 
     btnBuscar(): void {
         this.bloquearComponente = true;
+        this.filtroForm.disable();
+
         this.lstBusqueda = [];
         const { usuario, nombres, estado } = this.filtroForm.value;
         const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
@@ -94,6 +104,7 @@ export class BusquedaUsuario implements OnInit {
             }),
             finalize(() => {
                 this.bloquearComponente = false;
+                this.filtroForm.enable();
             })
         ).subscribe();
     }
@@ -104,9 +115,12 @@ export class BusquedaUsuario implements OnInit {
 
     onGlobalFilter(table: Table, event: Event): void {
         this.bloquearComponente = true;
+        this.filtroForm.disable();
+
         setTimeout(() => {
             table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
             this.bloquearComponente = false;
+            this.filtroForm.enable();
         }, 300);
     }
     validarTipoDispositivo(): void {
@@ -122,5 +136,10 @@ export class BusquedaUsuario implements OnInit {
     MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
         this._MessageService.clear();
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
+    }
+
+    @HostListener('document:keydown.enter', ['$event'])
+    handleEnter(event: KeyboardEvent) {
+        this.btnBuscar();
     }
 }
