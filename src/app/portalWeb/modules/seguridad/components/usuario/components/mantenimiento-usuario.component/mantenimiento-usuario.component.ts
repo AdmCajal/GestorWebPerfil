@@ -24,12 +24,12 @@ import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/a
     templateUrl: './mantenimiento-usuario.component.html',
     styleUrls: ['./mantenimiento-usuario.component.scss'],
 })
-export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoComponente  {
+export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoComponente {
     @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
     bloquearComponente = false;
 
     breadcrumb: string | undefined;
-    accion: string | undefined;
+    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
     cntRegistros: number = 10;
 
     mantenimientoForm: FormGroup;
@@ -95,39 +95,10 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         this.bloquearComponente = true;
         this.mantenimientoForm.disable();
 
-        this.lstBusqueda = [];
-        const { usuario, nombres, estado } = this.mantenimientoForm.value;
-        const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
+        // this.bloquearComponente = false;
+        // this.mantenimientoForm.enable();
+        this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
 
-        this._UsuarioService.obtenerUsuarios(filtroFormato).pipe(
-            tap((consultaRepsonse: ResponseApi) => {
-                if (consultaRepsonse.success) {
-
-                    this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
-                        nroDocumento: d.USUARIO,
-                        codigoTipoDocumento: d.TipoDocumento,
-                        nombres: d.NOMBRECOMPLETO,
-                        codigoEstado: d.ESTADO,
-                        estadoNombre: d.DesEstado,
-                        correoElectronico: d.CorreoElectronico,
-                        codigoPersona: d.PERSONA,
-                    }))];
-
-                    this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
-                    return;
-                } else {
-                    this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
-                }
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                console.error(`Error al buscar. ${error}`);
-                return of(null);
-            }),
-            finalize(() => {
-                this.bloquearComponente = false;
-                this.mantenimientoForm.enable();
-            })
-        ).subscribe();
     }
 
     btnLimpiarFiltros(): void {
@@ -159,12 +130,13 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
 
-    @HostListener('document:keydown.enter', ['$event'])
-    handleEnter(event: KeyboardEvent) {
-        this.btnAccionForm();
-    }
+    // @HostListener('document:keydown.enter', ['$event'])
+    // handleEnter(event: KeyboardEvent) {
+    //     this.btnAccionForm();
+    // }
 
     btnLogAuditoria(): void {
         this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
     }
+
 }

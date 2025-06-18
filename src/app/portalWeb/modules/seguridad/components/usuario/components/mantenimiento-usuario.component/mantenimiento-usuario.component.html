@@ -1,5 +1,7 @@
-<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [(visible)]="visualizarForm"
-    [position]="position" [styleClass]="'w-4'" [maximizable]="true">
+<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!bloquearComponente"
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'w-4'" [maximizable]="true">
+    <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="bloquearComponente" />
+
     <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-3 col-12 ">
             <label for="name1">N° Documento</label>
@@ -44,6 +46,7 @@
     </form>
 
     <div class="flex flex-wrap justify-content-between">
+        <app-log-modificaciones [componente]="this"></app-log-modificaciones>
         <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
             <div class="flex flex-column">
                 <div class="flex">
@@ -67,8 +70,10 @@
         <div class="gap-2">
             <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
                 *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
-            <p-button icon="pi pi-{{accion == 'AGREGAR' ? 'plus':'pencil'}}" class="ml-2" label="{{accion | titlecase}}"
-                raised *ngIf="accion != 'VER'" />
+            <p-button
+                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
+                (onClick)="btnAccionForm()" />
         </div>
     </ng-template>
 </p-dialog>

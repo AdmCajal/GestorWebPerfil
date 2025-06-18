@@ -6,7 +6,7 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { MiscelaneoService } from '../miscelaneo.service';
+import { UsuarioService } from '../usuario.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,18 +14,18 @@ import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { MantenimientoMiscelaneo } from '../mantenimiento-miscelaneo.component/mantenimiento-miscelaneo.component';
-import { CabeceraVistaComponent } from '../../../../../../shared/components/cabecera-vista-component/cabecera-vista-component';
+import { MantenimientoUsuario } from '../mantenimiento-usuario.component/mantenimiento-usuario.component';
+import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente copy';
 
 @Component({
-    selector: 'app-vista-usuario',
+    selector: 'app-busqueda-usuario',
     standalone: true,
-    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoMiscelaneo],
-    templateUrl: './vista-miscelaneo.component.html',
-    styleUrls: ['./vista-miscelaneo.component.scss'],
+    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoUsuario],
+    templateUrl: './busqueda-usuario.component.html',
+    styleUrls: ['./busqueda-usuario.component.scss'],
 })
-export class VistaMiscelaneo implements OnInit {
-    @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
+export class BusquedaUsuario implements OnInit, AccionesVistaComponente {
+    @ViewChild(MantenimientoUsuario) _MantenimientoUsuario!: MantenimientoUsuario;
 
 
     bloquearComponente = false;
@@ -39,7 +39,7 @@ export class VistaMiscelaneo implements OnInit {
 
     lstEstados: any[] = [];
     constructor(private activatedRoute: ActivatedRoute,
-        private _UsuarioService: MiscelaneoService,
+        private _UsuarioService: UsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -47,6 +47,8 @@ export class VistaMiscelaneo implements OnInit {
         public _Router: Router,
 
     ) { this.filtroForm = new FormGroup({}); }
+
+    
 
     ngOnInit(): void {
         this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
@@ -122,15 +124,16 @@ export class VistaMiscelaneo implements OnInit {
     }
 
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoMiscelaneo.visualizarForm = true;
-        this._MantenimientoMiscelaneo.accion = accion;
-        this._MantenimientoMiscelaneo.mantenimientoForm.patchValue(registro);
+        this._MantenimientoUsuario.visualizarForm = true;
+        this._MantenimientoUsuario.accion = accion;
+        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
         console.log(registro);
     }
-    
+
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
+
     onGlobalFilter(table: Table, event: Event): void {
         this.bloquearComponente = true;
         this.filtroForm.disable();
@@ -156,13 +159,14 @@ export class VistaMiscelaneo implements OnInit {
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
 
-    @HostListener('document:keydown.enter', ['$event'])
-    handleEnter(event: KeyboardEvent) {
-        this.btnBuscar();
-    }
+    // @HostListener('document:keydown.enter', ['$event'])
+    // handleEnter(event: KeyboardEvent) {
+    //     this.btnBuscar();
+    // }
 
     rptaMantenimiento(respuesta: any) {
         this.bloquearComponente = respuesta.bloquearComponente;
+        console.log(respuesta)
         if (respuesta.buscar) { this.btnBuscar(); }
 
         if (respuesta.accion) {
@@ -189,8 +193,8 @@ export class VistaMiscelaneo implements OnInit {
                 return "info";
         }
     }
-
-
+    
+    
     obtenerIconoEstado(estado: string): string {
         switch (estado) {
             case "1":

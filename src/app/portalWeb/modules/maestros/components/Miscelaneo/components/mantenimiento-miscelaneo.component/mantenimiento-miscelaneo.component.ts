@@ -27,7 +27,7 @@ export class MantenimientoMiscelaneo implements OnInit {
     bloquearComponente = false;
 
     breadcrumb: string | undefined;
-    accion: string | undefined;
+    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
     cntRegistros: number = 10;
 
     mantenimientoForm: FormGroup;

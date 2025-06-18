@@ -6,7 +6,7 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { UsuarioService } from '../usuario.service';
+import { MiscelaneoService } from '../miscelaneo.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,18 +14,18 @@ import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { MantenimientoUsuario } from '../mantenimiento-usuario.component/mantenimiento-usuario.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente copy';
+import { MantenimientoMiscelaneo } from '../mantenimiento-miscelaneo.component/mantenimiento-miscelaneo.component';
+import { CabeceraVistaComponent } from '../../../../../../shared/components/cabecera-vista-component/cabecera-vista-component';
 
 @Component({
-    selector: 'app-vista-usuario',
+    selector: 'app-busqueda-usuario',
     standalone: true,
-    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoUsuario],
-    templateUrl: './vista-usuario.component.html',
-    styleUrls: ['./vista-usuario.component.scss'],
+    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoMiscelaneo],
+    templateUrl: './busqueda-miscelaneo.component.html',
+    styleUrls: ['./busqueda-miscelaneo.component.scss'],
 })
-export class VistaUsuario implements OnInit, AccionesVistaComponente {
-    @ViewChild(MantenimientoUsuario) _MantenimientoUsuario!: MantenimientoUsuario;
+export class BusquedaMiscelaneo implements OnInit {
+    @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
 
 
     bloquearComponente = false;
@@ -35,11 +35,11 @@ export class VistaUsuario implements OnInit, AccionesVistaComponente {
 
     filtroForm: FormGroup;
 
-    lstBusqueda: any[] = [];
+    lstBusqueda: any[] = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
 
     lstEstados: any[] = [];
     constructor(private activatedRoute: ActivatedRoute,
-        private _UsuarioService: UsuarioService,
+        private _UsuarioService: MiscelaneoService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -47,8 +47,6 @@ export class VistaUsuario implements OnInit, AccionesVistaComponente {
         public _Router: Router,
 
     ) { this.filtroForm = new FormGroup({}); }
-
-    
 
     ngOnInit(): void {
         this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
@@ -84,56 +82,58 @@ export class VistaUsuario implements OnInit, AccionesVistaComponente {
         this.bloquearComponente = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
-        const { usuario, nombres, estado } = this.filtroForm.value;
-        const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
+        this.lstBusqueda = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
 
-        this._UsuarioService.obtenerUsuarios(filtroFormato).pipe(
-            tap((consultaRepsonse: ResponseApi) => {
-                if (consultaRepsonse.success) {
+        // const { usuario, nombres, estado } = this.filtroForm.value;
+        // const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
 
-                    this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
-                        nroDocumento: d.USUARIO,
-                        tipoDocumento: d.TipoDocumento,
-                        nombres: d.NOMBRECOMPLETO,
-                        perfil: d.PERFIL,
-                        estado: d.ESTADO,
-                        estadoDesc: d.DesEstado,
-                        correoElectronico: d.CorreoElectronico,
-                        persona: d.PERSONA,
-                        tipoUsuario: d.TipoUsuario,
-                        expirarContrasenia: d.ExpirarPasswordFlag,
-                        fechaExpiracion: d.FechaExpiracion,
-                    }))];
+        // this._UsuarioService.obtenerUsuarios(filtroFormato).pipe(
+        //     tap((consultaRepsonse: ResponseApi) => {
+        //         if (consultaRepsonse.success) {
 
-                    this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
-                    return;
-                } else {
-                    this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
-                }
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                console.error(`Error al buscar. ${error}`);
-                return of(null);
-            }),
-            finalize(() => {
-                this.bloquearComponente = false;
-                this.filtroForm.enable();
-            })
-        ).subscribe();
+        //             this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
+        //                 nroDocumento: d.USUARIO,
+        //                 tipoDocumento: d.TipoDocumento,
+        //                 nombres: d.NOMBRECOMPLETO,
+        //                 perfil: d.PERFIL,
+        //                 estado: d.ESTADO,
+        //                 estadoDesc: d.DesEstado,
+        //                 correoElectronico: d.CorreoElectronico,
+        //                 persona: d.PERSONA,
+        //                 tipoUsuario: d.TipoUsuario,
+        //                 expirarContrasenia: d.ExpirarPasswordFlag,
+        //                 fechaExpiracion: d.FechaExpiracion,
+        //             }))];
+
+        //             this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
+        //             return;
+        //         } else {
+        //             this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
+        //         }
+        //     }), catchError((error) => {
+        //         this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+        //         console.error(`Error al buscar. ${error}`);
+        //         return of(null);
+        //     }),
+        //     finalize(() => {
+        //         this.bloquearComponente = false;
+        //         this.filtroForm.enable();
+        //     })
+        // ).subscribe();
+        this.bloquearComponente = false;
+        this.filtroForm.enable();
     }
 
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+        this._MantenimientoMiscelaneo.visualizarForm = true;
+        this._MantenimientoMiscelaneo.accion = accion;
+        this._MantenimientoMiscelaneo.mantenimientoForm.patchValue(registro);
         console.log(registro);
     }
 
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-
     onGlobalFilter(table: Table, event: Event): void {
         this.bloquearComponente = true;
         this.filtroForm.disable();
@@ -192,8 +192,8 @@ export class VistaUsuario implements OnInit, AccionesVistaComponente {
                 return "info";
         }
     }
-    
-    
+
+
     obtenerIconoEstado(estado: string): string {
         switch (estado) {
             case "1":

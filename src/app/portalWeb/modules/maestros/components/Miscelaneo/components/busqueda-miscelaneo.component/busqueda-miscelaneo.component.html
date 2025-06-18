@@ -52,9 +52,10 @@
                 </td>
                 <td> <i title="Editar Usuario" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
                         (click)="btnMantenimientoFormulario('EDITAR',data)"></i>
-                    {{data.nroDocumento | titlecase}}</td>
-                <td>{{data.nombres | titlecase}}</td>
-                <td>{{data.correoElectronico | lowercase}}</td>
+                    {{data.companiaDesc | titlecase}}</td>
+                <td>{{data.tipoDesc | titlecase}}</td>
+                <td>{{data.miscelaneoCod | lowercase}}</td>
+                <td>{{data.descripcion | lowercase}}</td>
                 <td [style]="{'white-space':'nowrap'}">
                     <p-tag [icon]="'pi ' + obtenerIconoEstado(data.estado)"
                         [severity]="obtenerColorEstado(data.estado) || 'info'" [value]="data.estadoDesc">
