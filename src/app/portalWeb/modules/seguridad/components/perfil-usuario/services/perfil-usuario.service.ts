@@ -9,7 +9,7 @@ import { ResponseApi } from '../../../../../core/models/response/response.model'
 @Injectable({
     providedIn: 'root'
 })
-export class UsuarioService {
+export class PerfilUsuarioService {
     private apiUrl: string = "";
 
     constructor(private _http: HttpClient, private _encryptService: EncryptService, private _configService: ConfigService) { }
