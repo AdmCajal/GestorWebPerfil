@@ -7,8 +7,5 @@ import { BusquedaPerfilUsuario } from './components/busqueda-perfil-usuario.comp
 export default [
     {
         path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Usuarios', idMenu: 'W1GRUP07CON001' }, component: BusquedaPerfilUsuario,
-    },
-    {
-        path: 'mantenimiento/:accion',  data: { breadcrumb: 'Usuarios', idMenu: 'W1GRUP07CON001' }, component: MantenimientoPerfilUsuario,
     }
 ] as Routes;

@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { HostListener } from '@angular/core';
 import { ComponentesCompartidosModule } from '../../componentes-compartidos.module';
 import { AccionesVistaComponente } from '../../../core/utils/acccionesVistaComponente';
+import { SecurityService } from '../../../security/services/Security.service';
 
 @Component({
     selector: 'app-cabecera-vista',
@@ -38,11 +39,12 @@ export class CabeceraVistaComponent implements OnInit {
 
     constructor(private activatedRoute: ActivatedRoute,
         public _Router: Router,
+        private _SecurityService: SecurityService
 
     ) { }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._SecurityService.nombreComponente(this.activatedRoute.snapshot.data['idMenu']) //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
     }
 
     btnNuevo(): void {

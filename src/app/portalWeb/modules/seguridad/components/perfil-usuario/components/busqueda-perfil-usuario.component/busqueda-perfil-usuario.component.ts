@@ -6,7 +6,6 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { UsuarioService } from '../../services/perfil-usuario.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,20 +13,22 @@ import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { MantenimientoUsuario } from '../mantenimiento-perfil-usuario.component/mantenimiento-perfil-usuario.component';
+import { MantenimientoPerfilUsuario } from '../mantenimiento-perfil-usuario.component/mantenimiento-perfil-usuario.component';
 import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
+import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
+import { SecurityService } from '../../../../../../security/services/Security.service';
 
 @Component({
     selector: 'app-busqueda-perfil-usuario',
     standalone: true,
-    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
+    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoPerfilUsuario],
     templateUrl: './busqueda-perfil-usuario.component.html',
     styleUrls: ['./busqueda-perfil-usuario.component.scss'],
 })
 export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
-    // @ViewChild(MantenimientoUsuario) _MantenimientoUsuario!: MantenimientoUsuario;
+    @ViewChild(MantenimientoPerfilUsuario) _MantenimientoUsuario!: MantenimientoPerfilUsuario;
 
 
     bloquearComponente = false;
@@ -42,20 +43,20 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
 
     lstEstados: any[] = [];
     constructor(private activatedRoute: ActivatedRoute,
-        private _UsuarioService: UsuarioService,
+        private _PerfilUsuarioService: PerfilUsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
         public _Router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+
 
     ) { this.filtroForm = new FormGroup({}); }
 
 
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -89,7 +90,7 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
         this.filtroForm.disable();
 
         this.lstBusqueda = [];
-        this._UsuarioService.obtenerUsuarios(this.filtroForm.value).pipe(
+        this._PerfilUsuarioService.obtenerUsuarios(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
@@ -120,7 +121,7 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
         registro.SedEstado = 2;
-        this._UsuarioService.mantenimiento(valorAccionServicio, registro).pipe(
+        this._PerfilUsuarioService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
                     this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
@@ -143,18 +144,13 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
     }
 
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-
-        this._Router.navigate(['mantenimiento', accion], { relativeTo: this.route });
-        this.esconderMenu();
-
-
-        // this._MantenimientoUsuario.visualizarForm = true;
-        // this._MantenimientoUsuario.accion = accion;
-        // this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        // this._MantenimientoUsuario.estructuraForm();
-        // registro.Clave = '';
-        // this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+        this._MantenimientoUsuario.visualizarForm = true;
+        this._MantenimientoUsuario.accion = accion;
+        this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
+        this._MantenimientoUsuario.estructuraForm();
+        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
     }
+
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }

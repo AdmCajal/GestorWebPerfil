@@ -1,74 +1,73 @@
-<!-- <p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!barraBusqueda"
-    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true"> -->
-<section class="card">
+<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!barraBusqueda"
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
+
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
-
-    <form class="flex flex-wrap md:flex-nowrap gap-2" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
-        <p-fieldset legend="Datos de usuario" class="col-3">
-            <section class="flex flex-wrap">
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Nro. Documento <span class="font-semibold text-red-500">*</span></label>
-                    <p-autocomplete formControlName="empleadoBusqueda" [suggestions]="lstUsuarios"
-                        placeholder="Ingrese un Nro de documento"
-                        (completeMethod)="btnBuscarEmpleado('empleadoBusqueda')" field="visible" [dropdown]="false"
-                        (onSelect)="onEmpleadoSeleccionado($event)" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Nombres <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" placeholder="Ingrese nombre" type="text"
-                        formControlName="NOMBRECOMPLETO" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Usuario <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" />
-
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Usuario AD <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" />
-                </div>
-
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
+    <div class="flex flex-wrap md:flex-nowrap gap-2">
+        <p-fieldset legend="Datos Generales" class="col-6">
+            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Tipo Usuario <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="TipoUsuario" placeholder="Seleccione una opción"></p-dropdown>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Sucursal <span class="font-semibold text-red-500">*</span></label>
+                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Correo Electrónico <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" formControlName="CorreoElectronico" />
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Gerencia <span class="font-semibold text-red-500">*</span></label>
+                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="expiraPass"><p-checkbox value="S" inputId="expiraPass"
-                            formControlName="ExpirarPasswordFlag" />
-                        ¿Expirar Contraseña?
-                    </label>
-                    <p-datepicker appendTo="body" formControlName="FechaExpiracion" [styleClass]="'col-12 p-0'"
-                        [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                        *ngIf="mantenimientoForm.get('ExpirarPasswordFlag')?.value == 'S'" />
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Responsable <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText id="name1" placeholder="Ingrese nombre" type="text"
+                        formControlName="NOMBRECOMPLETO" />
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Contraseña <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" formControlName="Clave" />
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Centro De Costo <span class="font-semibold text-red-500">*</span></label>
+                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Confirmar Contraseña <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" formControlName="contraseniaConfirmacion" />
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText id="name1" type="text" placeholder="Ingrese el nombre del perfil" />
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="ESTADO"
-                        formControlName="ESTADO" placeholder="Seleccione una opción"></p-dropdown>
-                </div>
-            </section>
+            </form>
         </p-fieldset>
-        <p-fieldset legend="Datos de usuario" class="col-9">
+        <p-fieldset legend="Asignación De Aplicativos" class="col-6">
+
             <section class="flex flex-wrap">
-                <div class="col-9">
+                <div class="col-4">
+                    <div class="flex col-12 ">
+                        <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion"
+                            optionValue="codigo" [(ngModel)]="codigoAplicativoAgregar" [styleClass]="'w-12'"
+                            placeholder="Seleccione una opción"></p-dropdown>
+                        <p-button icon="pi pi-plus" class="ml-2" raised severity="success"
+                            title="Agregar aplicativo seleccionado" (onClick)="onAgregarAplicativoSeleccionado()" />
+                    </div>
+                    <div class="border-round border-solid  border-1 border-300 col-12">
+                        <h4 class="w-12 ml-2 mb-0 text-lg font-bold"> Aplicativos seleccionados:</h4>
+                        <div class="w-12 ml-3">
+                            <div class="flex" *ngFor="let item of lstaplicativosSeleccionados">
+                                <b> <p-button pButton pRipple type="button" severity="danger" icon="pi pi-minus" text
+                                        rounded></p-button> <span (click)="onVerAplicativoSeleccionado(item)"
+                                        style="cursor: pointer;">{{item.label}}</span> </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 div-accesos-perfil">
+                    <h4 class="w-12 mb-0 text-lg font-bold"> Accesos del aplicativo: <span class="text-green-500">
+                            {{nombreAplicativoSeleccionado}}</span></h4>
+                    <div class="flex">
+                        <p-tree [value]="aplicativoSeleccionado" styleClass="w-full md:w-[30rem]"
+                            selectionMode="checkbox" />
+                    </div>
+                </div>
+
+                <!-- <div class="col-9">
                     <p-table [value]="optDetallePerfiles.controls" [selectionPageOnly]="false" [paginator]="true"
                         styleClass="p-datatable-gridlines" [rows]="cntRegistros" [showCurrentPageReport]="true"
                         [rowHover]="true" [paginator]="true" selectionMode="single" showGridlines class="w-12"
@@ -95,12 +94,6 @@
                                         <p-button *ngIf="!editing" pButton pRipple type="button" severity="danger"
                                             icon="pi pi-minus" text rounded
                                             (onClick)="eliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
-                                        <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow
-                                            severity="success" icon="pi pi-pencil" text rounded></button>
-                                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
-                                            icon="pi pi-check" text rounded severity="success"></button>
-                                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
-                                            icon="pi pi-times" text rounded severity="warn"></button> -->
                                     </div>
                                 </td>
                                 <td [pEditableColumn]="data.value.ordenVista" pEditableColumnField="ordenVista">
@@ -189,10 +182,10 @@
                 <div class=" col-3 div-accesos-perfil">
                     <h4 class="w-12 mb-0 text-lg font-bold"> Accesos del Perfil</h4>
                     <p-tree [value]="lstVisualizarPerfil" styleClass="w-full md:w-[30rem]" />
-                </div>
+                </div> -->
             </section>
         </p-fieldset>
-    </form>
+    </div>
 
     <div class="flex flex-wrap justify-content-between">
         <!-- <app-log-modificaciones [componente]="this"></app-log-modificaciones> -->
@@ -201,10 +194,12 @@
                 <div class="flex">
                     <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
                     <div class="w-11 ml-1">
-                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4 días
+                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4
+                            días
                         </div>
                         <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
-                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong> 2025-04-07
+                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong>
+                            2025-04-07
                             12:34:04</div>
                     </div>
                 </div>
@@ -226,4 +221,4 @@
         </div>
     </ng-template>
     <!-- </p-dialog> -->
-</section>
+</p-dialog>
