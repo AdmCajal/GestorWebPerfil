@@ -6,6 +6,6 @@ import { MantenimientoSucursal } from './components/mantenimiento-sucursal.compo
 
 export default [
     {
-        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Sucursal', idMenu: 'CON039' }, component: BusquedaSucursal,
+        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Sucursal', idMenu: 'W1GRUP07CON039' }, component: BusquedaSucursal,
     }
 ] as Routes;

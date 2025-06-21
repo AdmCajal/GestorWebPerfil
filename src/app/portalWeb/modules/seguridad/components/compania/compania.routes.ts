@@ -6,7 +6,7 @@ import { MantenimientoCompania } from './components/mantenimiento-compania.compo
 
 export default [
     {
-        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Compañia', idMenu: 'CON005' }, component: BusquedaCompania,
+        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Compañia', idMenu: 'W1GRUP07CON005' }, component: BusquedaCompania,
     }
 
 

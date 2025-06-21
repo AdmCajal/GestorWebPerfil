@@ -159,7 +159,7 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
                             nivelModulo: m.ORDEN,
                             status: m.Estado,
                             estado: m.Estado,
-                            id_menu: m.Concepto,
+                            id_menu: m.AplicacionCodigo + m.Grupo + m.Concepto,
                             icono: 'pi pi-building-columns'
                         }
                     ));

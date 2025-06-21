@@ -6,6 +6,6 @@ import { MantenimientoSucursal } from './components/mantenimiento-persona.compon
 
 export default [
     {
-        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Persona', idMenu: 'CON019' }, component: BusquedaPersona,
+        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Persona', idMenu: 'W1GRUP04CON019' }, component: BusquedaPersona,
     }
 ] as Routes;
