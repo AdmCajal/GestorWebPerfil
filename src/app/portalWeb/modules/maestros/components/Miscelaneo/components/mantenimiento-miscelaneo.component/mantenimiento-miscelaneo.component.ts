@@ -6,7 +6,7 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { MiscelaneoService } from '../miscelaneo.service';
+import { MiscelaneoService } from '../../Services/miscelaneo.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

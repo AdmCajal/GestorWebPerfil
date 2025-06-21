@@ -1,0 +1,143 @@
+<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!bloquearComponente"
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
+    <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="bloquearComponente" />
+
+    <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+        <p-fieldset legend="Información General" class="col-6">
+            <div class="w-12 flex flex-wrap">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="compania">Tipo de persona</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="compania">Tipo de Persona</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="compania">Sexo</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Nro. Documento</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Ruc</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Nombres</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Apellido paterno</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Apellido materno</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Fecha de nacimiento</label>
+                    <p-datepicker formControlName="rangoFechaCreacion" [styleClass]="'col-12 p-0'"
+                        [iconDisplay]="'input'" [showIcon]="false" inputId="icondisplay" />
+                </div>
+            </div>
+        </p-fieldset>
+        <p-fieldset legend="Información Adicional" class="col-6">
+            <div class="w-12 flex flex-wrap">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Teléfono Nro. 1</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Teléfono Nro. 2</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Correo electrónico</label>
+                    <input pInputText id="Código" type="mail" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Dirección</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Estado">Estado</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="Estado" formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label for="Código">Referencia</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="Departamento">Departamento</label>
+                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                        id="Departamento" formControlName="departamento"
+                        placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="Provincia">Provincia</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="Provincia" formControlName="provincia" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                    <label for="Distrito">Distrito</label>
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="Distrito" formControlName="distrito" placeholder="Seleccione una opción"></p-dropdown>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                    <label for="Distrito">Comentario</label>
+                    <input pInputText id="Código" type="text" formControlName="codigo"
+                        placeholder="Código de sucursal" />
+                </div>
+            </div>
+        </p-fieldset>
+    </form>
+
+    <div class="flex flex-wrap justify-content-between">
+        <!-- <app-log-modificaciones [componente]="this"></app-log-modificaciones> -->
+        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
+            <div class="flex flex-column">
+                <div class="flex">
+                    <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
+                    <div class="w-11 ml-1">
+                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4 días
+                        </div>
+                        <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
+                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong> 2025-04-07
+                            12:34:04</div>
+                    </div>
+                </div>
+                <p-divider align="center" type="dotted">
+                    <b>28 de enero de 2025</b>
+                </p-divider>
+            </div>
+        </p-fieldset>
+    </div>
+    <ng-template #footer>
+
+        <div class="gap-2">
+            <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
+                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+            <p-button
+                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
+                (onClick)="btnAccionForm()" />
+        </div>
+    </ng-template>
+</p-dialog>

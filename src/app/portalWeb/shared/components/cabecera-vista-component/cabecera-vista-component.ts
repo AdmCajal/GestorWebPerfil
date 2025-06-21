@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { HostListener } from '@angular/core';
 import { ComponentesCompartidosModule } from '../../componentes-compartidos.module';
-import { AccionesVistaComponente } from '../../../core/utils/acccionesVistaComponente copy';
+import { AccionesVistaComponente } from '../../../core/utils/acccionesVistaComponente';
 
 @Component({
     selector: 'app-cabecera-vista',
@@ -25,7 +25,7 @@ import { AccionesVistaComponente } from '../../../core/utils/acccionesVistaCompo
             <p-button icon="pi pi-download" label="Exportar" severity="contrast" raised (onClick)="btnExportar()" />
         </div>
     </div>
-    <hr *ngIf="!this.componente.bloquearComponente" class="mb-2 mt-0">
+    <hr *ngIf="!this.componente.barraBusqueda" class="mb-2 mt-0">
     <p-progressbar mode="indeterminate" class="mb-2 mt-0" [style]="{ height: '1px' }" *ngIf="this.componente.bloquearComponente" />
     `
 })

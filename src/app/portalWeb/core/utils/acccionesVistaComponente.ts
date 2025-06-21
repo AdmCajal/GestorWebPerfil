@@ -4,4 +4,5 @@ export declare interface AccionesVistaComponente {
     btnExportar(): void;
 
     bloquearComponente: boolean;
+    barraBusqueda: boolean;
 }

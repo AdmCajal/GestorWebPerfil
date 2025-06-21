@@ -6,7 +6,7 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { MiscelaneoService } from '../miscelaneo.service';
+import { MiscelaneoService } from '../../Services/miscelaneo.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,6 +16,7 @@ import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoMiscelaneo } from '../mantenimiento-miscelaneo.component/mantenimiento-miscelaneo.component';
 import { CabeceraVistaComponent } from '../../../../../../shared/components/cabecera-vista-component/cabecera-vista-component';
+import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
 
 @Component({
     selector: 'app-busqueda-usuario',
@@ -24,11 +25,12 @@ import { CabeceraVistaComponent } from '../../../../../../shared/components/cabe
     templateUrl: './busqueda-miscelaneo.component.html',
     styleUrls: ['./busqueda-miscelaneo.component.scss'],
 })
-export class BusquedaMiscelaneo implements OnInit {
+export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
     @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
 
 
     bloquearComponente = false;
+    barraBusqueda: boolean = false;
 
     breadcrumb: string | undefined;
     cntRegistros: number = 10;

@@ -8,11 +8,11 @@ import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { HostListener } from '@angular/core';
-import { UsuarioService } from '../../seguridad/components/usuario/components/usuario.service';
 import { MenuLayoutService } from '../../../core/services/menu.layout.service';
 import { ResponseApi } from '../../../core/models/response/response.model';
 import { ComponentesCompartidosModule } from '../../../shared/componentes-compartidos.module';
 import { LayoutService } from '../../../../layout/service/layout.service';
+import { UsuarioService } from '../../seguridad/components/usuario/services/usuario.service';
 
 @Component({
     selector: 'app-access',

@@ -74,7 +74,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { ScrollTopModule } from 'primeng/scrolltop';
 import { CabeceraVistaComponent } from './components/cabecera-vista-component/cabecera-vista-component';
 import { LogModificacionesComponent } from './components/log-modificaciones-component/log-modificaciones-component';
-
+import { TextareaModule } from 'primeng/textarea';
+import { SelectModule } from 'primeng/select';
 @NgModule({
   declarations: [
 
@@ -150,6 +151,8 @@ import { LogModificacionesComponent } from './components/log-modificaciones-comp
     InputIconModule,
     DatePickerModule,
     ScrollTopModule,
+    TextareaModule,
+    SelectModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ],
@@ -233,6 +236,8 @@ import { LogModificacionesComponent } from './components/log-modificaciones-comp
     InputIconModule,
     DatePickerModule,
     ScrollTopModule,
+    TextareaModule,
+    SelectModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ], providers: [DatePipe, MessageService],

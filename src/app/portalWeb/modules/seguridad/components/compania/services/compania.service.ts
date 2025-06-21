@@ -9,16 +9,16 @@ import { ResponseApi } from '../../../../../core/models/response/response.model'
 @Injectable({
     providedIn: 'root'
 })
-export class UsuarioService {
+export class CompaniaService {
     private apiUrl: string = "";
 
     constructor(private _http: HttpClient, private _encryptService: EncryptService, private _configService: ConfigService) { }
 
 
-    obtenerUsuarios(filtro: any): Observable<ResponseApi> {
+    obtener(filtro: any): Observable<ResponseApi> {
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {
-                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR}`;
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.COMPANIA.LISTAR}`;
                 return this._http.post<ResponseApi>(this.apiUrl, filtro);
             }),
             catchError(error => {
@@ -28,14 +28,14 @@ export class UsuarioService {
         )
     }
 
-    obtenerPerfiles(filtro: any): Observable<any> {
+    mantenimiento(codigo: number, obj: any): Observable<ResponseApi> {
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {
-                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR_PERFIL}`;
-                return this._http.post<ResponseApi>(this.apiUrl, filtro);
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.COMPANIA.MANTENIMIENTO}${codigo}`;
+                return this._http.post<ResponseApi>(this.apiUrl, obj);
             }),
             catchError(error => {
-                console.error(`Error al buscar usuarios. ${error}`);
+                console.error(`Error al registrar. ${error}`);
                 return throwError(error);
             })
         )

@@ -6,27 +6,33 @@ import { AppFloatingConfigurator } from '../../../../../../../layout/component/a
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
-import { UsuarioService } from '../usuario.service';
-import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
+import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { LogModificacionesComponent } from '../../../../../../shared/components/log-modificaciones-component/log-modificaciones-component';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
+import { UsuarioService } from '../../services/usuario.service';
+import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
+import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
+import { v4 as uuidv4 } from 'uuid';
+import { CompaniaService } from '../../../compania/services/compania.service';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
     standalone: true,
-    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, LogModificacionesComponent],
+    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-usuario.component.html',
     styleUrls: ['./mantenimiento-usuario.component.scss'],
 })
 export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoComponente {
     @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
     bloquearComponente = false;
+    barraBusqueda = false;
 
     breadcrumb: string | undefined;
     accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
@@ -34,16 +40,130 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
     mantenimientoForm: FormGroup;
 
-    lstBusqueda: any[] = [];
+    lstUsuarios: any[] = [];
     lstEstados: any[] = [];
     lstPerfiles: any[] = [];
+    lstCompanias: any[] = [];
 
-    visualizarForm: boolean = false;
+    lstPerfilesAsignados: any[] = [
+        {
+            nro: 1,
+            companiaCod: 'compania',
+            sucursalCod: 'sucursal',
+            gerenciaCod: 'gerencia',
+            centroCostoCod: 'centro costo',
+            perfilCod: 'perfil',
+        }
+    ];
+    lstVisualizarPerfil: any[] = [
+        {
+            key: '0',
+            label: 'APLICATIVO   ',
+            data: 'Documents Folder',
+            icon: 'pi pi-fw pi-inbox',
+            children: [
+                {
+                    key: '0-0',
+                    label: 'Spring',
+                    data: 'Work Folder',
+                    icon: 'pi pi-fw pi-cog',
+                    children: [
+                        {
+                            key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                            children: [
+                                { key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                            ]
+                        },
+                        {
+                            key: '0-0-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                            children: [
+                                {
+                                    key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                    children: [
+                                        { key: '0-0-0', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                        { key: '0-0-1', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
+                                    ]
+                                },
+                                {
+                                    key: '0-0-1', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                                    children: [
+                                        {
+                                            key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                            children: [
+                                                { key: '0-0-0', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                                { key: '0-0-1', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                                { key: '0-0-1', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                                { key: '0-0-1', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            key: '0-0-1', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                            children: [
+                                {
+                                    key: '0-0-0', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                    children: [
+                                        { key: '0-0-0', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                        { key: '0-0-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        { key: '0-0-1', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                    ]
+                                },
+                                {
+                                    key: '0-0-0', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                    children: [
+                                        { key: '0-0-0', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                        { key: '0-0-1', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        { key: '0-0-1', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            key: '0-0-1', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                            children: [
+                                {
+                                    key: '0-0-0', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                    children: [
+                                        { key: '0-0-0', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                        { key: '0-0-1', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        { key: '0-0-1', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                    ]
+                                },
+                                {
+                                    key: '0-0-0', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                    children: [
+                                        { key: '0-0-0', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    key: '0-1',
+                    label: 'Home',
+                    data: 'Home Folder',
+                    icon: 'pi pi-fw pi-home',
+                    children: [{ key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month' }]
+                }
+            ]
+        }
+    ]
+
+    visualizarForm: boolean = true;
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
     constructor(private activatedRoute: ActivatedRoute,
         private _UsuarioService: UsuarioService,
+        private _CompaniaService: CompaniaService,
+        private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -61,18 +181,56 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
     estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
-            nroDocumento: [{ value: '', disabled: this.bloquearComponente }],
-            nombres: [{ value: '', disabled: this.bloquearComponente }],
-            perfil: [{ value: '', disabled: this.bloquearComponente }],
-            tipoUsuario: [{ value: '', disabled: this.bloquearComponente }],
-            correoElectronico: [{ value: '', disabled: this.bloquearComponente }],
-            contrasenia: [{ value: '', disabled: this.bloquearComponente }],
+            empleadoBusqueda: [{ value: '', disabled: this.bloquearComponente }],
+            PERSONA: [{ value: '', disabled: this.bloquearComponente }],
+            USUARIO: [{ value: '', disabled: this.bloquearComponente }],
+            NOMBRECOMPLETO: [{ value: '', disabled: true }],
+            PERFIL: [{ value: '', disabled: this.bloquearComponente }],
+            TipoUsuario: [{ value: '', disabled: this.bloquearComponente }],
+            CorreoElectronico: [{ value: '', disabled: this.bloquearComponente }],
+            Clave: [{ value: '', disabled: this.bloquearComponente }],
             contraseniaConfirmacion: [{ value: '', disabled: this.bloquearComponente }],
-            expirarContrasenia: [{ value: '', disabled: this.bloquearComponente }],
-            fechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
-            estado: [{ value: '', disabled: this.bloquearComponente }],
+            ExpirarPasswordFlag: [{ value: '', disabled: this.bloquearComponente }],
+            FechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
+            ESTADO: [{ value: '', disabled: this.bloquearComponente }],
+            detallePerfiles: this._fb.array([])
 
         });
+    }
+    get optDetallePerfiles() {
+        return this.mantenimientoForm.get('detallePerfiles') as FormArray;
+    }
+
+    agregarLineaDetallePerfiles() {
+        this.optDetallePerfiles.push(this._fb.group({
+            uuidv4: [uuidv4()],
+            ordenVista: [this.optDetallePerfiles.length + 1],
+            companiaCod: '0',
+            companiaNom: 'Seleccionar',
+            sucursalCod: '0',
+            sucursalNom: 'Seleccionar',
+            gerenciaCod: '0',
+            gerenciaNom: 'Seleccionar',
+            centroCostoCod: '0',
+            centroCostoNom: 'Seleccionar',
+            perfilCod: '0',
+            perfilNom: 'Seleccionar',
+        }));
+    }
+    eliminarYReordenarDetallePerfiles(codDetalle: number) {
+        let detalleArray = this.optDetallePerfiles;
+
+        let index = detalleArray.value.findIndex((detalle: any) => detalle.uuidv4 === codDetalle);
+
+        if (index >= 0) {
+            detalleArray.removeAt(index);
+
+            detalleArray.controls.forEach((detalle, i) => {
+                detalle.get('ordenVista')?.setValue(i + 1);
+            });
+        } else {
+            console.log(`No se encontró el detalle con codDetalle: ${codDetalle}`);
+        }
     }
 
     esconderMenu() {
@@ -82,27 +240,127 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            perfiles: this._UsuarioService.obtenerPerfiles({ ESTADO: 'A' })
+            perfiles: this._UsuarioService.obtenerPerfiles({ ESTADO: 'A' }),
+            companias: this._CompaniaService.obtener({})
         }).subscribe(resp => {
-            this.lstEstados = [...resp.estados];
+            const dataEstados = resp.estados?.map((ele: any) => ({
+                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
+            }));
+            this.lstEstados = [...dataEstados];
+
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompanias = [...dataCompanias];
 
             const dataPerfiles: any[] = resp.perfiles.map((m: any) => ({ codigo: m.Codigo, descripcion: m.Descripcion }));
             this.lstPerfiles = [...dataPerfiles];
         });
     }
-
     btnAccionForm(): void {
         this.bloquearComponente = true;
+        this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        // this.bloquearComponente = false;
-        // this.mantenimientoForm.enable();
-        this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+
+        this._UsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+                    this.visualizarForm = false;
+                    this.estructuraForm();
+                    this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                }
+
+            }), catchError((error) => {
+                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                return of(null);
+            }),
+            finalize(() => {
+                this.bloquearComponente = false;
+                this.barraBusqueda = false;
+                this.mantenimientoForm.enable();
+            })
+        ).subscribe();
 
     }
 
-    btnLimpiarFiltros(): void {
-        this.estructuraForm();
+    btnBuscarEmpleado(campo: string): void {
+        this.mantenimientoForm
+            .get(campo)
+            ?.valueChanges.pipe(
+                debounceTime(1000),
+                switchMap(res => {
+                    if (res.length >= 0) {
+                        if (res.length == 0) {
+                            this.mantenimientoForm.get('PERSONA')?.setValue('');
+                            this.mantenimientoForm.get('USUARIO')?.setValue('');
+                            this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue('');
+                            this.mantenimientoForm.get('CorreoElectronico')?.setValue('');
+                        }
+                        const filtroForm = {
+                            Documento: res.trim(),
+                            tipopersona: "N", // Natural
+                            SoloBeneficiarios: "0",
+                            UneuNegocioId: "0"
+                        }
+                        return this._PersonaService.obtener(filtroForm);
+                    }
+                    return [];
+                })
+            )
+            .subscribe((responseApi) => {
+                this.lstUsuarios = [];
+                const dataResponse: any[] = responseApi.data;
+                if (dataResponse.length > 0) {
+                    const dataFormato = dataResponse.map(res => {
+                        return {
+                            ...res,
+                            visible: res.Documento.trim() + ' - ' + res.NombreCompleto.trim(),
+                        }
+                    });
+                    this.lstUsuarios = [...dataFormato];
+                }
+            });
+    }
+
+    onEmpleadoSeleccionado(evento: any): void {
+        this.mantenimientoForm.get('PERSONA')?.setValue(evento.value.Persona);
+        this.mantenimientoForm.get('USUARIO')?.setValue(evento.value.Documento);
+        this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue(evento.value.NombreCompleto);
+        this.mantenimientoForm.get('CorreoElectronico')?.setValue(evento.value.CorreoInterno);
+
+        this.mantenimientoForm.get('empleadoBusqueda')?.setValue({ visible: evento.value.Documento });
+    }
+
+    onAsignarDescripcionDetalle(evento: any, detalle: FormGroup, tipo: string): void {
+        switch (tipo) {
+            case 'COMPANIA':
+                const companiSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('companiaNom')?.setValue(companiSeleccionado?.descripcion);
+                break;
+            case 'SUCURSAL':
+                const sucursalSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('companiaNom')?.setValue(sucursalSeleccionado?.descripcion);
+                break;
+            case 'GERENCIA':
+                const gerenciaSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('companiaNom')?.setValue(gerenciaSeleccionado?.descripcion);
+                break;
+            case 'CENTROCOSTO':
+                const centroCostoSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('companiaNom')?.setValue(centroCostoSeleccionado?.descripcion);
+                break;
+            case 'PERFIL':
+                const perfilSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('companiaNom')?.setValue(perfilSeleccionado?.descripcion);
+                break;
+            default:
+                this.MensajeToastComun('notification', 'error', 'Error', `el tipo: '${tipo}' no está considerado .`);
+                return;
+        }
+
     }
 
     onGlobalFilter(table: Table, event: Event): void {

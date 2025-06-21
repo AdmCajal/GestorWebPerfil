@@ -1,0 +1,81 @@
+<section class="card">
+    <app-cabecera-vista [componente]="this"></app-cabecera-vista>
+
+    <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Ruc</label>
+            <input pInputText id="name1" type="text" formControlName="DocumentoFiscal" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Razón Social</label>
+            <input pInputText id="name1" type="text" formControlName="descripcioncorta" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Estado</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="estado"
+                placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+    </form>
+</section>
+
+<section class="card">
+    <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
+        [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
+        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" responsiveLayout="scroll"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[ 5,10, 25, 50]">
+        <ng-template #caption>
+            <div class="flex">
+                <p class="text-align-center mb-0 text-xl font-semibold flex align-items-end">Resultados de Búsqueda:</p>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th class="w-1">Acciones</th>
+                <th>Ruc</th>
+                <th>Razón Social</th>
+                <th>Fecha</th>
+                <th>Doc. Representante</th>
+                <th>Representante</th>
+                <th>Teléfono</th>
+                <th>Estado</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-data>
+            <tr>
+                <td>
+                    <p-button title="Ver Registro" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
+                        (onClick)="btnMantenimientoFormulario('VER',data)" />
+                    <p-button title="Inactivar Registro" icon="pi pi-unlock" severity="warn" rounded outlined
+                        class="ml-1" (onClick)="btnInactivar(data)" />
+                </td>
+                <td> <i title="Editar Registro" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
+                        (click)="btnMantenimientoFormulario('EDITAR',data)"></i>
+                    {{data.RUC | titlecase}}</td>
+                <td>{{data.DescripcionCorta | titlecase}}</td>
+                <td>{{data.FechaCreacion | date: 'dd/MM/yyyy'}}</td>
+                <td>{{data.DocumentoFiscal | lowercase}}</td>
+                <td>{{data.RepresentanteLegal | lowercase}}</td>
+                <td>{{data.Telefono1 | lowercase}}</td>
+                <td [style]="{'white-space':'nowrap'}">
+                    <p-tag [icon]="'pi ' + obtenerIconoEstado(data.Estado)"
+                        [severity]="obtenerColorEstado(data.Estado) || 'info'" [value]="data.ESTADOdesc">
+                    </p-tag>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="8">No se encontró información.</td>
+            </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+            <tr>
+                <td colspan="8">Cargando información. Espere por favor...</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>
+<app-mantenimiento-compania (msjMantenimiento)="rptaMantenimiento($event)"></app-mantenimiento-compania>
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-right"></p-toast>

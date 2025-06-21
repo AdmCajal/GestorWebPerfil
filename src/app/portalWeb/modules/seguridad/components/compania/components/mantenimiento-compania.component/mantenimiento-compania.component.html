@@ -1,0 +1,115 @@
+<p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!barraBusqueda"
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-6 w-11'" [maximizable]="true">
+    <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
+
+    <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+            <label for="Ruc">Empresa <span class="font-semibold text-red-500">*</span></label>
+            <div class="flex">
+                <p-autocomplete formControlName="EmpRucBusqueda" [suggestions]="lstEmpresa" class="w-3 mr-2"
+                    placeholder="Ingrese un Nro de documento" (completeMethod)="btnBuscarEmpresa('EmpRucBusqueda')"
+                    field="visible" [dropdown]="false" (onSelect)="onEmpresaSeleccionado($event)" />
+                <p-autocomplete formControlName="EmpRazonSocialBusqueda" [suggestions]="lstEmpresa" class="w-9 mr-2"
+                    placeholder="Ingrese nombre" (completeMethod)="btnBuscarEmpresa('EmpRazonSocialBusqueda')"
+                    field="visible" [dropdown]="false" (onSelect)="onEmpresaSeleccionado($event)" />
+                <!-- <p-button icon="pi pi-search" class="ml-1" raised severity="info" /> -->
+                <!-- <p-button icon="pi pi-plus" class="ml-1" raised severity="success" /> -->
+
+            </div>
+            <span *ngIf="mantenimientoForm.get('Persona')?.invalid && mantenimientoForm.get('EmpRucBusqueda')?.touched"
+                class="text-red-500 text-sm italic w-12"> El campo empresa es obligatorio. </span>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+            <label for="Doc.Representante">Representante <span class="font-semibold text-red-500">*</span></label>
+            <div class="flex">
+                <p-autocomplete formControlName="DocumentoFiscalBusqueda" [suggestions]="lstRepresentante"
+                    class="w-3 mr-2" placeholder="Ingrese un Nro de documento"
+                    (completeMethod)="btnBuscarRepresentante('DocumentoFiscalBusqueda')" field="visible"
+                    [dropdown]="false" (onSelect)="onRepresentanteSeleccionado($event)" />
+                <p-autocomplete formControlName="RepresentanteLegalBusqueda" [suggestions]="lstRepresentante"
+                    class="w-9 mr-2" placeholder="Ingrese nombre"
+                    (completeMethod)="btnBuscarRepresentante('RepresentanteLegalBusqueda')" field="visible"
+                    [dropdown]="false" (onSelect)="onRepresentanteSeleccionado($event)" />
+                <!-- <p-button icon="pi pi-minus" class="ml-2" raised severity="danger" /> -->
+                <!-- <p-button icon="pi pi-search" class="ml-1" raised severity="info" /> -->
+                <!-- <p-button icon="pi pi-plus" class="ml-1" raised severity="success" /> -->
+
+            </div>
+            <span
+                *ngIf="mantenimientoForm.get('DocumentoFiscal')?.invalid && mantenimientoForm.get('DocumentoFiscalBusqueda')?.touched"
+                class="text-red-500 text-sm italic w-12"> El campo representante es obligatorio. </span>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="Pag.Web">Pagina Web</label>
+            <input pInputText id="Pag.Web" type="text" formControlName="DireccionComun" placeholder="Página Web" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="CorreoElectronico">Correo electrónico <span class="font-semibold text-red-500">*</span></label>
+            <input pInputText id="CorreoElectronico" type="mail" formControlName="DireccionAdicional"
+                placeholder="Correo electrónico" />
+            <span
+                *ngIf="mantenimientoForm.get('DireccionAdicional')?.invalid && mantenimientoForm.get('DireccionAdicional')?.touched"
+                class="text-red-500 text-sm italic"> El campo correo electrónico es obligatorio. </span>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="Teléfono">Teléfono</label>
+            <input pInputText id="Teléfono" type="text" formControlName="Telefono1" placeholder="Teléfono" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="Estado">Estado <span class="font-semibold text-red-500">*</span></label>
+            <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                id="Estado" formControlName="Estado" placeholder="Seleccione una opción"></p-dropdown>
+            <span *ngIf="mantenimientoForm.get('Estado')?.invalid && mantenimientoForm.get('Estado')?.touched"
+                class="text-red-500 text-sm italic"> La selección de estado es obligatorio. </span>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="Departamento">Departamento</label>
+            <p-dropdown appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion" optionValue="codigo"
+                [filter]="true" id="Departamento" formControlName="CodDep" placeholder="Seleccione una opción"
+                (onChange)="btnObtenerProvincia($event)"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="Provincia">Provincia</label>
+            <p-dropdown appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo"
+                [filter]="true" id="Provincia" formControlName="CodPro" placeholder="Seleccione una opción"
+                (onChange)="btnObtenerDistritos($event)"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="Distrito">Distrito</label>
+            <p-dropdown appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo"
+                [filter]="true" id="Distrito" formControlName="CodDis" placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+    </form>
+
+    <div class="flex flex-wrap justify-content-between">
+        <!-- <app-log-modificaciones [componente]="this"></app-log-modificaciones> -->
+        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
+            <div class="flex flex-column">
+                <div class="flex">
+                    <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
+                    <div class="w-11 ml-1">
+                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4 días
+                        </div>
+                        <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
+                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong> 2025-04-07
+                            12:34:04</div>
+                    </div>
+                </div>
+                <p-divider align="center" type="dotted">
+                    <b>28 de enero de 2025</b>
+                </p-divider>
+            </div>
+        </p-fieldset>
+    </div>
+    <ng-template #footer>
+
+        <div class="gap-2">
+            <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
+                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+            <p-button
+                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'" (onClick)="btnAccionForm()"
+                [disabled]="!mantenimientoForm.valid" />
+        </div>
+    </ng-template>
+</p-dialog>

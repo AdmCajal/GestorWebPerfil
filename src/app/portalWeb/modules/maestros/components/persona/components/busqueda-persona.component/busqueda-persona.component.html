@@ -1,0 +1,90 @@
+<section class="card">
+    <app-cabecera-vista [componente]="this"></app-cabecera-vista>
+
+    <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Tipo de persona</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                formControlName="tipoPersona" placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Tipo de documento</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                formControlName="tipoDocumento" placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Nro. Documento</label>
+            <input pInputText id="name1" type="text" formControlName="documento" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Nombres</label>
+            <input pInputText id="name1" type="text" formControlName="nombre" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Estado</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="estado"
+                placeholder="Seleccione una opción"></p-dropdown>
+        </div>
+    </form>
+</section>
+
+<section class="card">
+    <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
+        [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
+        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" responsiveLayout="scroll"
+        [showCurrentPageReport]="true" [rowsPerPageOptions]="[ 5,10, 25, 50]">
+        <ng-template #caption>
+            <div class="flex">
+                <p class="text-align-center mb-0 text-xl font-semibold flex align-items-end">Resultados de Búsqueda:</p>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th class="w-1">Acciones</th>
+                <th>Nombres</th>
+                <th>Tipo De Documento</th>
+                <th>Documento</th>
+                <th>Teléfono</th>
+                <th>Correo Electrónico</th>
+                <th>Tipo Persona</th>
+                <th>Ubigeo</th>
+                <th>Estado</th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-data>
+            <tr>
+                <td>
+                    <p-button title="Ver Usuario" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
+                        (onClick)="btnMantenimientoFormulario('VER',data)" />
+                    <p-button title="Inactivar Usuario" icon="pi pi-unlock" severity="warn" rounded outlined
+                        class="ml-1" />
+                </td>
+                <td> <i title="Editar Usuario" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
+                        (click)="btnMantenimientoFormulario('EDITAR',data)"></i>
+                    {{data.codigo | titlecase}}</td>
+                <td>{{data.nombre | lowercase}}</td>
+                <td>{{data.compania | lowercase}}</td>
+                <td>{{data.direccion | lowercase}}</td>
+                <td>{{data.telefono | lowercase}}</td>
+                <td [style]="{'white-space':'nowrap'}">
+                    <p-tag [icon]="'pi ' + obtenerIconoEstado(data.estado)"
+                        [severity]="obtenerColorEstado(data.estado) || 'info'" [value]="data.estadoDesc">
+                    </p-tag>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="8">No se encontró información.</td>
+            </tr>
+        </ng-template>
+        <ng-template #loadingbody>
+            <tr>
+                <td colspan="8">Cargando información. Espere por favor...</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>
+<app-mantenimiento-persona (msjMantenimiento)="rptaMantenimiento($event)"></app-mantenimiento-persona>

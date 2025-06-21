@@ -17,8 +17,8 @@ export class permisosGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const nombreComponente = route.data['breadcrumb'];
-
-    console.log(nombreComponente)
+    const idMenu = route.data['idMenu'];
+console.log(idMenu)
     if (sessionStorage.getItem('data_login') != null && nombreComponente == 'Dashboard') {
       // Cambia el título de la página
 
@@ -27,10 +27,10 @@ export class permisosGuard implements CanActivate {
       }
       return true
     }
-    else if (nombreComponente && this._SecurityService.permisosComponente(nombreComponente)) {
+    else if (idMenu && this._SecurityService.permisosComponente(idMenu)) {
       // Cambia el título de la página
-      if (nombreComponente) {
-        this.titleService.setTitle(`.: ${nombreComponente} - Portal Web - SANNA :.`);
+      if (this._SecurityService.nombreComponente(idMenu)) {
+        this.titleService.setTitle(`.: ${this._SecurityService.nombreComponente(idMenu)} - Portal Web - SANNA :.`);
       }
 
       return true;

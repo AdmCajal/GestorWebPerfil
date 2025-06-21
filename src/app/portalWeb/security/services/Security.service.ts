@@ -39,18 +39,43 @@ export class SecurityService {
         return false;
     }
 
-    permisosComponente(componente: string) {
+    permisosComponente(idMenu: string): boolean {
 
-        if (componente == 'public') return true;
+        if (idMenu == 'public') return true;
 
         if (sessionStorage.getItem("data_menu")) {
             const dataEncriptada: string = JSON.parse(sessionStorage.getItem("data_menu") || "");
             const data: any[] = JSON.parse(this._EncryptService.Desencriptar(dataEncriptada)) || [];
-            const subMenu: any = data.find(sm => sm.nombre === componente);
+            const subMenu: any = data.find(sm => sm.id_menu === idMenu);
+            console.log(idMenu)
+            console.log(data)
             console.log(subMenu)
             return subMenu && subMenu.estado == 1 ? true : false
         }
         return false;
+    }
+
+    nombreComponente(idMenu: string): string | null {
+
+        if (idMenu == 'public') return 'true';
+
+        if (sessionStorage.getItem("data_menu")) {
+            const currentUrl = window.location.href;
+            const lastSegment = currentUrl.split('/').pop();
+            //&& sm.url.includes(lastSegment)
+            const dataEncriptada: string = JSON.parse(sessionStorage.getItem("data_menu") || "");
+            const data: any[] = JSON.parse(this._EncryptService.Desencriptar(dataEncriptada)) || [];
+            const subMenu: any = data.find(sm => sm.id_menu === idMenu );
+
+            console.log(lastSegment);
+
+            // console.log(idMenu)
+            console.log(data)
+            // console.log(subMenu)
+
+            if (subMenu) return subMenu.nombre;
+        }
+        return null;
     }
 
     cerrarSesion() {

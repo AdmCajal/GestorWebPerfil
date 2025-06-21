@@ -6,8 +6,9 @@ import { MantenimientoUsuario } from './components/mantenimiento-usuario.compone
 
 export default [
     {
-        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Usuarios' }, component: BusquedaUsuario,
+        path: '', canActivate: [permisosGuard], data: { breadcrumb: 'Usuarios', idMenu: 'CON003' }, component: BusquedaUsuario,
+    },
+    {
+        path: 'mantenimiento/:accion',  data: { breadcrumb: 'Usuarios', idMenu: 'CON003' }, component: MantenimientoUsuario,
     }
-
-
 ] as Routes;

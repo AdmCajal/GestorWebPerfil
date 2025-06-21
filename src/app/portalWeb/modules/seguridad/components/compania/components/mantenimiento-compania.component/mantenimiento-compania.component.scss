@@ -1,0 +1,17 @@
+:host ::ng-deep {
+	.p-dialog-title {
+		font-family: "Roboto", sans-serif !important;
+		font-weight: 700 !important;
+	}
+
+	.p-fieldset-legend-label {
+		// font-family: "Roboto", sans-serif !important;
+		font-weight: 720 !important;
+	}
+	.p-inputtext {
+		width: 100% !important;
+	}
+	.p-autocomplete{
+		display: block;
+	}
+}
