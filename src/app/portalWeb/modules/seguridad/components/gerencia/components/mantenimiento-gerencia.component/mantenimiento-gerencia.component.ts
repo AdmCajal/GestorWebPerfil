@@ -20,21 +20,21 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CompaniaService } from '../../../compania/services/compania.service';
-import { AplicativoService } from '../../services/aplicativo.service';
+import { GerenciaService } from '../../services/gerencia.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { ModuloAplicativo } from '../../../../../../core/models/interfaces/aplicativo/modulo.aplicativo';
 import { NodoSeleccionadoModulo } from '../../../../../../core/models/interfaces/aplicativo/NodoSeleccionadoModulo.aplicativo';
 
 @Component({
-    selector: 'app-mantenimiento-aplicativo',
+    selector: 'app-mantenimiento-gerencia',
     standalone: true,
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
-    templateUrl: './mantenimiento-aplicativo.component.html',
-    styleUrls: ['./mantenimiento-aplicativo.component.scss'],
+    templateUrl: './mantenimiento-gerencia.component.html',
+    styleUrls: ['./mantenimiento-gerencia.component.scss'],
     providers: [TreeDragDropService]
 
 })
-export class MantenimientoAplicativo implements OnInit, AcccionesMantenimientoComponente {
+export class MantenimientoGerencia implements OnInit, AcccionesMantenimientoComponente {
     @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
     bloquearComponente = false;
     barraBusqueda = false;
@@ -46,19 +46,14 @@ export class MantenimientoAplicativo implements OnInit, AcccionesMantenimientoCo
     mantenimientoForm: FormGroup;
 
     lstEstados: any[] = [];
-    lstModulosDisponibles: ModuloAplicativo[] = [];
-    lstModulosAsignados: ModuloAplicativo[] = [];
 
-    nodoModuloSeleccionado: NodoSeleccionadoModulo = {
-        esVisible: false, tituloDialog: '', tipo: '', nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
-    };
 
     visualizarForm: boolean = false;
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
     constructor(private _ActivatedRoute: ActivatedRoute,
-        private _PerfilUsuarioService: AplicativoService,
+        private _GerenciaService: GerenciaService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -71,7 +66,6 @@ export class MantenimientoAplicativo implements OnInit, AcccionesMantenimientoCo
         this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.AgregarlstModulosDisponibles();
         this.esconderMenu();
     }
 
@@ -107,7 +101,7 @@ export class MantenimientoAplicativo implements OnInit, AcccionesMantenimientoCo
 
         let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
-        this._PerfilUsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+        this._GerenciaService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
                     this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
@@ -129,112 +123,6 @@ export class MantenimientoAplicativo implements OnInit, AcccionesMantenimientoCo
             })
         ).subscribe();
 
-    }
-
-    onNodeDropLstModulosAsignados(evento: any): void {
-        this.AgregarlstModulosDisponibles();
-
-        const nodoIngreso: ModuloAplicativo = evento?.dragNode;
-        const nodoAnterior: ModuloAplicativo = evento?.dropNode;
-
-        console.log(nodoIngreso);
-        console.log(nodoAnterior);
-
-        if (nodoIngreso) {
-            this.nodoModuloSeleccionado.esVisible = true;
-            this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
-                nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
-            this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
-            this.nodoModuloSeleccionado.nodo = nodoIngreso;
-        }
-
-        if (!nodoIngreso || !nodoAnterior) return;
-
-
-        const tipoIngreso = nodoIngreso.tipoNodo;
-        const tipoDestino = nodoAnterior.tipoNodo;
-
-        console.log(tipoIngreso);
-        console.log(tipoDestino);
-        /*
-        // // Regla 1: Dentro de Módulo solo se permiten Módulo o Formulario
-        // if (tipoDestino === 'M' && tipoIngreso === 'A') {
-        //     console.log('No se puede agregar una Acción dentro de un Módulo');
-        //     return;
-        // }
-
-        // // Regla 2: Al nivel raíz (sin dropNode) no se permite Acción
-        // if (!evento.dropNode && tipoIngreso === 'A') {
-        //     console.log('No se puede agregar una Acción al nivel raíz');
-        //     return;
-        // }
-
-        // // Regla 3: Dentro de Formulario solo se permite Acción
-        // if (tipoDestino === 'F' && tipoIngreso !== 'A') {
-        //     console.log('Solo se puede agregar una Acción dentro de un Formulario');
-        //     return;
-        // }
-
-        // // Regla 4: Al nivel de Módulo o Formulario no se permite Acción
-        // if (evento.dropNode && evento.dropNode.parent === null && tipoIngreso === 'A') {
-        //     console.log('No se puede agregar una Acción al mismo nivel que un Módulo o Formulario');
-        //     return;
-        // }
-        // */
-
-        console.log('Nodo válido, se puede agregar');
-
-    }
-
-    btnNodoSeleccionado(nodoIngreso: any): void {
-        this.nodoModuloSeleccionado.esVisible = true;
-        this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
-            nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
-        this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
-        this.nodoModuloSeleccionado.nodo = nodoIngreso;
-    }
-
-    onDialogNodoOptFormulario(): void {
-        if (this.nodoModuloSeleccionado && this.nodoModuloSeleccionado?.nodo) {
-            const tipoCod = this.nodoModuloSeleccionado.nodo.tipoNodo;
-            const tipoDesc = this.nodoModuloSeleccionado.tipo;
-
-            if (this.nodoModuloSeleccionado.nodo.label.length == 0) {
-                this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el nombre de ${tipoDesc}`); return;
-            }
-            if (this.nodoModuloSeleccionado.nodo.codigoObj.length == 0) {
-                this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el código de objeto`); return;
-            }
-            if (this.nodoModuloSeleccionado.nodo.icono.length == 0) {
-                this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el icono`); return;
-            }
-
-            switch (tipoCod) {
-                case 'M':
-                    break;
-                case 'F':
-                    if (this.nodoModuloSeleccionado.nodo.url.length == 0) {
-                        this.MensajeToastComun('notification', 'warn', 'Advertencia', 'Debe ingresar una url'); return;
-                    }
-                    break;
-                case 'A':
-                    break;
-                default:
-                    this.MensajeToastComun('notification', 'warn', 'Advertencia', `Tipo de opción no válida: ${tipoCod}`); return;
-
-            }
-
-            this.nodoModuloSeleccionado.nodo.sobreEscribir = false;
-            this.nodoModuloSeleccionado.esVisible = false;
-        }
-    }
-
-    AgregarlstModulosDisponibles(): void {
-        this.lstModulosDisponibles = [
-            { key: 1, icon: 'pi pi-folder-plus', label: 'Módulo', tipoNodo: 'M', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] },
-            { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: 'F', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] },
-            { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: 'A', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
-        ]
     }
 
     onVerAplicativoSeleccionado(item: any): void {

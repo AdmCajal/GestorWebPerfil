@@ -32,7 +32,7 @@ export class DashBoardGeneral implements OnInit {
     lstBusqueda: any[] = [];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _UsuarioService: UsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -43,13 +43,13 @@ export class DashBoardGeneral implements OnInit {
     ) { this.filtroForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
         this.esconderMenu();
     }
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
     estructuraForm(): void {

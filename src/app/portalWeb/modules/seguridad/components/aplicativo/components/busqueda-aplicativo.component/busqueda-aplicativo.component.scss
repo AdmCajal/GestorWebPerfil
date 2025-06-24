@@ -1,0 +1,15 @@
+tr {
+  th {
+    background-color: rgb(73, 197, 108);
+    color: white;
+    font-weight: 750;
+
+    &:first-child {
+      border-top-left-radius: 1rem;
+    }
+
+    &:last-child {
+      border-top-right-radius: 1rem;
+    }
+  }
+}

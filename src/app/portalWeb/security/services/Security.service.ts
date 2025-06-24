@@ -11,10 +11,10 @@ export class SecurityService {
 
     constructor(private _EncryptService: EncryptService) { }
 
-    guardarLogin(response: ResponseApi) {
+    guardarLogin(response: ResponseApi): void {
         sessionStorage.setItem("data_login", JSON.stringify(this._EncryptService.Encriptar(JSON.stringify(response))));
     }
-    eliminarLogin() {
+    eliminarLogin(): void {
         sessionStorage.removeItem('data_login');
     }
 
@@ -78,7 +78,7 @@ export class SecurityService {
         return undefined;
     }
 
-    cerrarSesion() {
+    cerrarSesion():void {
         sessionStorage.removeItem('Menu_Session');
         sessionStorage.removeItem('data_menu');
         sessionStorage.removeItem('data_login');

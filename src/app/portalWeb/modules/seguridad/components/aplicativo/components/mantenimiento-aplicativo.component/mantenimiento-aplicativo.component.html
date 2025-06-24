@@ -8,23 +8,21 @@
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Aplicativo <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
-                        formControlName="NOMBRECOMPLETO" />
+                        formControlName="nombreAplicativo" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Descripción <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" placeholder="Obligatorio" type="text"
-                        formControlName="NOMBRECOMPLETO" />
+                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="descripcion" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Base de datos <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" placeholder="Obligatorio" type="text"
-                        formControlName="NOMBRECOMPLETO" />
+                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="baseDatos" />
                 </div>
 
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
+                        placeholder="Seleccione una opción" formControlName="estado"></p-dropdown>
                 </div>
             </form>
         </p-fieldset>
@@ -67,18 +65,18 @@
                         </ng-template>
                         <ng-template let-node pTemplate="default">
 
-                            <span (click)="onBlurModuloSeleccionado(node,true)"
-                                *ngIf="node.esEditable && !node.sobreEscribir && node.tipoNodo != 'A'">
+                            <span (click)="node.sobreEscribir = true" *ngIf="node.esEditable && !node.sobreEscribir ">
                                 {{node.label}}</span>
-                            <span *ngIf="node.tipoNodo == 'A'"> {{node.label}}</span>
 
-                            <div class="flex">
+                            <div class="flex" pFocusTrap>
                                 <input pInputText type="text" [(ngModel)]="node.label" class="w-6"
-                                    (blur)="onBlurModuloSeleccionado(node,false)"
-                                    *ngIf="node.esEditable && node.sobreEscribir">
-                                <p-button icon="pi pi-ellipsis-v" class="ml-2" raised severity="success"
-                                    title="Opciones"
-                                    *ngIf="node.esEditable && node.sobreEscribir && node.tipoNodo == 'F'" />
+                                    *ngIf="node.esEditable && node.sobreEscribir" [pAutoFocus]="true" [fluid]="true">
+                                <p-button icon="pi pi-check" class="ml-2" raised severity="success" title="Aceptar"
+                                    *ngIf="node.esEditable && node.sobreEscribir"
+                                    (onClick)="node.sobreEscribir = false" />
+                                <p-button icon="pi pi-ellipsis-v" class="ml-2" raised severity="info" title="Opciones"
+                                    *ngIf="node.esEditable && node.sobreEscribir"
+                                    (onClick)="btnNodoSeleccionado(node)" />
                             </div>
                         </ng-template>
                     </p-tree>
@@ -120,26 +118,36 @@
         </div>
     </ng-template>
 </p-dialog>
+
 <!-- Formulario de opciones de modulo -->
-<p-dialog *ngIf="nodoModuloSeleccionado"
-    header="{{'Opciones de formulario: ' + nodoModuloSeleccionado.label | titlecase}}" [modal]="true"
-    [closable]="!barraBusqueda" [(visible)]="visualizarFormOptModulos" [position]="'center'"
-    [styleClass]="'md:w-3 w-11'" [maximizable]="false">
-    <form class="flex flex-wrap gap-2">
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
-            <label for="name1">Aplicativo <span class="font-semibold text-red-500">*</span></label>
-            <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
-                [(ngModel)]="nodoModuloSeleccionado.label" />
+<p-dialog [header]="nodoModuloSeleccionado.tituloDialog" [modal]="true" [(visible)]="nodoModuloSeleccionado.esVisible"
+    [position]="'center'" [styleClass]="'md:w-3 w-11'" [maximizable]="false" [closable]="false">
+    <div class="flex flex-wrap">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Código objeto <span class="font-semibold text-red-500">*</span></label>
+            <input pInputText id="name1" placeholder="Obligatorio" type="text"
+                [(ngModel)]="nodoModuloSeleccionado.nodo.codigoObj" [ngModelOptions]="{standalone: true}" />
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">{{nodoModuloSeleccionado.tipo | titlecase}} <span
+                    class="font-semibold text-red-500">*</span></label>
+            <input pInputText id="name1" placeholder="Ingrese nombre de {{nodoModuloSeleccionado.tipo}}" type="text"
+                [(ngModel)]="nodoModuloSeleccionado.nodo.label" [ngModelOptions]="{standalone: true}" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+            <label for="name1">Icono <span class="font-semibold text-red-500">*</span></label>
+            <input pInputText id="name1" placeholder="Obligatorio" type="text"
+                [(ngModel)]="nodoModuloSeleccionado.nodo.icono" [ngModelOptions]="{standalone: true}" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
             <label for="name1">url <span class="font-semibold text-red-500">*</span></label>
             <input pInputText id="name1" placeholder="Obligatorio" type="text"
-                [(ngModel)]="nodoModuloSeleccionado.url" />
+                [(ngModel)]="nodoModuloSeleccionado.nodo.url" [ngModelOptions]="{standalone: true}" />
         </div>
-    </form>
+    </div>
     <ng-template #footer>
         <div class="gap-2">
-            <p-button icon="pi pi-plus" class="mr-2" label="{{'Aceptar' | titlecase}}" raised
+            <p-button icon="pi pi-check" class="mr-2" label="{{'Aceptar' | titlecase}}" raised
                 (onClick)="onDialogNodoOptFormulario()" />
         </div>
     </ng-template>

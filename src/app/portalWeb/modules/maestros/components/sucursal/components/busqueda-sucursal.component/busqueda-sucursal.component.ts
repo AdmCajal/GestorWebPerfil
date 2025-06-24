@@ -15,7 +15,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoSucursal } from '../mantenimiento-sucursal.component/mantenimiento-sucursal.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { CompaniaService } from '../../../../../seguridad/components/compania/services/compania.service';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
@@ -27,7 +27,7 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
     templateUrl: './busqueda-sucursal.component.html',
     styleUrls: ['./busqueda-sucursal.component.scss'],
 })
-export class BusquedaSucursal implements OnInit, AccionesVistaComponente {
+export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
 
 
@@ -43,7 +43,7 @@ export class BusquedaSucursal implements OnInit, AccionesVistaComponente {
     lstEstados: any[] = [];
     lstCompanias: any[] = [];
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _SucursalService: SucursalService,
         private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
@@ -55,7 +55,7 @@ export class BusquedaSucursal implements OnInit, AccionesVistaComponente {
     ) { this.filtroForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -72,7 +72,7 @@ export class BusquedaSucursal implements OnInit, AccionesVistaComponente {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

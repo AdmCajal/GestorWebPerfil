@@ -14,7 +14,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoPerfilUsuario } from '../mantenimiento-perfil-usuario.component/mantenimiento-perfil-usuario.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
@@ -27,7 +27,7 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     templateUrl: './busqueda-perfil-usuario.component.html',
     styleUrls: ['./busqueda-perfil-usuario.component.scss'],
 })
-export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
+export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoPerfilUsuario) _MantenimientoUsuario!: MantenimientoPerfilUsuario;
 
 
@@ -42,7 +42,7 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
     lstBusqueda: any[] = [];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -72,7 +72,7 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesVistaComponente {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

@@ -15,7 +15,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoCompania } from '../mantenimiento-compania.component/mantenimiento-compania.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 
@@ -26,7 +26,7 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
     templateUrl: './busqueda-compania.component.html',
     styleUrls: ['./busqueda-compania.component.scss'],
 })
-export class BusquedaCompania implements OnInit, AccionesVistaComponente {
+export class BusquedaCompania implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoCompania) _MantenimientoUsuario!: MantenimientoCompania;
 
 
@@ -41,7 +41,7 @@ export class BusquedaCompania implements OnInit, AccionesVistaComponente {
     lstBusqueda: any[] = [];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -54,7 +54,7 @@ export class BusquedaCompania implements OnInit, AccionesVistaComponente {
 
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -69,7 +69,7 @@ export class BusquedaCompania implements OnInit, AccionesVistaComponente {
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

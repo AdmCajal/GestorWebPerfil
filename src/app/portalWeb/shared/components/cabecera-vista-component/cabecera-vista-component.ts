@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { HostListener } from '@angular/core';
 import { ComponentesCompartidosModule } from '../../componentes-compartidos.module';
-import { AccionesVistaComponente } from '../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../core/utils/acccionesBusquedaComponente';
 import { SecurityService } from '../../../security/services/Security.service';
 
 @Component({
@@ -35,16 +35,16 @@ export class CabeceraVistaComponent implements OnInit {
 
     breadcrumb: string | undefined;
 
-    @Input() componente!: AccionesVistaComponente;
+    @Input() componente!: AccionesBusquedaComponente;
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         public _Router: Router,
         private _SecurityService: SecurityService
 
     ) { }
 
     ngOnInit(): void {
-        this.breadcrumb = this._SecurityService.nombreComponente(this.activatedRoute.snapshot.data['idMenu']) || this.activatedRoute.snapshot.data['breadcrumb']  //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb']  //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
     }
 
     btnNuevo(): void {

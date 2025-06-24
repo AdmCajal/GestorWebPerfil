@@ -55,7 +55,12 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
                 {
                     key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
                     children: [
-                        { key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                        {
+                            key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                            // children: [
+                            //     { key: '0-0-0-1', label: 'Agregar', icon: 'pi pi-fw pi-file', data: 'Expenses Document' }
+                            // ]
+                        },
                         { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
                         { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
                         { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
@@ -144,7 +149,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
@@ -157,7 +162,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
     ) { this.mantenimientoForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this._SecurityService.nombreComponente(this.activatedRoute.snapshot.data['idMenu']) //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -182,11 +187,11 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
 
         });
     }
-    get optDetallePerfiles() {
+    get optDetallePerfiles(): FormArray<any> {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
 
-    agregarLineaDetallePerfiles() {
+    btnAgregarLineaDetallePerfiles(): void {
         this.optDetallePerfiles.push(this._fb.group({
             uuidv4: [uuidv4()],
             ordenVista: [this.optDetallePerfiles.length + 1],
@@ -202,7 +207,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
             perfilNom: 'Seleccionar',
         }));
     }
-    eliminarYReordenarDetallePerfiles(codDetalle: number) {
+    btnEliminarYReordenarDetallePerfiles(codDetalle: number) {
         let detalleArray = this.optDetallePerfiles;
 
         let index = detalleArray.value.findIndex((detalle: any) => detalle.uuidv4 === codDetalle);
@@ -218,7 +223,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
         }
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

@@ -16,7 +16,7 @@ import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoMiscelaneo } from '../mantenimiento-miscelaneo.component/mantenimiento-miscelaneo.component';
 import { CabeceraVistaComponent } from '../../../../../../shared/components/cabecera-vista-component/cabecera-vista-component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 
 @Component({
     selector: 'app-busqueda-usuario',
@@ -25,7 +25,7 @@ import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesV
     templateUrl: './busqueda-miscelaneo.component.html',
     styleUrls: ['./busqueda-miscelaneo.component.scss'],
 })
-export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
+export class BusquedaMiscelaneo implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
 
 
@@ -40,7 +40,7 @@ export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
     lstBusqueda: any[] = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _UsuarioService: MiscelaneoService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -51,7 +51,7 @@ export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
     ) { this.filtroForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -67,7 +67,7 @@ export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 
@@ -131,6 +131,9 @@ export class BusquedaMiscelaneo implements OnInit, AccionesVistaComponente {
         this._MantenimientoMiscelaneo.accion = accion;
         this._MantenimientoMiscelaneo.mantenimientoForm.patchValue(registro);
         console.log(registro);
+    }
+    btnInactivar(registro: any): void {
+        throw new Error('Method not implemented.');
     }
 
     btnExportar(): void {

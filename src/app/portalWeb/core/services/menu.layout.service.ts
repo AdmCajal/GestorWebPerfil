@@ -83,7 +83,7 @@ export class MenuLayoutService {
     return [];
   }
 
-  guardarMenuCredencialesOrdenadas() {
+  guardarMenuCredencialesOrdenadas(): void {
     if (sessionStorage.getItem('Menu_Session')) {
       const credencialesMenu: Submenu[] = [];
       const dataEncriptada: string = JSON.parse(sessionStorage.getItem('Menu_Session') || '');

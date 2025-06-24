@@ -15,7 +15,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoSucursal } from '../mantenimiento-persona.component/mantenimiento-persona.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 
 @Component({
     selector: 'app-busqueda-persona',
@@ -24,7 +24,7 @@ import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesV
     templateUrl: './busqueda-persona.component.html',
     styleUrls: ['./busqueda-persona.component.scss'],
 })
-export class BusquedaPersona implements OnInit, AccionesVistaComponente {
+export class BusquedaPersona implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
 
 
@@ -39,7 +39,7 @@ export class BusquedaPersona implements OnInit, AccionesVistaComponente {
     lstBusqueda: any[] = [];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -51,8 +51,9 @@ export class BusquedaPersona implements OnInit, AccionesVistaComponente {
 
 
 
+
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -70,7 +71,7 @@ export class BusquedaPersona implements OnInit, AccionesVistaComponente {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 
@@ -127,6 +128,10 @@ export class BusquedaPersona implements OnInit, AccionesVistaComponente {
         this._MantenimientoUsuario.accion = accion;
         this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
         console.log(registro);
+    }
+    
+    btnInactivar(registro: any): void {
+        throw new Error('Method not implemented.');
     }
 
     btnExportar(): void {

@@ -36,7 +36,7 @@ export class AsingarPuesto implements OnInit {
 
     lstEstados: any[] = [];
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _PuestoService: PuestoService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -64,7 +64,7 @@ export class AsingarPuesto implements OnInit {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

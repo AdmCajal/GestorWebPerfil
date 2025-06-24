@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AppFloatingConfigurator } from '../../../../../../../layout/component/app.floatingconfigurator';
@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
@@ -32,7 +32,7 @@ import { CompaniaService } from '../../../compania/services/compania.service';
 export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoComponente {
     @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
     bloquearComponente = false;
-    barraBusqueda = false;
+    barraBusqueda = true;
 
     breadcrumb: string | undefined;
     accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
@@ -40,127 +40,20 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
     mantenimientoForm: FormGroup;
 
-    lstUsuarios: any[] = [];
+    lstUsuariosBusqueda: any[] = [];
     lstEstados: any[] = [];
-    lstPerfiles: any[] = [];
     lstCompanias: any[] = [];
 
-    lstPerfilesAsignados: any[] = [
-        {
-            nro: 1,
-            companiaCod: 'compania',
-            sucursalCod: 'sucursal',
-            gerenciaCod: 'gerencia',
-            centroCostoCod: 'centro costo',
-            perfilCod: 'perfil',
-        }
-    ];
-    lstVisualizarPerfil: any[] = [
-        {
-            key: '0',
-            label: 'APLICATIVO   ',
-            data: 'Documents Folder',
-            icon: 'pi pi-fw pi-inbox',
-            children: [
-                {
-                    key: '0-0',
-                    label: 'Spring',
-                    data: 'Work Folder',
-                    icon: 'pi pi-fw pi-cog',
-                    children: [
-                        {
-                            key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            ]
-                        },
-                        {
-                            key: '0-0-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                            children: [
-                                {
-                                    key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        { key: '0-0-1', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                    ]
-                                },
-                                {
-                                    key: '0-0-1', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                                    children: [
-                                        {
-                                            key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                            children: [
-                                                { key: '0-0-0', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                                { key: '0-0-1', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                                { key: '0-0-1', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                                { key: '0-0-1', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            key: '0-0-1', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                            children: [
-                                {
-                                    key: '0-0-0', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        { key: '0-0-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        { key: '0-0-1', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    ]
-                                },
-                                {
-                                    key: '0-0-0', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        { key: '0-0-1', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        { key: '0-0-1', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            key: '0-0-1', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                            children: [
-                                {
-                                    key: '0-0-0', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        { key: '0-0-1', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        { key: '0-0-1', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    ]
-                                },
-                                {
-                                    key: '0-0-0', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    key: '0-1',
-                    label: 'Home',
-                    data: 'Home Folder',
-                    icon: 'pi pi-fw pi-home',
-                    children: [{ key: '0-1-0', label: 'Invoices.txt', icon: 'pi pi-fw pi-file', data: 'Invoices for this month' }]
-                }
-            ]
-        }
-    ]
 
+    perfilSeleccionadoVisualizar: any = {
+        nombrePerfil: '',
+        data: []
+    }
     visualizarForm: boolean = true;
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _UsuarioService: UsuarioService,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
@@ -168,11 +61,36 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
+        public _Router: Router
 
-    ) { this.mantenimientoForm = new FormGroup({}); }
+    ) {
+        this.mantenimientoForm = new FormGroup({});
+        this._ActivatedRoute.paramMap.subscribe(params => {
+            if (params.get('accion')) {
+                const accionObtenida: any = params.get('accion') || '';
+                switch (accionObtenida) {
+                    case 'AGREGAR':
+                        this.accion = accionObtenida;
+                        break;
+                    case 'EDITAR':
+                        this.accion = accionObtenida;
+                        break;
+                    case 'VER':
+                        this.accion = accionObtenida;
+                        break;
+                    default:
+                        console.error(`La acción detectada no está contemplada: ${accionObtenida}`)
+                        return;
+                }
+            } else {
+                console.error(`La acción detectada no está contemplada: ${params.get('accion') || 'No se encontró'}`)
+            }
+        });
+    }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
+
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -197,11 +115,11 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
         });
     }
-    get optDetallePerfiles() {
+    get optDetallePerfiles(): FormArray<any> {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
 
-    agregarLineaDetallePerfiles() {
+    btnAgregarLineaDetallePerfiles(): void {
         this.optDetallePerfiles.push(this._fb.group({
             uuidv4: [uuidv4()],
             ordenVista: [this.optDetallePerfiles.length + 1],
@@ -217,7 +135,7 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
             perfilNom: 'Seleccionar',
         }));
     }
-    eliminarYReordenarDetallePerfiles(codDetalle: number) {
+    btnEliminarYReordenarDetallePerfiles(codDetalle: number): void {
         let detalleArray = this.optDetallePerfiles;
 
         let index = detalleArray.value.findIndex((detalle: any) => detalle.uuidv4 === codDetalle);
@@ -233,14 +151,110 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         }
     }
 
-    esconderMenu() {
+    btnVisualizarPerfil(detalle: FormGroup) {
+        this.perfilSeleccionadoVisualizar.nombrePerfil = detalle.get('perfilNom')?.value || '';
+        this.perfilSeleccionadoVisualizar.data = [
+            {
+                key: '0',
+                label: 'Aplicativos',
+                data: 'Documents Folder',
+                icon: 'pi pi-fw pi-inbox',
+                children: [
+                    {
+                        key: '0-0',
+                        label: 'Spring',
+                        data: 'Work Folder',
+                        icon: 'pi pi-fw pi-cog',
+                        children: [
+                            {
+                                key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                children: [
+                                    { key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                    { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                    { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                    { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                ]
+                            },
+                            {
+                                key: '0-0-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                                children: [
+                                    {
+                                        key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                        children: [
+                                            { key: '0-0-0', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                            { key: '0-0-1', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
+                                        ]
+                                    },
+                                    {
+                                        key: '0-0-1', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                                        children: [
+                                            {
+                                                key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                                children: [
+                                                    { key: '0-0-0', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                                    { key: '0-0-1', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                                    { key: '0-0-1', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                                    { key: '0-0-1', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                key: '0-0-1', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                                children: [
+                                    {
+                                        key: '0-0-0', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                        children: [
+                                            { key: '0-0-0', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                            { key: '0-0-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                            { key: '0-0-1', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        ]
+                                    },
+                                    {
+                                        key: '0-0-0', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                        children: [
+                                            { key: '0-0-0', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                            { key: '0-0-1', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                            { key: '0-0-1', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                key: '0-0-1', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
+                                children: [
+                                    {
+                                        key: '0-0-0', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                        children: [
+                                            { key: '0-0-0', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                            { key: '0-0-1', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                            { key: '0-0-1', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
+                                        ]
+                                    },
+                                    {
+                                        key: '0-0-0', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
+                                        children: [
+                                            { key: '0-0-0', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+    }
+
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            perfiles: this._UsuarioService.obtenerPerfiles({ ESTADO: 'A' }),
             companias: this._CompaniaService.obtener({})
         }).subscribe(resp => {
             const dataEstados = resp.estados?.map((ele: any) => ({
@@ -250,11 +264,9 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
             const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
             this.lstCompanias = [...dataCompanias];
-
-            const dataPerfiles: any[] = resp.perfiles.map((m: any) => ({ codigo: m.Codigo, descripcion: m.Descripcion }));
-            this.lstPerfiles = [...dataPerfiles];
         });
     }
+
     btnAccionForm(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -311,7 +323,7 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
                 })
             )
             .subscribe((responseApi) => {
-                this.lstUsuarios = [];
+                this.lstUsuariosBusqueda = [];
                 const dataResponse: any[] = responseApi.data;
                 if (dataResponse.length > 0) {
                     const dataFormato = dataResponse.map(res => {
@@ -320,9 +332,14 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
                             visible: res.Documento.trim() + ' - ' + res.NombreCompleto.trim(),
                         }
                     });
-                    this.lstUsuarios = [...dataFormato];
+                    this.lstUsuariosBusqueda = [...dataFormato];
                 }
             });
+    }
+
+    btnMantenimientoFormulario(): void {
+        this._Router.navigate(['../../'], { relativeTo: this._ActivatedRoute });
+        this.esconderMenu();
     }
 
     onEmpleadoSeleccionado(evento: any): void {
@@ -373,6 +390,7 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
             this.mantenimientoForm.enable();
         }, 300);
     }
+
     validarTipoDispositivo(): void {
         if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
             this.cntRegistros = 5;
@@ -387,11 +405,6 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         this._MessageService.clear();
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
-
-    // @HostListener('document:keydown.enter', ['$event'])
-    // handleEnter(event: KeyboardEvent) {
-    //     this.btnAccionForm();
-    // }
 
     btnLogAuditoria(): void {
         this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;

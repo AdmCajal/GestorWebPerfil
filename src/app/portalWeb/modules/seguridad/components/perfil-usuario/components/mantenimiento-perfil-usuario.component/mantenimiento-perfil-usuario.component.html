@@ -2,6 +2,7 @@
     [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
 
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
+
     <div class="flex flex-wrap md:flex-nowrap gap-2">
         <p-fieldset legend="Datos Generales" class="col-6">
             <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
@@ -59,11 +60,28 @@
                     </div>
                 </div>
                 <div class="col-6 div-accesos-perfil">
-                    <h4 class="w-12 mb-0 text-lg font-bold"> Accesos del aplicativo: <span class="text-green-500">
-                            {{nombreAplicativoSeleccionado}}</span></h4>
                     <div class="flex">
-                        <p-tree [value]="aplicativoSeleccionado" styleClass="w-full md:w-[30rem]"
-                            selectionMode="checkbox" />
+                        <p-tree [value]="aplicativoSeleccionado" styleClass="w-full md:w-[30rem]" class="w-full"
+                            selectionMode="checkbox">
+                            <ng-template let-node #header>
+                                <div class="w-12 flex justify-content-left ">
+                                    <p class="flex flex-nowrap justify-content-between">
+                                        <span class="header-label ">Accesos del aplicativo:
+                                            <span class="text-green-500 font-bold">
+                                                {{nombreAplicativoSeleccionado}}
+                                            </span>
+                                        </span>
+                                    </p>
+                                </div>
+                                <hr>
+                            </ng-template>
+                            <ng-template let-node pTemplate="empty">
+                                <div class=" w-12 flex justify-content-center align-items-top   ">
+                                    <p class="flex flex-nowrap justify-content-between  w-10  ">
+                                        <span class="header-label ">Seleccione un aplicativo asignado...</span>
+                                    </p>
+                                </div>
+                            </ng-template></p-tree>
                     </div>
                 </div>
 
@@ -93,7 +111,7 @@
                                     <div class="flex items-center justify-center gap-2">
                                         <p-button *ngIf="!editing" pButton pRipple type="button" severity="danger"
                                             icon="pi pi-minus" text rounded
-                                            (onClick)="eliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
+                                            (onClick)="btnEliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
                                     </div>
                                 </td>
                                 <td [pEditableColumn]="data.value.ordenVista" pEditableColumnField="ordenVista">
@@ -175,7 +193,7 @@
                         </ng-template>
                         <ng-template #paginatorleft>
                             <p-button label="Agregar línea" icon="pi pi-plus" text
-                                (onClick)="agregarLineaDetallePerfiles()" />
+                                (onClick)="btnAgregarLineaDetallePerfiles()" />
                         </ng-template>
                     </p-table>
                 </div>

@@ -76,6 +76,8 @@ import { CabeceraVistaComponent } from './components/cabecera-vista-component/ca
 import { LogModificacionesComponent } from './components/log-modificaciones-component/log-modificaciones-component';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
+import { FocusTrapModule } from 'primeng/focustrap';
+import { AutoFocusModule } from 'primeng/autofocus';
 @NgModule({
   declarations: [
 
@@ -153,6 +155,8 @@ import { SelectModule } from 'primeng/select';
     ScrollTopModule,
     TextareaModule,
     SelectModule,
+    FocusTrapModule,
+    AutoFocusModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ],
@@ -238,6 +242,8 @@ import { SelectModule } from 'primeng/select';
     ScrollTopModule,
     TextareaModule,
     SelectModule,
+    FocusTrapModule,
+    AutoFocusModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ], providers: [DatePipe, MessageService],

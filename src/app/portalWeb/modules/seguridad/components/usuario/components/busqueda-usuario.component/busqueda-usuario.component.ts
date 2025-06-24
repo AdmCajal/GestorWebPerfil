@@ -15,7 +15,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoUsuario } from '../mantenimiento-usuario.component/mantenimiento-usuario.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 
@@ -26,7 +26,7 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
     templateUrl: './busqueda-usuario.component.html',
     styleUrls: ['./busqueda-usuario.component.scss'],
 })
-export class BusquedaUsuario implements OnInit, AccionesVistaComponente {
+export class BusquedaUsuario implements OnInit, AccionesBusquedaComponente {
     // @ViewChild(MantenimientoUsuario) _MantenimientoUsuario!: MantenimientoUsuario;
 
 
@@ -41,21 +41,19 @@ export class BusquedaUsuario implements OnInit, AccionesVistaComponente {
     lstBusqueda: any[] = [];
 
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _UsuarioService: UsuarioService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
-        public _Router: Router,
-        private route: ActivatedRoute
-
+        public _Router: Router
     ) { this.filtroForm = new FormGroup({}); }
 
 
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -71,7 +69,7 @@ export class BusquedaUsuario implements OnInit, AccionesVistaComponente {
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 
@@ -143,17 +141,8 @@ export class BusquedaUsuario implements OnInit, AccionesVistaComponente {
     }
 
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-
-        this._Router.navigate(['mantenimiento', accion], { relativeTo: this.route });
+        this._Router.navigate(['mantenimiento', accion], { relativeTo: this._ActivatedRoute });
         this.esconderMenu();
-
-
-        // this._MantenimientoUsuario.visualizarForm = true;
-        // this._MantenimientoUsuario.accion = accion;
-        // this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        // this._MantenimientoUsuario.estructuraForm();
-        // registro.Clave = '';
-        // this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
     }
     btnExportar(): void {
         throw new Error('Method not implemented.');

@@ -1,14 +1,19 @@
 <!-- <p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!barraBusqueda"
     [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true"> -->
-<section class="card">
-    <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
+
+
+<div class="card">
+    <div class="w-full flex flex-nowrap ">
+        <h4 class="w-12 ml-2 mb-0 text-2xl font-bold"> {{accion | titlecase}} {{ breadcrumb | titlecase}} </h4>
+        <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary" (onClick)="btnMantenimientoFormulario()" />
+    </div>
 
     <form class="flex flex-wrap md:flex-nowrap gap-2" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
-        <p-fieldset legend="Datos de usuario" class="col-3">
+        <p-fieldset legend="Datos De Usuario" class="col-3">
             <section class="flex flex-wrap">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Nro. Documento <span class="font-semibold text-red-500">*</span></label>
-                    <p-autocomplete formControlName="empleadoBusqueda" [suggestions]="lstUsuarios"
+                    <p-autocomplete formControlName="empleadoBusqueda" [suggestions]="lstUsuariosBusqueda"
                         placeholder="Ingrese un Nro de documento"
                         (completeMethod)="btnBuscarEmpleado('empleadoBusqueda')" field="visible" [dropdown]="false"
                         (onSelect)="onEmpleadoSeleccionado($event)" />
@@ -26,12 +31,6 @@
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Usuario AD <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" type="text" />
-                </div>
-
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Tipo Usuario <span class="font-semibold text-red-500">*</span></label>
@@ -66,7 +65,7 @@
                 </div>
             </section>
         </p-fieldset>
-        <p-fieldset legend="Datos de usuario" class="col-9">
+        <p-fieldset legend="Asignación De Perfil" class="col-9">
             <section class="flex flex-wrap">
                 <div class="col-9">
                     <p-table [value]="optDetallePerfiles.controls" [selectionPageOnly]="false" [paginator]="true"
@@ -93,8 +92,11 @@
                                 <td>
                                     <div class="flex items-center justify-center gap-2">
                                         <p-button *ngIf="!editing" pButton pRipple type="button" severity="danger"
-                                            icon="pi pi-minus" text rounded
-                                            (onClick)="eliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
+                                            icon="pi pi-minus" text rounded title="Eliminar perfil"
+                                            (onClick)="btnEliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
+                                        <p-button *ngIf="!editing" pButton pRipple type="button" severity="info"
+                                            icon="pi pi-search" text rounded title="Visualizar aplicativos de perfil"
+                                            (onClick)="btnVisualizarPerfil(data)"></p-button>
                                         <!-- <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow
                                             severity="success" icon="pi pi-pencil" text rounded></button>
                                         <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
@@ -182,48 +184,44 @@
                         </ng-template>
                         <ng-template #paginatorleft>
                             <p-button label="Agregar línea" icon="pi pi-plus" text
-                                (onClick)="agregarLineaDetallePerfiles()" />
+                                (onClick)="btnAgregarLineaDetallePerfiles()" />
                         </ng-template>
                     </p-table>
                 </div>
                 <div class=" col-3 div-accesos-perfil">
-                    <h4 class="w-12 mb-0 text-lg font-bold"> Accesos del Perfil</h4>
-                    <p-tree [value]="lstVisualizarPerfil" styleClass="w-full md:w-[30rem]" />
+                    <p-tree [value]="perfilSeleccionadoVisualizar.data" styleClass="w-full" class="w-12">
+                        <ng-template let-node #header>
+                            <div class="w-12 flex justify-content-left ">
+                                <p class="flex flex-nowrap justify-content-between">
+                                    <span class="header-label ">Accesos del Perfil:
+                                        <span class="text-green-500 font-bold">
+                                            {{perfilSeleccionadoVisualizar.nombrePerfil}}
+                                        </span>
+                                    </span>
+                                </p>
+                            </div>
+                            <hr>
+                        </ng-template>
+                        <ng-template let-node pTemplate="empty">
+                            <div class=" w-12 flex justify-content-center align-items-top   ">
+                                <p class="flex flex-nowrap justify-content-between  w-10  ">
+                                    <span class="header-label ">Seleccione un perfil asignado...</span>
+                                </p>
+                            </div>
+                        </ng-template>
+                    </p-tree>
                 </div>
             </section>
         </p-fieldset>
     </form>
 
-    <div class="flex flex-wrap justify-content-between">
-        <!-- <app-log-modificaciones [componente]="this"></app-log-modificaciones> -->
-        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
-            <div class="flex flex-column">
-                <div class="flex">
-                    <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
-                    <div class="w-11 ml-1">
-                        <div class="text-400">Nota de <strong class="text-blue-700">Administrator</strong> - hace 4 días
-                        </div>
-                        <div class="font-medium"><strong class="font-bold">Se agregó un nuevo misceláneo:</strong>
-                            Sucursal - SEG - Clínica el golf <strong class="font-bold">Fecha y hora:</strong> 2025-04-07
-                            12:34:04</div>
-                    </div>
-                </div>
-                <p-divider align="center" type="dotted">
-                    <b>28 de enero de 2025</b>
-                </p-divider>
-            </div>
-        </p-fieldset>
-    </div>
-    <ng-template #footer>
+    <div class="w-full flex flex-nowrap justify-content-left gap-2">
+        <p-button
+            icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+            class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'" (onClick)="btnAccionForm()" />
 
-        <div class="gap-2">
-            <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
-                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
-            <p-button
-                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
-                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
-                (onClick)="btnAccionForm()" />
-        </div>
-    </ng-template>
+        <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
+            *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+    </div>
     <!-- </p-dialog> -->
-</section>
+</div>

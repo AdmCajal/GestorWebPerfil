@@ -49,7 +49,7 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
@@ -60,7 +60,7 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
     ) { this.mantenimientoForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
         this.obtenerDatosSelect();
         this.estructuraForm();
         this.esconderMenu();
@@ -120,7 +120,7 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 

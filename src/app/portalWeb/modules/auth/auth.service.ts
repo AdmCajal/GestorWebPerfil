@@ -127,7 +127,7 @@ export class AuthService {
 
     }
 
-    eliminarCredenciales() {
+    eliminarCredenciales(): void {
         localStorage.removeItem('cred_msv_portal');
     }
 

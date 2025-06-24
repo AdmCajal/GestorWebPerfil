@@ -33,7 +33,7 @@ import { AcccionesMantenimientoComponente } from '../../../core/utils/acccionesM
 export class LogModificacionesComponent implements OnInit {
     @Input() componente!: AcccionesMantenimientoComponente;
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         public _Router: Router,
 
     ) { }

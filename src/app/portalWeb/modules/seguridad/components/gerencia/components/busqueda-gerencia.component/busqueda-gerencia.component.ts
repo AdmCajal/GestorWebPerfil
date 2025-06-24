@@ -2,67 +2,46 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AppFloatingConfigurator } from '../../../../../../../layout/component/app.floatingconfigurator';
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
 import { Table } from 'primeng/table';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
-import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { MantenimientoAplicativo } from '../mantenimiento-aplicativo.component/mantenimiento-aplicativo.component';
-import { AccionesVistaComponente } from '../../../../../../core/utils/acccionesVistaComponente';
+import { MantenimientoGerencia } from '../mantenimiento-gerencia.component/mantenimiento-gerencia.component';
+import { AccionesBusquedaComponente as AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
-import { AplicativoService } from '../../services/aplicativo.service';
-import { SecurityService } from '../../../../../../security/services/Security.service';
-
+import { GerenciaService } from '../../services/gerencia.service';
+import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 @Component({
-    selector: 'app-busqueda-aplicativo',
+    selector: 'app-busqueda-gerencia',
     standalone: true,
-    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoAplicativo],
-    templateUrl: './busqueda-aplicativo.component.html',
-    styleUrls: ['./busqueda-aplicativo.component.scss'],
+    imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoGerencia],
+    templateUrl: './busqueda-gerencia.component.html',
+    styleUrls: ['./busqueda-gerencia.component.scss'],
 })
-export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
-    @ViewChild(MantenimientoAplicativo) _MantenimientoUsuario!: MantenimientoAplicativo;
-
-
-    bloquearComponente = false;
-    barraBusqueda = false;
-
-    breadcrumb: string | undefined;
-    cntRegistros: number = 10;
-
-    filtroForm: FormGroup;
-
-    lstBusqueda: any[] = [];
-
+export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
+    @ViewChild(MantenimientoGerencia) _MantenimientoUsuario!: MantenimientoGerencia;
     lstEstados: any[] = [];
-    constructor(private activatedRoute: ActivatedRoute,
-        private _PerfilUsuarioService: AplicativoService,
+
+    constructor(
+        private _GerenciaService: GerenciaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
+        override _LayoutService: LayoutService,
         public _Router: Router,
-        private route: ActivatedRoute,
-
-
-    ) { this.filtroForm = new FormGroup({}); }
-
-
+    ) { super(_MessageService, _LayoutService); }
 
     ngOnInit(): void {
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
-    }
 
+    }
     estructuraForm(): void {
         this.filtroForm = this._fb.group({
             USUARIO: [{ value: '', disabled: this.bloquearComponente }],
@@ -71,11 +50,6 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
-
-    esconderMenu() {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
@@ -133,7 +107,6 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
         //     })
         // ).subscribe();
     }
-
     btnInactivar(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -141,7 +114,7 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
         registro.SedEstado = 2;
-        this._PerfilUsuarioService.mantenimiento(valorAccionServicio, registro).pipe(
+        this._GerenciaService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
                     this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
@@ -162,7 +135,9 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
         ).subscribe();
 
     }
-
+    btnExportar(): void {
+        throw new Error('Method not implemented.');
+    }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
         this._MantenimientoUsuario.visualizarForm = true;
         this._MantenimientoUsuario.accion = accion;
@@ -171,38 +146,7 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
         this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
     }
 
-    btnExportar(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.barraBusqueda = true;
-        this.filtroForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.barraBusqueda = false;
-            this.filtroForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    rptaMantenimiento(respuesta: any) {
+    rptaMantenimiento(respuesta: any): void {
 
         console.log(respuesta)
         if (respuesta.buscar) { this.btnBuscar(); }
@@ -218,36 +162,4 @@ export class BusquedaAplicativo implements OnInit, AccionesVistaComponente {
             }
         }
     }
-
-    obtenerColorEstado(estado: string | number): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {
-        switch (estado) {
-            case 1:
-            case "1":
-            case "A":
-                return "success";
-            case "0":
-            case 2:
-            case "I":
-                return "danger";
-            default:
-                return "info";
-        }
-    }
-
-
-    obtenerIconoEstado(estado: string | number): string {
-        switch (estado) {
-            case "1":
-            case 1:
-            case "A":
-                return "pi-check";
-            case "0":
-            case 0:
-            case 2:
-            case "I":
-                return "pi-times";
-        }
-        return "pi-info-circle"
-    }
-
 }

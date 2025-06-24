@@ -42,7 +42,7 @@ export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComp
     visualizarLogMoficaciones: boolean = false;
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
-    constructor(private activatedRoute: ActivatedRoute,
+    constructor(private _ActivatedRoute: ActivatedRoute,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         private _MessageService: MessageService,
@@ -52,7 +52,7 @@ export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComp
     ) { this.mantenimientoForm = new FormGroup({}); }
 
     ngOnInit(): void {
-        this.breadcrumb = this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
+        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
         this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
@@ -71,7 +71,7 @@ export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComp
         });
     }
 
-    esconderMenu() {
+    esconderMenu(): void {
         this._LayoutService.onMenuToggle();
     }
 
