@@ -44,7 +44,7 @@ export class CabeceraVistaComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.breadcrumb = this._SecurityService.nombreComponente(this.activatedRoute.snapshot.data['idMenu']) //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
+        this.breadcrumb = this._SecurityService.nombreComponente(this.activatedRoute.snapshot.data['idMenu']) || this.activatedRoute.snapshot.data['breadcrumb']  //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
     }
 
     btnNuevo(): void {

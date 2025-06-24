@@ -55,7 +55,7 @@ export class SecurityService {
         return false;
     }
 
-    nombreComponente(idMenu: string): string  {
+    nombreComponente(idMenu: string): string |undefined {
 
         if (idMenu == 'public') return 'true';
 
@@ -75,7 +75,7 @@ export class SecurityService {
 
             if (subMenu) return subMenu.nombre;
         }
-        return '';
+        return undefined;
     }
 
     cerrarSesion() {

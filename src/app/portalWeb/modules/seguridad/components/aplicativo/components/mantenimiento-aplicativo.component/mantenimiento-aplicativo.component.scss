@@ -1,0 +1,48 @@
+	tr {
+		th {
+			background-color: rgb(73, 197, 108);
+			color: white;
+			font-weight: 750;
+
+			&:first-child {
+				border-top-left-radius: 1rem;
+			}
+
+			&:last-child {
+				border-top-right-radius: 1rem;
+			}
+		}
+	}
+
+
+
+	:host ::ng-deep {
+
+
+
+		.p-dialog-title {
+			font-family: "Roboto", sans-serif !important;
+			font-weight: 700 !important;
+		}
+
+		.p-fieldset-legend-label {
+			// font-family: "Roboto", sans-serif !important;
+			font-weight: 720 !important;
+		}
+
+		.p-select-overlay {
+			width: 100% !important;
+		}
+
+		.p-inputtext {
+			width: 100% !important;
+		}
+
+		.p-autocomplete {
+			display: block;
+		}
+
+		.div-borde-izquierda {
+			border-left: solid 1px #e5e7eb !important;
+		}
+	}
