@@ -20,6 +20,9 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
+import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { SecurityService } from '../../../../../../security/services/Security.service';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 
 @Component({
     selector: 'app-mantenimiento-compania',
@@ -28,42 +31,27 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
     templateUrl: './mantenimiento-compania.component.html',
     styleUrls: ['./mantenimiento-compania.component.scss'],
 })
-export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComponente {
-    @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
-    bloquearComponente = false;
-    barraBusqueda = false;
+export class MantenimientoCompania extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
-    breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
+    lstEmpresaBusqueda: any[] = [];
+    lstRepresentanteBusqueda: any[] = [];
+    lstDepartamentos: ComboItem[] = [];
+    lstDistritos: ComboItem[] = [];
+    lstProvincias: ComboItem[] = [];
 
-    mantenimientoForm: FormGroup;
-
-    lstEstados: any[] = [];
-    lstEmpresa: any[] = [];
-    lstRepresentante: any[] = [];
-    lstDepartamentos: any[] = [];
-    lstDistritos: any[] = [];
-    lstProvincias: any[] = [];
-
-    visualizarForm: boolean = false;
-    visualizarLogMoficaciones: boolean = false;
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
-
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    constructor(override _ActivatedRoute: ActivatedRoute,
+        override _SecurityService: SecurityService,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
-        private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
+        override _MessageService: MessageService,
+        private _MenuLayoutService: MenuLayoutService
 
-    ) { this.mantenimientoForm = new FormGroup({}); }
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -119,11 +107,6 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
             CodDis: [{ value: 0, disabled: this.bloquearComponente }],
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
@@ -172,7 +155,6 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
             })
         ).subscribe();
     }
-
     btnBuscarEmpresa(campo: string): void {
         this.mantenimientoForm
             .get(campo)
@@ -197,7 +179,7 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
                 })
             )
             .subscribe((responseApi) => {
-                this.lstEmpresa = [];
+                this.lstEmpresaBusqueda = [];
                 const dataResponse: any[] = responseApi.data;
                 if (dataResponse.length > 0) {
                     const dataFormato = dataResponse.map(res => {
@@ -206,13 +188,12 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
                             visible: res.Documento.trim() + ' - ' + res.NombreCompleto.trim(),
                         }
                     });
-                    this.lstEmpresa = [...dataFormato];
+                    this.lstEmpresaBusqueda = [...dataFormato];
                 }
             });
 
 
     }
-
     btnBuscarRepresentante(campo: string): void {
         this.mantenimientoForm
             .get(campo)
@@ -236,7 +217,7 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
                 })
             )
             .subscribe((responseApi) => {
-                this.lstRepresentante = [];
+                this.lstRepresentanteBusqueda = [];
                 const dataResponse: any[] = responseApi.data;
                 if (dataResponse.length > 0) {
                     const dataFormato = dataResponse.map(res => {
@@ -245,28 +226,11 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
                             visible: res.NombreCompleto || `${res[0].Nombres}, ${res[0].ApellidoPaterno}`,
                         }
                     });
-                    this.lstRepresentante = [...dataFormato];
+                    this.lstRepresentanteBusqueda = [...dataFormato];
                 }
             });
 
 
-    }
-
-    onEmpresaSeleccionado(evento: any): void {
-        this.mantenimientoForm.get('Persona')?.setValue(evento.value.Persona);
-        this.mantenimientoForm.get('personadoc')?.setValue(evento.value.Documento);
-        this.mantenimientoForm.get('DescripcionCorta')?.setValue(evento.value.NombreCompleto);
-
-        this.mantenimientoForm.get('EmpRucBusqueda')?.setValue({ visible: evento.value.Documento });
-        this.mantenimientoForm.get('EmpRazonSocialBusqueda')?.setValue({ visible: evento.value.NombreCompleto });
-    }
-
-    onRepresentanteSeleccionado(evento: any): void {
-        this.mantenimientoForm.get('DocumentoFiscal')?.setValue(evento.value.Documento);
-        this.mantenimientoForm.get('RepresentanteLegal')?.setValue(evento.value.NombreCompleto);
-
-        this.mantenimientoForm.get('DocumentoFiscalBusqueda')?.setValue({ visible: evento.value.Documento });
-        this.mantenimientoForm.get('RepresentanteLegalBusqueda')?.setValue({ visible: evento.value.NombreCompleto });
     }
     btnObtenerProvincia(evento: any): void {
         this.lstProvincias = [];
@@ -296,12 +260,19 @@ export class MantenimientoCompania implements OnInit, AcccionesMantenimientoComp
         });
     }
 
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-    btnLogAuditoria(): void {
-        this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
-    }
+    onEmpresaSeleccionado(evento: any): void {
+        this.mantenimientoForm.get('Persona')?.setValue(evento.value.Persona);
+        this.mantenimientoForm.get('personadoc')?.setValue(evento.value.Documento);
+        this.mantenimientoForm.get('DescripcionCorta')?.setValue(evento.value.NombreCompleto);
 
+        this.mantenimientoForm.get('EmpRucBusqueda')?.setValue({ visible: evento.value.Documento });
+        this.mantenimientoForm.get('EmpRazonSocialBusqueda')?.setValue({ visible: evento.value.NombreCompleto });
+    }
+    onRepresentanteSeleccionado(evento: any): void {
+        this.mantenimientoForm.get('DocumentoFiscal')?.setValue(evento.value.Documento);
+        this.mantenimientoForm.get('RepresentanteLegal')?.setValue(evento.value.NombreCompleto);
+
+        this.mantenimientoForm.get('DocumentoFiscalBusqueda')?.setValue({ visible: evento.value.Documento });
+        this.mantenimientoForm.get('RepresentanteLegalBusqueda')?.setValue({ visible: evento.value.NombreCompleto });
+    }
 }

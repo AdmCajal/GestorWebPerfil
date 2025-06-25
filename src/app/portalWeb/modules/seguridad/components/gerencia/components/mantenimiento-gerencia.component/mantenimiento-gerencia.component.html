@@ -30,9 +30,8 @@
             <p-fieldset legend="Asignación De Responsables" class="md:col-6 col-12 ">
 
                 <p-table [value]="[]" [selectionPageOnly]="false" [paginator]="false" styleClass="p-datatable-gridlines"
-                    [rows]="cntRegistros" [rowHover]="true" selectionMode="single"  dataKey="id"
-                    editMode="row" responsiveLayout="scroll" [resizableColumns]="true" [scrollable]="true"
-                    scrollDirection="horizontal" [scrollHeight]="'auto'">
+                    [rowHover]="true" selectionMode="single" dataKey="id" editMode="row" responsiveLayout="scroll"
+                    [resizableColumns]="true" [scrollable]="true" scrollDirection="horizontal" [scrollHeight]="'auto'">
                     <ng-template #header>
                         <tr>
                             <th class="w-1">Acciones</th>
@@ -44,15 +43,14 @@
 
                     </ng-template>
                     <ng-template #footer>
-                        <p-button  title="Agregar línea" icon="pi pi-plus" text />
+                        <p-button title="Agregar línea" icon="pi pi-plus" text />
                     </ng-template>
                 </p-table>
             </p-fieldset>
             <p-fieldset legend="Asignación De Aplicativos" class="md:col-6 col-12 ">
                 <p-table [value]="[]" [selectionPageOnly]="false" [paginator]="false" styleClass="p-datatable-gridlines"
-                    [rows]="cntRegistros" [rowHover]="true" selectionMode="single" dataKey="id"
-                    editMode="row" responsiveLayout="scroll" [resizableColumns]="true" [scrollable]="true"
-                    scrollDirection="horizontal" [scrollHeight]="'auto'">
+                    [rowHover]="true" selectionMode="single" dataKey="id" editMode="row" responsiveLayout="scroll"
+                    [resizableColumns]="true" [scrollable]="true" scrollDirection="horizontal" [scrollHeight]="'auto'">
                     <ng-template #header>
                         <tr>
                             <th class="w-1">Acciones</th>

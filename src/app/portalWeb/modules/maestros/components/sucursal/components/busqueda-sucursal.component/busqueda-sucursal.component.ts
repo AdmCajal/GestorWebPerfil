@@ -19,6 +19,8 @@ import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccion
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { CompaniaService } from '../../../../../seguridad/components/compania/services/compania.service';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
+import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 
 @Component({
     selector: 'app-busqueda-sucursal',
@@ -27,39 +29,26 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
     templateUrl: './busqueda-sucursal.component.html',
     styleUrls: ['./busqueda-sucursal.component.scss'],
 })
-export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
+export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
 
-
-    bloquearComponente = false;
-    barraBusqueda = false;
-
-    breadcrumb: string | undefined;
-    cntRegistros: number = 10;
-
-    filtroForm: FormGroup;
-
-    lstBusqueda: any[] = [];
-    lstEstados: any[] = [];
-    lstCompanias: any[] = [];
+    lstEstados: ComboItem[] = [];
+    lstCompanias: ComboItem[] = [];
 
     constructor(private _ActivatedRoute: ActivatedRoute,
         private _SucursalService: SucursalService,
         private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
+        override _LayoutService: LayoutService,
         public _Router: Router,
 
-    ) { this.filtroForm = new FormGroup({}); }
+    ) { super(_MessageService, _LayoutService) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -71,11 +60,6 @@ export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         const optTodos = { descripcion: 'TODOS', codigo: '' };
 
@@ -121,7 +105,6 @@ export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
             })
         ).subscribe();
     }
-
     btnInactivar(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -150,7 +133,9 @@ export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
         ).subscribe();
 
     }
-
+    btnExportar(): void {
+        throw new Error('Method not implemented.');
+    }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
         this._MantenimientoUsuario.visualizarForm = true;
         this._MantenimientoUsuario.accion = accion;
@@ -159,38 +144,7 @@ export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
         this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
     }
 
-    btnExportar(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.barraBusqueda = true;
-        this.filtroForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.barraBusqueda = false;
-            this.filtroForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    rptaMantenimiento(respuesta: any) {
+    rptaMantenimiento(respuesta: any): void {
 
         console.log(respuesta)
         if (respuesta.buscar) { this.btnBuscar(); }
@@ -205,36 +159,5 @@ export class BusquedaSucursal implements OnInit, AccionesBusquedaComponente {
                     break;
             }
         }
-    }
-
-    obtenerColorEstado(estado: string | number): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {
-        switch (estado) {
-            case 1:
-            case "1":
-            case "A":
-                return "success";
-            case "0":
-            case 2:
-            case "I":
-                return "danger";
-            default:
-                return "info";
-        }
-    }
-
-
-    obtenerIconoEstado(estado: string | number): string {
-        switch (estado) {
-            case "1":
-            case 1:
-            case "A":
-                return "pi-check";
-            case "0":
-            case 0:
-            case 2:
-            case "I":
-                return "pi-times";
-        }
-        return "pi-info-circle"
     }
 }

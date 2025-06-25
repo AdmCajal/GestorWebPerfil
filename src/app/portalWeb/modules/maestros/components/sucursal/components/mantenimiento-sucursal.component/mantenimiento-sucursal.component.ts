@@ -19,6 +19,9 @@ import { SucursalService } from '../../services/sucursal.service';
 import { CompaniaService } from '../../../../../seguridad/components/compania/services/compania.service';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { SecurityService } from '../../../../../../security/services/Security.service';
 
 @Component({
     selector: 'app-mantenimiento-sucursal',
@@ -27,38 +30,23 @@ import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-for
     templateUrl: './mantenimiento-sucursal.component.html',
     styleUrls: ['./mantenimiento-sucursal.component.scss'],
 })
-export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComponente {
-    @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
-    bloquearComponente = false;
-    barraBusqueda = false;
+export class MantenimientoSucursal extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
-    breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
+    lstCompanias: ComboItem[] = [];
 
-    mantenimientoForm: FormGroup;
-
-    lstEstados: any[] = [];
-    lstCompanias: any[] = [];
-
-    visualizarForm: boolean = false;
-    visualizarLogMoficaciones: boolean = false;
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
-
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    constructor(override _ActivatedRoute: ActivatedRoute,
+        override _SecurityService: SecurityService,
         private _SucursalService: SucursalService,
         private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
 
-    ) { this.mantenimientoForm = new FormGroup({}); }
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -71,11 +59,6 @@ export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComp
             SedEstado: [{ value: '', disabled: this.bloquearComponente }, [Validators.required]],
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
@@ -120,14 +103,4 @@ export class MantenimientoSucursal implements OnInit, AcccionesMantenimientoComp
             })
         ).subscribe();
     }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    btnLogAuditoria(): void {
-        this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
-    }
-
 }

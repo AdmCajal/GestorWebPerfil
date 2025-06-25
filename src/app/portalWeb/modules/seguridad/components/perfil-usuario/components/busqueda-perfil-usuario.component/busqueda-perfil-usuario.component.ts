@@ -19,6 +19,8 @@ import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-for
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
+import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 
 @Component({
     selector: 'app-busqueda-perfil-usuario',
@@ -27,40 +29,24 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     templateUrl: './busqueda-perfil-usuario.component.html',
     styleUrls: ['./busqueda-perfil-usuario.component.scss'],
 })
-export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente {
+export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoPerfilUsuario) _MantenimientoUsuario!: MantenimientoPerfilUsuario;
 
-
-    bloquearComponente = false;
-    barraBusqueda = false;
-
-    breadcrumb: string | undefined;
-    cntRegistros: number = 10;
-
-    filtroForm: FormGroup;
-
-    lstBusqueda: any[] = [];
-
-    lstEstados: any[] = [];
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    lstEstados: ComboItem[] = [];
+    constructor(
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
+        override _LayoutService: LayoutService,
         public _Router: Router,
-        private route: ActivatedRoute,
 
 
-    ) { this.filtroForm = new FormGroup({}); }
-
-
+    ) { super(_MessageService, _LayoutService) }
 
     ngOnInit(): void {
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -71,11 +57,6 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
@@ -113,7 +94,6 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente
             })
         ).subscribe();
     }
-
     btnInactivar(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -142,7 +122,9 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente
         ).subscribe();
 
     }
-
+    btnExportar(): void {
+        throw new Error('Method not implemented.');
+    }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
         this._MantenimientoUsuario.visualizarForm = true;
         this._MantenimientoUsuario.accion = accion;
@@ -151,38 +133,7 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente
         this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
     }
 
-    btnExportar(): void {
-        throw new Error('Method not implemented.');
-    }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.barraBusqueda = true;
-        this.filtroForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.barraBusqueda = false;
-            this.filtroForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    rptaMantenimiento(respuesta: any) {
+    rptaMantenimiento(respuesta: any): void {
 
         console.log(respuesta)
         if (respuesta.buscar) { this.btnBuscar(); }
@@ -198,36 +149,4 @@ export class BusquedaPerfilUsuario implements OnInit, AccionesBusquedaComponente
             }
         }
     }
-
-    obtenerColorEstado(estado: string | number): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {
-        switch (estado) {
-            case 1:
-            case "1":
-            case "A":
-                return "success";
-            case "0":
-            case 2:
-            case "I":
-                return "danger";
-            default:
-                return "info";
-        }
-    }
-
-
-    obtenerIconoEstado(estado: string | number): string {
-        switch (estado) {
-            case "1":
-            case 1:
-            case "A":
-                return "pi-check";
-            case "0":
-            case 0:
-            case 2:
-            case "I":
-                return "pi-times";
-        }
-        return "pi-info-circle"
-    }
-
 }

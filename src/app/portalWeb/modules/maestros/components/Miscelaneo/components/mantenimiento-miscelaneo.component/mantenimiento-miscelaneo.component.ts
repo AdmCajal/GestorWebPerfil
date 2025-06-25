@@ -14,6 +14,9 @@ import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
+import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { SecurityService } from '../../../../../../security/services/Security.service';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
@@ -22,39 +25,22 @@ import { LayoutService } from '../../../../../../../layout/service/layout.servic
     templateUrl: './mantenimiento-miscelaneo.component.html',
     styleUrls: ['./mantenimiento-miscelaneo.component.scss'],
 })
-export class MantenimientoMiscelaneo implements OnInit {
-    @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
-    bloquearComponente = false;
+export class MantenimientoMiscelaneo extends BaseComponenteMantenimiento implements OnInit {
 
-    breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
-    cntRegistros: number = 10;
-
-    mantenimientoForm: FormGroup;
-
-    lstBusqueda: any[] = [];
-    lstEstados: any[] = [];
-    lstPerfiles: any[] = [];
-
-    visualizarForm: boolean = false;
-    visualizarLogMoficaciones: boolean = false;
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
-
-    constructor(private _ActivatedRoute: ActivatedRoute,
-        private _UsuarioService: MiscelaneoService,
+    lstPerfiles: ComboItem[] = [];
+    constructor(override _ActivatedRoute: ActivatedRoute,
+        override _SecurityService: SecurityService,
+        private _MiscelaneoService: MiscelaneoService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
 
-    ) { this.mantenimientoForm = new FormGroup({}); }
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -71,15 +57,10 @@ export class MantenimientoMiscelaneo implements OnInit {
 
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            perfiles: this._UsuarioService.obtenerPerfiles({ ESTADO: 'A' })
+            perfiles: this._MiscelaneoService.obtenerPerfiles({ ESTADO: 'A' })
         }).subscribe(resp => {
             this.lstEstados = [...resp.estados];
 
@@ -91,77 +72,5 @@ export class MantenimientoMiscelaneo implements OnInit {
     btnAccionForm(): void {
         this.bloquearComponente = true;
         this.mantenimientoForm.disable();
-
-        this.lstBusqueda = [];
-        const { usuario, nombres, estado } = this.mantenimientoForm.value;
-        const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
-
-        this._UsuarioService.obtenerUsuarios(filtroFormato).pipe(
-            tap((consultaRepsonse: ResponseApi) => {
-                if (consultaRepsonse.success) {
-
-                    this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
-                        nroDocumento: d.USUARIO,
-                        codigoTipoDocumento: d.TipoDocumento,
-                        nombres: d.NOMBRECOMPLETO,
-                        codigoEstado: d.ESTADO,
-                        estadoNombre: d.DesEstado,
-                        correoElectronico: d.CorreoElectronico,
-                        codigoPersona: d.PERSONA,
-                    }))];
-
-                    this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
-                    return;
-                } else {
-                    this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
-                }
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                console.error(`Error al buscar. ${error}`);
-                return of(null);
-            }),
-            finalize(() => {
-                this.bloquearComponente = false;
-                this.mantenimientoForm.enable();
-            })
-        ).subscribe();
-    }
-
-    btnLimpiarFiltros(): void {
-        this.estructuraForm();
-    }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.mantenimientoForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.mantenimientoForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    @HostListener('document:keydown.enter', ['$event'])
-    handleEnter(event: KeyboardEvent) {
-        this.btnAccionForm();
-    }
-
-    btnLogAuditoria(): void {
-        this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
     }
 }

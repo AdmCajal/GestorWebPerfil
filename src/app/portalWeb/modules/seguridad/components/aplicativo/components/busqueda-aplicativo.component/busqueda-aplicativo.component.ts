@@ -40,7 +40,6 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
     ngOnInit(): void {
         this.obtenerDatosSelect();
         this.estructuraForm();
-
     }
     estructuraForm(): void {
         this.filtroForm = this._fb.group({

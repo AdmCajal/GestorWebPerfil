@@ -17,6 +17,8 @@ import { LayoutService } from '../../../../../../../layout/service/layout.servic
 import { MantenimientoMiscelaneo } from '../mantenimiento-miscelaneo.component/mantenimiento-miscelaneo.component';
 import { CabeceraVistaComponent } from '../../../../../../shared/components/cabecera-vista-component/cabecera-vista-component';
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
+import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 
 @Component({
     selector: 'app-busqueda-usuario',
@@ -25,37 +27,23 @@ import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccion
     templateUrl: './busqueda-miscelaneo.component.html',
     styleUrls: ['./busqueda-miscelaneo.component.scss'],
 })
-export class BusquedaMiscelaneo implements OnInit, AccionesBusquedaComponente {
+export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
 
-
-    bloquearComponente = false;
-    barraBusqueda: boolean = false;
-
-    breadcrumb: string | undefined;
-    cntRegistros: number = 10;
-
-    filtroForm: FormGroup;
-
-    lstBusqueda: any[] = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
-
-    lstEstados: any[] = [];
+    lstEstados: ComboItem[] = [];
     constructor(private _ActivatedRoute: ActivatedRoute,
-        private _UsuarioService: MiscelaneoService,
+        private _MiscelaneoService: MiscelaneoService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
+        override _LayoutService: LayoutService,
         public _Router: Router,
 
-    ) { this.filtroForm = new FormGroup({}); }
+    ) { super(_MessageService, _LayoutService) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -66,11 +54,6 @@ export class BusquedaMiscelaneo implements OnInit, AccionesBusquedaComponente {
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN')
@@ -85,91 +68,23 @@ export class BusquedaMiscelaneo implements OnInit, AccionesBusquedaComponente {
         this.filtroForm.disable();
 
         this.lstBusqueda = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
-
-        // const { usuario, nombres, estado } = this.filtroForm.value;
-        // const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
-
-        // this._UsuarioService.obtenerUsuarios(filtroFormato).pipe(
-        //     tap((consultaRepsonse: ResponseApi) => {
-        //         if (consultaRepsonse.success) {
-
-        //             this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
-        //                 nroDocumento: d.USUARIO,
-        //                 tipoDocumento: d.TipoDocumento,
-        //                 nombres: d.NOMBRECOMPLETO,
-        //                 perfil: d.PERFIL,
-        //                 estado: d.ESTADO,
-        //                 estadoDesc: d.DesEstado,
-        //                 correoElectronico: d.CorreoElectronico,
-        //                 persona: d.PERSONA,
-        //                 tipoUsuario: d.TipoUsuario,
-        //                 expirarContrasenia: d.ExpirarPasswordFlag,
-        //                 fechaExpiracion: d.FechaExpiracion,
-        //             }))];
-
-        //             this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
-        //             return;
-        //         } else {
-        //             this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
-        //         }
-        //     }), catchError((error) => {
-        //         this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-        //         console.error(`Error al buscar. ${error}`);
-        //         return of(null);
-        //     }),
-        //     finalize(() => {
-        //         this.bloquearComponente = false;
-        //         this.filtroForm.enable();
-        //     })
-        // ).subscribe();
         this.bloquearComponente = false;
         this.filtroForm.enable();
     }
-
+    btnInactivar(registro: any): void {
+        throw new Error('Method not implemented.');
+    }
+    btnExportar(): void {
+        throw new Error('Method not implemented.');
+    }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
         this._MantenimientoMiscelaneo.visualizarForm = true;
         this._MantenimientoMiscelaneo.accion = accion;
         this._MantenimientoMiscelaneo.mantenimientoForm.patchValue(registro);
         console.log(registro);
     }
-    btnInactivar(registro: any): void {
-        throw new Error('Method not implemented.');
-    }
 
-    btnExportar(): void {
-        throw new Error('Method not implemented.');
-    }
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.filtroForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.filtroForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    @HostListener('document:keydown.enter', ['$event'])
-    handleEnter(event: KeyboardEvent) {
-        this.btnBuscar();
-    }
-
-    rptaMantenimiento(respuesta: any) {
+    rptaMantenimiento(respuesta: any): void {
         this.bloquearComponente = respuesta.bloquearComponente;
         if (respuesta.buscar) { this.btnBuscar(); }
 
@@ -184,31 +99,4 @@ export class BusquedaMiscelaneo implements OnInit, AccionesBusquedaComponente {
             }
         }
     }
-
-    obtenerColorEstado(estado: string): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {
-        switch (estado) {
-            case "1":
-            case "A":
-                return "success";
-            case "0":
-            case "I":
-                return "danger";
-            default:
-                return "info";
-        }
-    }
-
-
-    obtenerIconoEstado(estado: string): string {
-        switch (estado) {
-            case "1":
-            case "A":
-                return "pi-check";
-            case "0":
-            case "I":
-                return "pi-times";
-        }
-        return "pi-info-circle"
-    }
-
 }

@@ -1,19 +1,15 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AppFloatingConfigurator } from '../../../../../../../layout/component/app.floatingconfigurator';
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
-import { Table } from 'primeng/table';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { MessageService, TreeNode } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
-import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { LogModificacionesComponent } from '../../../../../../shared/components/log-modificaciones-component/log-modificaciones-component';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
@@ -22,6 +18,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { CompaniaService } from '../../../compania/services/compania.service';
 import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
+import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 
 @Component({
     selector: 'app-mantenimiento-perfil-usuario',
@@ -30,23 +28,13 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     templateUrl: './mantenimiento-perfil-usuario.component.html',
     styleUrls: ['./mantenimiento-perfil-usuario.component.scss'],
 })
-export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimientoComponente {
-    @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
-    bloquearComponente = false;
-    barraBusqueda = false;
+export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
-    breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
-    cntRegistros: number = 10;
+    lstUsuariosBusqueda: any[] = [];
+    lstPerfiles: ComboItem[] = [];
+    lstCompanias: ComboItem[] = [];
 
-    mantenimientoForm: FormGroup;
-
-    lstUsuarios: any[] = [];
-    lstEstados: any[] = [];
-    lstPerfiles: any[] = [];
-    lstCompanias: any[] = [];
-
-    lstaplicativosSeleccionados: any[] = [
+    lstaplicativosSeleccionados: TreeNode[] = [
         {
             key: '0',
             label: 'Spring',
@@ -141,32 +129,24 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
         }
     ]
 
-    aplicativoSeleccionado: any[] = []
+    aplicativoSeleccionado: TreeNode[] = []
     nombreAplicativoSeleccionado: string = '';
     codigoAplicativoAgregar: any;
 
-    visualizarForm: boolean = false;
-    visualizarLogMoficaciones: boolean = false;
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
-
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    constructor(override _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
+        override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
-        private _SecurityService: SecurityService,
+        override _SecurityService: SecurityService,
 
-    ) { this.mantenimientoForm = new FormGroup({}); }
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
 
     ngOnInit(): void {
-        this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -187,6 +167,25 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
 
         });
     }
+    obtenerDatosSelect(): void {
+        forkJoin({
+            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
+            perfiles: this._PerfilUsuarioService.obtenerPerfiles({ ESTADO: 'A' }),
+            companias: this._CompaniaService.obtener({})
+        }).subscribe(resp => {
+            const dataEstados = resp.estados?.map((ele: any) => ({
+                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
+            }));
+            this.lstEstados = [...dataEstados];
+
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompanias = [...dataCompanias];
+
+            const dataPerfiles: any[] = resp.perfiles.map((m: any) => ({ codigo: m.Codigo, descripcion: m.Descripcion }));
+            this.lstPerfiles = [...dataPerfiles];
+        });
+    }
+
     get optDetallePerfiles(): FormArray<any> {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
@@ -222,29 +221,6 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
             console.log(`No se encontró el detalle con codDetalle: ${codDetalle}`);
         }
     }
-
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
-    obtenerDatosSelect(): void {
-        forkJoin({
-            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            perfiles: this._PerfilUsuarioService.obtenerPerfiles({ ESTADO: 'A' }),
-            companias: this._CompaniaService.obtener({})
-        }).subscribe(resp => {
-            const dataEstados = resp.estados?.map((ele: any) => ({
-                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
-            }));
-            this.lstEstados = [...dataEstados];
-
-            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
-            this.lstCompanias = [...dataCompanias];
-
-            const dataPerfiles: any[] = resp.perfiles.map((m: any) => ({ codigo: m.Codigo, descripcion: m.Descripcion }));
-            this.lstPerfiles = [...dataPerfiles];
-        });
-    }
     btnAccionForm(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -275,7 +251,6 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
         ).subscribe();
 
     }
-
     btnBuscarEmpleado(campo: string): void {
         this.mantenimientoForm
             .get(campo)
@@ -301,7 +276,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
                 })
             )
             .subscribe((responseApi) => {
-                this.lstUsuarios = [];
+                this.lstUsuariosBusqueda = [];
                 const dataResponse: any[] = responseApi.data;
                 if (dataResponse.length > 0) {
                     const dataFormato = dataResponse.map(res => {
@@ -310,7 +285,7 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
                             visible: res.Documento.trim() + ' - ' + res.NombreCompleto.trim(),
                         }
                     });
-                    this.lstUsuarios = [...dataFormato];
+                    this.lstUsuariosBusqueda = [...dataFormato];
                 }
             });
     }
@@ -323,7 +298,6 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
 
         this.mantenimientoForm.get('empleadoBusqueda')?.setValue({ visible: evento.value.Documento });
     }
-
     onAsignarDescripcionDetalle(evento: any, detalle: FormGroup, tipo: string): void {
         switch (tipo) {
             case 'COMPANIA':
@@ -352,12 +326,11 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
         }
 
     }
-
     onAgregarAplicativoSeleccionado(): void {
         const item = this.lstPerfiles.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
 
         if (item) {
-            const aplicativoAgregar = { key: item.codigo, label: item.descripcion };
+            const aplicativoAgregar: TreeNode = { key: item.codigo, label: item.descripcion };
             const yaExiste = this.lstaplicativosSeleccionados.some((a: any) => a.key === aplicativoAgregar.key);
 
             if (yaExiste) {
@@ -369,7 +342,6 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
             this.MensajeToastComun('notification', 'warn', 'Advertencia', 'No se encontró el aplicativo al momento de agregar');
         }
     }
-
     onVerAplicativoSeleccionado(item: any): void {
         this.nombreAplicativoSeleccionado = item.label;
         let data = [
@@ -452,39 +424,4 @@ export class MantenimientoPerfilUsuario implements OnInit, AcccionesMantenimient
         this.aplicativoSeleccionado = [...data];
         this.MensajeToastComun('notification', 'success', 'Correcto', 'Módulos obtenidos');
     }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.mantenimientoForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.mantenimientoForm.enable();
-        }, 300);
-    }
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    // @HostListener('document:keydown.enter', ['$event'])
-    // handleEnter(event: KeyboardEvent) {
-    //     this.btnAccionForm();
-    // }
-
-    btnLogAuditoria(): void {
-        this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
-    }
-
 }

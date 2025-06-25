@@ -6,12 +6,13 @@
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
             <label for="Ruc">Empresa <span class="font-semibold text-red-500">*</span></label>
             <div class="flex">
-                <p-autocomplete formControlName="EmpRucBusqueda" [suggestions]="lstEmpresa" class="w-3 mr-2"
+                <p-autocomplete formControlName="EmpRucBusqueda" [suggestions]="lstEmpresaBusqueda" class="w-3 mr-2"
                     placeholder="Ingrese un Nro de documento" (completeMethod)="btnBuscarEmpresa('EmpRucBusqueda')"
                     field="visible" [dropdown]="false" (onSelect)="onEmpresaSeleccionado($event)" />
-                <p-autocomplete formControlName="EmpRazonSocialBusqueda" [suggestions]="lstEmpresa" class="w-9 mr-2"
-                    placeholder="Ingrese nombre" (completeMethod)="btnBuscarEmpresa('EmpRazonSocialBusqueda')"
-                    field="visible" [dropdown]="false" (onSelect)="onEmpresaSeleccionado($event)" />
+                <p-autocomplete formControlName="EmpRazonSocialBusqueda" [suggestions]="lstEmpresaBusqueda"
+                    class="w-9 mr-2" placeholder="Ingrese nombre"
+                    (completeMethod)="btnBuscarEmpresa('EmpRazonSocialBusqueda')" field="visible" [dropdown]="false"
+                    (onSelect)="onEmpresaSeleccionado($event)" />
                 <!-- <p-button icon="pi pi-search" class="ml-1" raised severity="info" /> -->
                 <!-- <p-button icon="pi pi-plus" class="ml-1" raised severity="success" /> -->
 
@@ -22,11 +23,11 @@
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
             <label for="Doc.Representante">Representante <span class="font-semibold text-red-500">*</span></label>
             <div class="flex">
-                <p-autocomplete formControlName="DocumentoFiscalBusqueda" [suggestions]="lstRepresentante"
+                <p-autocomplete formControlName="DocumentoFiscalBusqueda" [suggestions]="lstRepresentanteBusqueda"
                     class="w-3 mr-2" placeholder="Ingrese un Nro de documento"
                     (completeMethod)="btnBuscarRepresentante('DocumentoFiscalBusqueda')" field="visible"
                     [dropdown]="false" (onSelect)="onRepresentanteSeleccionado($event)" />
-                <p-autocomplete formControlName="RepresentanteLegalBusqueda" [suggestions]="lstRepresentante"
+                <p-autocomplete formControlName="RepresentanteLegalBusqueda" [suggestions]="lstRepresentanteBusqueda"
                     class="w-9 mr-2" placeholder="Ingrese nombre"
                     (completeMethod)="btnBuscarRepresentante('RepresentanteLegalBusqueda')" field="visible"
                     [dropdown]="false" (onSelect)="onRepresentanteSeleccionado($event)" />

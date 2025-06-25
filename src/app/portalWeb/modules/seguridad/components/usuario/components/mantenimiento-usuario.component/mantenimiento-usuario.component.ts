@@ -1,19 +1,15 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-import { AppFloatingConfigurator } from '../../../../../../../layout/component/app.floatingconfigurator';
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
-import { Table } from 'primeng/table';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
-import { Form, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
-import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
-import { LogModificacionesComponent } from '../../../../../../shared/components/log-modificaciones-component/log-modificaciones-component';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { UsuarioService } from '../../services/usuario.service';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
@@ -21,6 +17,10 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
 import { v4 as uuidv4 } from 'uuid';
 import { CompaniaService } from '../../../compania/services/compania.service';
+import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { VisualizarPerfilUsuario } from '../../../../../../core/models/interfaces/usuario/visualizarPerfil.usuario';
+import { SecurityService } from '../../../../../../security/services/Security.service';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
@@ -29,52 +29,36 @@ import { CompaniaService } from '../../../compania/services/compania.service';
     templateUrl: './mantenimiento-usuario.component.html',
     styleUrls: ['./mantenimiento-usuario.component.scss'],
 })
-export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoComponente {
-    @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
-    bloquearComponente = false;
-    barraBusqueda = true;
-
-    breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
-    cntRegistros: number = 10;
-
-    mantenimientoForm: FormGroup;
+export class MantenimientoUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
     lstUsuariosBusqueda: any[] = [];
-    lstEstados: any[] = [];
-    lstCompanias: any[] = [];
+    lstCompanias: ComboItem[] = [];
 
-
-    perfilSeleccionadoVisualizar: any = {
+    perfilSeleccionadoVisualizar: VisualizarPerfilUsuario = {
         nombrePerfil: '',
         data: []
     }
-    visualizarForm: boolean = true;
-    visualizarLogMoficaciones: boolean = false;
-    position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    constructor(override _ActivatedRoute: ActivatedRoute,
+        override _SecurityService: SecurityService,
+        override _MessageService: MessageService,
         private _UsuarioService: UsuarioService,
         private _CompaniaService: CompaniaService,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
-        private _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
         public _Router: Router
 
     ) {
-        this.mantenimientoForm = new FormGroup({});
+        super(_MessageService, _SecurityService, _ActivatedRoute);
+
         this._ActivatedRoute.paramMap.subscribe(params => {
             if (params.get('accion')) {
                 const accionObtenida: any = params.get('accion') || '';
                 switch (accionObtenida) {
                     case 'AGREGAR':
-                        this.accion = accionObtenida;
-                        break;
                     case 'EDITAR':
-                        this.accion = accionObtenida;
-                        break;
                     case 'VER':
                         this.accion = accionObtenida;
                         break;
@@ -89,12 +73,8 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
     }
 
     ngOnInit(): void {
-        this.breadcrumb = this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre no encontrado';
-
-        this.validarTipoDispositivo();
         this.obtenerDatosSelect();
         this.estructuraForm();
-        this.esconderMenu();
     }
 
     estructuraForm(): void {
@@ -151,7 +131,7 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         }
     }
 
-    btnVisualizarPerfil(detalle: FormGroup) {
+    btnVisualizarPerfil(detalle: FormGroup): void {
         this.perfilSeleccionadoVisualizar.nombrePerfil = detalle.get('perfilNom')?.value || '';
         this.perfilSeleccionadoVisualizar.data = [
             {
@@ -248,10 +228,6 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
         ];
     }
 
-    esconderMenu(): void {
-        this._LayoutService.onMenuToggle();
-    }
-
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
@@ -339,7 +315,6 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
 
     btnMantenimientoFormulario(): void {
         this._Router.navigate(['../../'], { relativeTo: this._ActivatedRoute });
-        this.esconderMenu();
     }
 
     onEmpleadoSeleccionado(evento: any): void {
@@ -378,36 +353,6 @@ export class MantenimientoUsuario implements OnInit, AcccionesMantenimientoCompo
                 return;
         }
 
-    }
-
-    onGlobalFilter(table: Table, event: Event): void {
-        this.bloquearComponente = true;
-        this.mantenimientoForm.disable();
-
-        setTimeout(() => {
-            table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-            this.bloquearComponente = false;
-            this.mantenimientoForm.enable();
-        }, 300);
-    }
-
-    validarTipoDispositivo(): void {
-        if (/Android|iPhone|BlackBerry|IEMobile/i.test(navigator.userAgent)) {
-            this.cntRegistros = 5;
-        }
-
-        if (/webOS|iPad|iPod|Opera Mini|Windows/i.test(navigator.userAgent)) {
-            this.cntRegistros = 10;
-        }
-    }
-
-    MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
-        this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
-    }
-
-    btnLogAuditoria(): void {
-        this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
     }
 
 }

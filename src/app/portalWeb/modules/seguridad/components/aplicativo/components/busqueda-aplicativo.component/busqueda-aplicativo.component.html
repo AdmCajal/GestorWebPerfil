@@ -2,6 +2,11 @@
     <app-cabecera-vista [componente]="this"></app-cabecera-vista>
 
     <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+            <label for="name1">Compañia</label>
+            <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="ESTADO"
+                placeholder="Seleccione una opción"></p-dropdown>
+        </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
             <label for="name1">Aplicativo</label>
             <input pInputText id="name1" type="text" formControlName="USUARIO" />
@@ -42,14 +47,14 @@
         <ng-template #body let-data>
             <tr>
                 <td>
+                    <p-button title="Editar Registro" icon="pi pi-pencil" severity="warn" rounded outlined class="ml-1"
+                        (onClick)="btnMantenimientoFormulario('EDITAR',data)" />
                     <p-button title="Ver Registros" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
                         (onClick)="btnMantenimientoFormulario('VER',data)" />
                     <p-button title="Inactivar Registro" icon="pi pi-unlock" severity="warn" rounded outlined
                         class="ml-1" (onClick)="btnInactivar(data)" />
                 </td>
-                <td> <i title="Editar Registro" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
-                        (click)="btnMantenimientoFormulario('EDITAR',data)"></i>
-                    {{data.nombreAplicativo | titlecase}}</td>
+                <td>{{data.nombreAplicativo | titlecase}}</td>
                 <td>{{data.descripcion | titlecase}}</td>
                 <td>{{data.baseDatos }}</td>
                 <td [style]="{'white-space':'nowrap'}">
