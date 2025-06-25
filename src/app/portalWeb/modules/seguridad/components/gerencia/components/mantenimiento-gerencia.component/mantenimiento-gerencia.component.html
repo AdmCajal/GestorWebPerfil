@@ -4,7 +4,7 @@
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
     <div class="flex flex-wrap gap-2">
         <p-fieldset legend="Datos Generales" class="col-12">
-            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
@@ -98,7 +98,8 @@
             <p-button
                 icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
                 class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
-                (onClick)="btnAccionForm()" />
+                (onClick)="btnConfirmarGuardarMantenimiento($event)" />
         </div>
     </ng-template>
 </p-dialog>
+<p-confirmdialog key="confirmarRegistroMantenimiento" />

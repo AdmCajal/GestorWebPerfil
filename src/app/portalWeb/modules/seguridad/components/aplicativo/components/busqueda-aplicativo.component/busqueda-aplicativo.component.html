@@ -52,7 +52,7 @@
                     <p-button title="Ver Registros" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
                         (onClick)="btnMantenimientoFormulario('VER',data)" />
                     <p-button title="Inactivar Registro" icon="pi pi-unlock" severity="warn" rounded outlined
-                        class="ml-1" (onClick)="btnInactivar(data)" />
+                        class="ml-1" (onClick)="btnInactivarRegistro($event, data)" />
                 </td>
                 <td>{{data.nombreAplicativo | titlecase}}</td>
                 <td>{{data.descripcion | titlecase}}</td>

@@ -8,7 +8,7 @@ import { UsuarioService } from '../../services/usuario.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
@@ -22,6 +22,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './busqueda-usuario.component.html',
     styleUrls: ['./busqueda-usuario.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
 
@@ -33,8 +34,9 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         override _LayoutService: LayoutService,
-        public _Router: Router
-    ) { super(_MessageService, _LayoutService) }
+        public _Router: Router,
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _LayoutService, _ConfirmationService) }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -86,7 +88,7 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
             })
         ).subscribe();
     }
-    btnInactivar(registro: any): void {
+    override inactivarRegistro(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.filtroForm.disable();
@@ -120,7 +122,7 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
         this._Router.navigate(['mantenimiento', accion], { relativeTo: this._ActivatedRoute });
     }
-    
+
     rptaMantenimiento(respuesta: any): void {
 
         console.log(respuesta)

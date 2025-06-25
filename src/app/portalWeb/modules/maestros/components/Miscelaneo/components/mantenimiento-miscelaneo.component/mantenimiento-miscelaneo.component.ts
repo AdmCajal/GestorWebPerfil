@@ -10,7 +10,7 @@ import { MiscelaneoService } from '../../Services/miscelaneo.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
@@ -24,6 +24,7 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-miscelaneo.component.html',
     styleUrls: ['./mantenimiento-miscelaneo.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoMiscelaneo extends BaseComponenteMantenimiento implements OnInit {
 
@@ -35,8 +36,9 @@ export class MantenimientoMiscelaneo extends BaseComponenteMantenimiento impleme
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         private _LayoutService: LayoutService,
+        override _ConfirmationService: ConfirmationService
 
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -69,7 +71,7 @@ export class MantenimientoMiscelaneo extends BaseComponenteMantenimiento impleme
         });
     }
 
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.mantenimientoForm.disable();
     }

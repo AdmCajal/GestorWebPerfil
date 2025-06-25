@@ -6,7 +6,7 @@ import { ComponentesCompartidosModule } from '../../../../../../shared/component
 import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { FormBuilder, } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { PersonaService } from '../../services/persona.service';
@@ -19,6 +19,7 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-persona.component.html',
     styleUrls: ['./mantenimiento-persona.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoSucursal extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
@@ -31,7 +32,8 @@ export class MantenimientoSucursal extends BaseComponenteMantenimiento implement
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -61,7 +63,7 @@ export class MantenimientoSucursal extends BaseComponenteMantenimiento implement
         });
     }
 
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.mantenimientoForm.disable();
         this.msjMantenimiento.emit({ accion: this.accion, buscar: true });

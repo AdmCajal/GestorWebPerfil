@@ -8,7 +8,7 @@ import { CompaniaService } from '../../services/compania.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoCompania } from '../mantenimiento-compania.component/mantenimiento-compania.component';
@@ -24,6 +24,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoCompania],
     templateUrl: './busqueda-compania.component.html',
     styleUrls: ['./busqueda-compania.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoCompania) _MantenimientoUsuario!: MantenimientoCompania;
@@ -36,8 +37,8 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
         private _MenuLayoutService: MenuLayoutService,
         override _LayoutService: LayoutService,
         public _Router: Router,
-
-    ) { super(_MessageService, _LayoutService) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _LayoutService, _ConfirmationService) }
 
     ngOnInit(): void {
         this.estructuraForm();
@@ -93,7 +94,7 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
             })
         ).subscribe();
     }
-    btnInactivar(registro: any): void {
+    override inactivarRegistro(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.filtroForm.disable();

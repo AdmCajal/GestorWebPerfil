@@ -10,7 +10,7 @@ import { MiscelaneoService } from '../../Services/miscelaneo.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
@@ -26,6 +26,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoMiscelaneo],
     templateUrl: './busqueda-miscelaneo.component.html',
     styleUrls: ['./busqueda-miscelaneo.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoMiscelaneo) _MantenimientoMiscelaneo!: MantenimientoMiscelaneo;
@@ -38,8 +39,8 @@ export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit
         private _MenuLayoutService: MenuLayoutService,
         override _LayoutService: LayoutService,
         public _Router: Router,
-
-    ) { super(_MessageService, _LayoutService) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _LayoutService, _ConfirmationService) }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -71,7 +72,7 @@ export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit
         this.bloquearComponente = false;
         this.filtroForm.enable();
     }
-    btnInactivar(registro: any): void {
+    override inactivarRegistro(registro: any): void {
         throw new Error('Method not implemented.');
     }
     btnExportar(): void {

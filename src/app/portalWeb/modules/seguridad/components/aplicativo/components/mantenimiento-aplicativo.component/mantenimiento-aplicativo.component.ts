@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder } from '@angular/forms';
-import { MessageService, TreeDragDropService } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
@@ -25,13 +25,12 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-aplicativo.component.html',
     styleUrls: ['./mantenimiento-aplicativo.component.scss'],
-    providers: [TreeDragDropService]
-
+    providers: [TreeDragDropService, ConfirmationService, MessageService]
 })
 export class MantenimientoAplicativo extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
 
-    
+
     lstModulosDisponibles: ModuloAplicativo[] = [];
     lstModulosAsignados: ModuloAplicativo[] = [];
 
@@ -45,8 +44,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         override _SecurityService: SecurityService,
-
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute); }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -75,7 +74,7 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
         });
     }
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();

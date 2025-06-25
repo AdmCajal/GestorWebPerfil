@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
@@ -28,6 +28,7 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-usuario.component.html',
     styleUrls: ['./mantenimiento-usuario.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
@@ -47,11 +48,10 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         private _MenuLayoutService: MenuLayoutService,
-        private _LayoutService: LayoutService,
-        public _Router: Router
-
+        public _Router: Router,
+        override _ConfirmationService: ConfirmationService
     ) {
-        super(_MessageService, _SecurityService, _ActivatedRoute);
+        super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService);
 
         this._ActivatedRoute.paramMap.subscribe(params => {
             if (params.get('accion')) {
@@ -243,34 +243,33 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         });
     }
 
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
-
         let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
-        this._UsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
-            tap((response: ResponseApi) => {
-                if (response.success) {
-                    this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
-                    this.visualizarForm = false;
-                    this.estructuraForm();
-                    this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
-                } else {
-                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
-                }
+        // this._UsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+        //     tap((response: ResponseApi) => {
+        //         if (response.success) {
+        //             this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+        //             this.visualizarForm = false;
+        //             this.estructuraForm();
+        //             this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+        //         } else {
+        //             this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+        //         }
 
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                return of(null);
-            }),
-            finalize(() => {
-                this.bloquearComponente = false;
-                this.barraBusqueda = false;
-                this.mantenimientoForm.enable();
-            })
-        ).subscribe();
+        //     }), catchError((error) => {
+        //         this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+        //         return of(null);
+        //     }),
+        //     finalize(() => {
+        //         this.bloquearComponente = false;
+        //         this.barraBusqueda = false;
+        //         this.mantenimientoForm.enable();
+        //     })
+        // ).subscribe();
 
     }
 

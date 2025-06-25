@@ -8,7 +8,7 @@ import { PersonaService } from '../../services/persona.service';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoSucursal } from '../mantenimiento-persona.component/mantenimiento-persona.component';
@@ -22,6 +22,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoSucursal],
     templateUrl: './busqueda-persona.component.html',
     styleUrls: ['./busqueda-persona.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class BusquedaPersona extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
@@ -34,8 +35,8 @@ export class BusquedaPersona extends BaseComponenteBusqueda implements OnInit, A
         private _MenuLayoutService: MenuLayoutService,
         override _LayoutService: LayoutService,
         public _Router: Router,
-
-    ) { super(_MessageService, _LayoutService) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _LayoutService, _ConfirmationService) }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -99,7 +100,7 @@ export class BusquedaPersona extends BaseComponenteBusqueda implements OnInit, A
             })
         ).subscribe();
     }
-    btnInactivar(registro: any): void {
+    override inactivarRegistro(registro: any): void {
         throw new Error('Method not implemented.');
     }
     btnExportar(): void {

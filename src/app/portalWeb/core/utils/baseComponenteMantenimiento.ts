@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { SecurityService } from '../../security/services/Security.service';
 import { ActivatedRoute } from '@angular/router';
 import { ComboItem } from '../models/interfaces/comboItem';
@@ -21,7 +21,11 @@ export class BaseComponenteMantenimiento {
     mantenimientoForm: FormGroup;
 
     lstEstados: ComboItem[] = [];
-    constructor(protected _MessageService: MessageService, protected _SecurityService: SecurityService, protected _ActivatedRoute: ActivatedRoute,
+    constructor(
+        protected _MessageService: MessageService,
+        protected _SecurityService: SecurityService,
+        protected _ActivatedRoute: ActivatedRoute,
+        protected _ConfirmationService: ConfirmationService
     ) {
         this.mantenimientoForm = new FormGroup({});
         this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
@@ -35,4 +39,34 @@ export class BaseComponenteMantenimiento {
     public btnLogAuditoria(): void {
         this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
     }
+
+    protected btnConfirmarGuardarMantenimiento(event: Event) {
+        console.log(event.target as EventTarget)
+        this._ConfirmationService.confirm({
+            target: event.target as EventTarget,
+            message: `Por favor confirme la acción de ${this.accion?.toLowerCase()}.`,
+            header: 'Confirmar Registro',
+            closable: false,
+            closeOnEscape: false,
+
+            icon: 'pi pi-exclamation-triangle',
+            key: 'confirmarRegistroMantenimiento',
+            acceptButtonProps: {
+                label: 'Confirmar',
+                icon: 'pi pi-check'
+            },
+            accept: () => {
+                this.guardarMantenimiento();
+            },
+            rejectButtonProps: {
+                label: 'Cancelar',
+                severity: 'secondary',
+                outlined: true,
+
+            },
+            reject: () => {
+            }
+        });
+    }
+    protected guardarMantenimiento(): void { }
 }

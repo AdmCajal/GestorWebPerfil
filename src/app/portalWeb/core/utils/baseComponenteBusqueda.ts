@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AccionesBusquedaComponente } from './acccionesBusquedaComponente';
 import { FormGroup } from '@angular/forms';
 import { Table } from 'primeng/table';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { LayoutService } from '../../../layout/service/layout.service';
 
 @Injectable({
@@ -16,7 +16,10 @@ export class BaseComponenteBusqueda {
     cntRegistros: number = 10;
     filtroForm: FormGroup;
     lstBusqueda: any[] = [];
-    constructor(protected _MessageService: MessageService, protected _LayoutService: LayoutService
+    constructor(
+        protected _MessageService: MessageService,
+        protected _LayoutService: LayoutService,
+        protected _ConfirmationService: ConfirmationService
     ) {
         this.esconderMenu();
         this.validarTipoDispositivo();
@@ -39,6 +42,36 @@ export class BaseComponenteBusqueda {
         this._MessageService.clear();
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
+
+    protected btnInactivarRegistro(event: Event, registro: any) {
+        console.log(event.target as EventTarget)
+        this._ConfirmationService.confirm({
+            target: event.target as EventTarget,
+            message: `¿Está seguro que quiere inactivar este registro?`,
+            header: 'Inactivar Registro',
+            closable: false,
+            closeOnEscape: false,
+
+            icon: 'pi pi-exclamation-triangle',
+            key: 'confirmarInactivarRegitro',
+            acceptButtonProps: {
+                label: 'Confirmar',
+                icon: 'pi pi-check'
+            },
+            accept: () => {
+                this.inactivarRegistro(registro);
+            },
+            rejectButtonProps: {
+                label: 'Cancelar',
+                severity: 'secondary',
+                outlined: true,
+
+            },
+            reject: () => {
+            }
+        });
+    }
+    protected inactivarRegistro(registro: any): void { }
 
     onGlobalFilter(table: Table, event: Event): void {
         this.bloquearComponente = true;

@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder } from '@angular/forms';
-import { MessageService, TreeDragDropService } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
@@ -22,8 +22,7 @@ import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseCo
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-gerencia.component.html',
     styleUrls: ['./mantenimiento-gerencia.component.scss'],
-    providers: [TreeDragDropService]
-
+    providers: [TreeDragDropService, ConfirmationService, MessageService]
 })
 export class MantenimientoGerencia extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
@@ -33,8 +32,8 @@ export class MantenimientoGerencia extends BaseComponenteMantenimiento implement
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         override _SecurityService: SecurityService,
-
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -62,7 +61,7 @@ export class MantenimientoGerencia extends BaseComponenteMantenimiento implement
 
         });
     }
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();

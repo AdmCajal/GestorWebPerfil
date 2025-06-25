@@ -47,7 +47,7 @@
                     <p-button title="Ver Registro" icon="pi pi-eye" severity="info" rounded outlined class="mr-1"
                         (onClick)="btnMantenimientoFormulario('VER',data)" />
                     <p-button title="Inactivar Registro" icon="pi pi-unlock" severity="warn" rounded outlined
-                        class="ml-1" (onClick)="btnInactivar(data)" />
+                        class="ml-1" (onClick)="btnInactivarRegistro($event, data)" />
                 </td>
                 <td> <i title="Editar Registro" class="pi pi-arrow-right text-yellow-500 mr-2" style="cursor: pointer;"
                         (click)="btnMantenimientoFormulario('EDITAR',data)"></i>

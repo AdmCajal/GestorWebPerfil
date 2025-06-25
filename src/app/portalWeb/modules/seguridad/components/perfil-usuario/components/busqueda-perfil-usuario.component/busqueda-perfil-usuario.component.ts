@@ -9,7 +9,7 @@ import { Table } from 'primeng/table';
 import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
@@ -28,6 +28,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule, MantenimientoPerfilUsuario],
     templateUrl: './busqueda-perfil-usuario.component.html',
     styleUrls: ['./busqueda-perfil-usuario.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoPerfilUsuario) _MantenimientoUsuario!: MantenimientoPerfilUsuario;
@@ -40,9 +41,9 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
         private _MenuLayoutService: MenuLayoutService,
         override _LayoutService: LayoutService,
         public _Router: Router,
+        override _ConfirmationService: ConfirmationService
 
-
-    ) { super(_MessageService, _LayoutService) }
+    ) { super(_MessageService, _LayoutService, _ConfirmationService) }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -94,7 +95,7 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
             })
         ).subscribe();
     }
-    btnInactivar(registro: any): void {
+    override inactivarRegistro(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.filtroForm.disable();

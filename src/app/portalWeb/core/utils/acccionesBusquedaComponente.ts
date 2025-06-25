@@ -1,15 +1,16 @@
 export declare interface AccionesBusquedaComponente {
+    bloquearComponente: boolean;
+    barraBusqueda: boolean;
+
     estructuraForm(): void;
     obtenerDatosSelect(): void;
 
-
     btnBuscar(): void;
-    btnInactivar(registro: any): void;
+    inactivarRegistro(registro: any): void;
     btnExportar(): void;
-
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void;
+
     rptaMantenimiento(respuesta: any): void;
 
-    bloquearComponente: boolean;
-    barraBusqueda: boolean;
+
 }

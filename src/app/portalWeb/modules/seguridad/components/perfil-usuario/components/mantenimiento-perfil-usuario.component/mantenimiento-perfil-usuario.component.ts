@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService, TreeNode } from 'primeng/api';
+import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
@@ -27,6 +27,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-perfil-usuario.component.html',
     styleUrls: ['./mantenimiento-perfil-usuario.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
@@ -141,8 +142,8 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
         override _SecurityService: SecurityService,
-
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -221,7 +222,7 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             console.log(`No se encontró el detalle con codDetalle: ${codDetalle}`);
         }
     }
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();

@@ -22,7 +22,7 @@ import { SecurityService } from '../../../security/services/Security.service';
 
         <div class="flex flex-wrap gap-2">
             <p-button icon="pi pi-plus" label="Nuevo" raised (onClick)="btnNuevo()" />
-            <p-button icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()" />
+            <p-button type="submit" icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()" />
             <p-button icon="pi pi-download" label="Exportar" severity="contrast" raised (onClick)="btnExportar()" />
         </div>
     </div>

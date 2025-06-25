@@ -9,7 +9,7 @@ import { Table } from 'primeng/table';
 import { catchError, debounceTime, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
@@ -30,6 +30,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     imports: [CommonModule, ButtonModule, RouterModule, RippleModule, ButtonModule, ComponentesCompartidosModule],
     templateUrl: './mantenimiento-compania.component.html',
     styleUrls: ['./mantenimiento-compania.component.scss'],
+    providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoCompania extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
@@ -45,9 +46,9 @@ export class MantenimientoCompania extends BaseComponenteMantenimiento implement
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
-        private _MenuLayoutService: MenuLayoutService
-
-    ) { super(_MessageService, _SecurityService, _ActivatedRoute) }
+        private _MenuLayoutService: MenuLayoutService,
+        override _ConfirmationService: ConfirmationService
+    ) { super(_MessageService, _SecurityService, _ActivatedRoute, _ConfirmationService); }
 
     ngOnInit(): void {
         this.obtenerDatosSelect();
@@ -124,7 +125,7 @@ export class MantenimientoCompania extends BaseComponenteMantenimiento implement
         });
     }
 
-    btnAccionForm(): void {
+    override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();

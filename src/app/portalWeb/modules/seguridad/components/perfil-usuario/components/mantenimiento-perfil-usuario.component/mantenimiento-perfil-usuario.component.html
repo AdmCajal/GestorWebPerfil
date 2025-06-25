@@ -5,7 +5,7 @@
 
     <div class="flex flex-wrap md:flex-nowrap gap-2">
         <p-fieldset legend="Datos Generales" class="col-6">
-            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" (ngSubmit)="btnAccionForm()">
+            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
@@ -84,123 +84,6 @@
                             </ng-template></p-tree>
                     </div>
                 </div>
-
-                <!-- <div class="col-9">
-                    <p-table [value]="optDetallePerfiles.controls" [selectionPageOnly]="false" [paginator]="true"
-                        styleClass="p-datatable-gridlines" [rows]="cntRegistros" [showCurrentPageReport]="true"
-                        [rowHover]="true" [paginator]="true" selectionMode="single" showGridlines class="w-12"
-                        [tableStyle]="{'min-width': '50rem' }"
-                        currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" dataKey="id"
-                        editMode="row" responsiveLayout="scroll" [showCurrentPageReport]="true"
-                        [resizableColumns]="true" [rowsPerPageOptions]="[ 5,10, 25, 50]" [scrollable]="true"
-                        scrollDirection="horizontal" [scrollHeight]="'auto'">
-                        <ng-template #header>
-                            <tr>
-                                <th class="w-1">Acciones</th>
-                                <th>Nro</th>
-                                <th>Compañia</th>
-                                <th>Sucursal</th>
-                                <th>Gerencia</th>
-                                <th>Centro De Costo</th>
-                                <th>Perfil</th>
-                            </tr>
-                        </ng-template>
-                        <ng-template #body let-data let-editing="editing" let-ri="rowIndex">
-                            <tr [pEditableRow]="data">
-                                <td>
-                                    <div class="flex items-center justify-center gap-2">
-                                        <p-button *ngIf="!editing" pButton pRipple type="button" severity="danger"
-                                            icon="pi pi-minus" text rounded
-                                            (onClick)="btnEliminarYReordenarDetallePerfiles(data.value.uuidv4)"></p-button>
-                                    </div>
-                                </td>
-                                <td [pEditableColumn]="data.value.ordenVista" pEditableColumnField="ordenVista">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            {{data.value.ordenVista}}
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.ordenVista}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td [pEditableColumn]="data.value.companiaCod" pEditableColumnField="companiaCod">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            <p-select placeholder="Seleccione" [options]="lstCompanias" appendTo="body"
-                                                optionLabel="descripcion" optionValue="codigo"
-                                                (onChange)="onAsignarDescripcionDetalle($event, data,'COMPANIA')"
-                                                formControlName="companiaCod" [style]="{'width':'100%', }" />
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.companiaNom}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td [pEditableColumn]="data.value.sucursalCod" pEditableColumnField="sucursalCod">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            <p-select placeholder="Seleccione" [options]="lstEstados" appendTo="body"
-                                                optionLabel="descripcion" optionValue="codigo"
-                                                (onChange)="onAsignarDescripcionDetalle($event, data,'SUCURSAL')"
-                                                formControlName="sucursalCod" [style]="{'width':'100%'}" />
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.sucursalNom}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td [pEditableColumn]="data.value.gerenciaCod" pEditableColumnField="gerenciaCod">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            <p-select placeholder="Seleccione" [options]="lstEstados" appendTo="body"
-                                                optionLabel="descripcion" optionValue="codigo"
-                                                (onChange)="onAsignarDescripcionDetalle($event, data,'GERENCIA')"
-                                                formControlName="gerenciaCod" [style]="{'width':'100%'}" />
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.gerenciaNom}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td [pEditableColumn]="data.value.centroCostoCod" pEditableColumnField="centroCostoCod">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            <p-select placeholder="Seleccione" [options]="lstEstados" appendTo="body"
-                                                optionLabel="descripcion" optionValue="codigo"
-                                                (onChange)="onAsignarDescripcionDetalle($event, data,'CENTROCOSTO')"
-                                                formControlName="centroCostoCod" [style]="{'width':'100%'}" />
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.centroCostoNom}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                                <td [pEditableColumn]="data.value.perfilCod" pEditableColumnField="perfilCod">
-                                    <p-cellEditor>
-                                        <ng-template #input>
-                                            <p-select placeholder="Seleccione" [options]="lstEstados" appendTo="body"
-                                                optionLabel="descripcion" optionValue="codigo"
-                                                (onChange)="onAsignarDescripcionDetalle($event, data,'PERFIL')"
-                                                formControlName="perfilCod" [style]="{'width':'100%'}" />
-                                        </ng-template>
-                                        <ng-template #output>
-                                            {{data.value.perfilNom}}
-                                        </ng-template>
-                                    </p-cellEditor>
-                                </td>
-                            </tr>
-                        </ng-template>
-                        <ng-template #paginatorleft>
-                            <p-button label="Agregar línea" icon="pi pi-plus" text
-                                (onClick)="btnAgregarLineaDetallePerfiles()" />
-                        </ng-template>
-                    </p-table>
-                </div>
-                <div class=" col-3 div-accesos-perfil">
-                    <h4 class="w-12 mb-0 text-lg font-bold"> Accesos del Perfil</h4>
-                    <p-tree [value]="lstVisualizarPerfil" styleClass="w-full md:w-[30rem]" />
-                </div> -->
             </section>
         </p-fieldset>
     </div>
@@ -235,8 +118,8 @@
             <p-button
                 icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
                 class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
-                (onClick)="btnAccionForm()" />
+                (onClick)="btnConfirmarGuardarMantenimiento($event)" />
         </div>
     </ng-template>
-    <!-- </p-dialog> -->
 </p-dialog>
+<p-confirmdialog key="confirmarRegistroMantenimiento" />
