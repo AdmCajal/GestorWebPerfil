@@ -116,5 +116,49 @@ export class BaseComponenteBusqueda {
         return "pi-info-circle"
     }
 
+    obtenerColorAccionEstado(estado: string | number): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {
+        switch (estado) {
+            case 1:
+            case "1":
+            case "A":
+                return "danger";
+            case "0":
+            case 2:
+            case "I":
+                return "success";
+            default:
+                return "info";
+        }
+    }
+    obtenerDescAccionEstado(estado: string | number): string {
+        switch (estado) {
+            case "1":
+            case 1:
+            case "A":
+                return "Inactivar";
+            case "0":
+            case 0:
+            case 2:
+            case "I":
+                return "Activar";
+        }
+        return "pi-info-circle"
+    }
+
+    obtenerIconoAccionEstado(estado: string | number): string {
+        switch (estado) {
+            case "1":
+            case 1:
+            case "A":
+                return "pi-lock";
+            case "0":
+            case 0:
+            case 2:
+            case "I":
+                return "pi-unlock";
+        }
+        return "pi-info-circle"
+    }
+
 
 }

@@ -163,6 +163,8 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
                             icono: 'pi pi-building-columns'
                         }
                     ));
+                    console.log(response)
+                    console.log(menuFormato)
                     this._menuLayoutService.guardarMenu(menuFormato);
                     this._menuLayoutService.guardarMenuCredencialesOrdenadas();
 
