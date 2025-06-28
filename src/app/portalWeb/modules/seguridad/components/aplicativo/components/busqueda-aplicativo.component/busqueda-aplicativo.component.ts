@@ -45,17 +45,19 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
     }
     estructuraForm(): void {
         this.filtroForm = this._fb.group({
-            USUARIO: [{ value: '', disabled: this.bloquearComponente }],
-            NOMBRECOMPLETO: [{ value: '', disabled: this.bloquearComponente }],
-            ESTADO: [{ value: '', disabled: this.bloquearComponente }],
+
+            Nombre: [{ value: '', disabled: this.bloquearComponente }],
+            Estado: [{ value: '', disabled: this.bloquearComponente }],
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
     obtenerDatosSelect(): void {
+        const optTodos = { descripcion: 'TODOS', codigo: '' };
+
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
         }).subscribe(resp => {
-            this.lstEstados = [...resp.estados];
+            this.lstEstados = [optTodos, ...resp.estados];
         });
     }
 
@@ -65,48 +67,29 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this.filtroForm.disable();
 
         this.lstBusqueda = [];
+        this._PerfilUsuarioService.obtenerAplicativos(this.filtroForm.value).pipe(
+            tap((consultaRepsonse: ResponseApi) => {
+                if (consultaRepsonse.success) {
 
-        this.lstBusqueda = [
-            {
-                nombreAplicativo: 'Spring',
-                descripcion: 'Aplicativo ERP',
-                baseDatos: 'BD_SPRING_PRODUCCION',
-                estado: 'A',
-                estadoDesc: 'Activo'
-            },
-            {
-                nombreAplicativo: 'HCE',
-                descripcion: 'Aplicativo ERP',
-                baseDatos: 'BD_HCE_PRODUCCION',
-                estado: 'A',
-                estadoDesc: 'Activo'
-            }
-        ]
-        this.bloquearComponente = false;
-        this.barraBusqueda = false;
-        this.filtroForm.enable();
-        // this._PerfilUsuarioService.obtenerUsuarios(this.filtroForm.value).pipe(
-        //     tap((consultaRepsonse: ResponseApi) => {
-        //         if (consultaRepsonse.success) {
+                    this.lstBusqueda = [...consultaRepsonse.data];
+                    console.log(this.lstBusqueda)
 
-        //             this.lstBusqueda = [...consultaRepsonse.data];
-
-        //             this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
-        //             return;
-        //         } else {
-        //             this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
-        //         }
-        //     }), catchError((error) => {
-        //         this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-        //         console.error(`Error al buscar. ${error}`);
-        //         return of(null);
-        //     }),
-        //     finalize(() => {
-        //         this.bloquearComponente = false;
-        //         this.barraBusqueda = false;
-        //         this.filtroForm.enable();
-        //     })
-        // ).subscribe();
+                    this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
+                    return;
+                } else {
+                    this.MensajeToastComun('notification', 'warn', 'Advertencia', consultaRepsonse.mensaje);
+                }
+            }), catchError((error) => {
+                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                console.error(`Error al buscar. ${error}`);
+                return of(null);
+            }),
+            finalize(() => {
+                this.bloquearComponente = false;
+                this.barraBusqueda = false;
+                this.filtroForm.enable();
+            })
+        ).subscribe();
     }
     override inactivarRegistro(registro: any): void {
         this.bloquearComponente = true;
@@ -145,6 +128,27 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
         this._MantenimientoUsuario.estructuraForm();
         this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+
+        forkJoin({
+            modulos: this._PerfilUsuarioService.obtenerJerarquias(registro)
+        }).subscribe(resp => {
+            console.log(resp.modulos.data);
+            
+            const moduloFormato: any[] = resp.modulos.data.map((m: any) => (
+                {
+                    titulo: m.NombreIndentado,
+                    ordenModulo: m.NombreIndentado,
+                    nombre: m.NombreIndentado,
+                    url: m.UrlOpcion,
+                    nivelModulo: m.Orden,
+                    id_menu: m.AplicacionCodigo + m.Grupo + m.Concepto,
+                    icono: 'pi pi-building-columns'
+                }
+            ));
+            
+
+        });
+
     }
 
     rptaMantenimiento(respuesta: any): void {

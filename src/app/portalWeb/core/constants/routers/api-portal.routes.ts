@@ -41,12 +41,15 @@ export const API_PORTAL_ROUTES = {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListaUsuario`,
         LISTAR_PERFIL: `${API_CUERPO.SEGURIDAD}/ListarComboPerfil`,
         MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoUsuario/`,
-
     },
     COMPANIA: {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListarCompania`,
         MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoCompania/`,
     },
-
+    APLICATIVO: {
+        LISTAR: `${API_CUERPO.SEGURIDAD}/ListarSistema`,
+        MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoSistema/`,
+        LISTAR_JERAQUIAS: `${API_CUERPO.SEGURIDAD}/ListarOpcionJerarquia`,
+    },
 
 }

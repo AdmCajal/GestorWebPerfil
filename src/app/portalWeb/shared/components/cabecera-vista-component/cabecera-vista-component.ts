@@ -21,8 +21,8 @@ import { SecurityService } from '../../../security/services/Security.service';
         <h3>{{'' + breadcrumb}} </h3>
 
         <div class="flex flex-wrap gap-2">
-            <p-button icon="pi pi-plus" label="Nuevo" raised (onClick)="btnNuevo()" />
-            <p-button type="submit" icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()" />
+            <p-button icon="pi pi-plus" label="Nuevo" raised (onClick)="btnMantenimientoFormulario()" />
+            <p-button type="submit" icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()"  />
             <p-button icon="pi pi-download" label="Exportar" severity="contrast" raised (onClick)="btnExportar()" />
         </div>
     </div>
@@ -31,6 +31,7 @@ import { SecurityService } from '../../../security/services/Security.service';
     `
 })
 export class CabeceraVistaComponent implements OnInit {
+    @ViewChild('botonBuscar') botonBuscar: any;
 
 
     breadcrumb: string | undefined;
@@ -47,7 +48,12 @@ export class CabeceraVistaComponent implements OnInit {
         this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb']  //this.activatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
     }
 
-    btnNuevo(): void {
+    @HostListener('document:keydown.enter', ['$event'])
+    handleEnter(event: KeyboardEvent) {
+        this.btnBuscar();
+    }
+
+    btnMantenimientoFormulario(): void {
         this.componente.btnMantenimientoFormulario('AGREGAR');
     }
 

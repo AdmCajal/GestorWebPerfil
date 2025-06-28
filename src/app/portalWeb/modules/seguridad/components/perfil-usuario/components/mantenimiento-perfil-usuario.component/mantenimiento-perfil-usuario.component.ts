@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
@@ -425,4 +425,10 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         this.aplicativoSeleccionado = [...data];
         this.MensajeToastComun('notification', 'success', 'Correcto', 'Módulos obtenidos');
     }
+    @HostListener('document:keydown.enter', ['$event'])
+    handleEnter(event: KeyboardEvent) {
+        this.guardarMantenimiento();
+    }
+
+
 }

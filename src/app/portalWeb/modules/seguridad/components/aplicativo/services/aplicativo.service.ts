@@ -14,10 +14,22 @@ export class AplicativoService {
 
     constructor(private _http: HttpClient, private _encryptService: EncryptService, private _configService: ConfigService) { }
 
-    obtenerUsuarios(filtro: any): Observable<ResponseApi> {
+    obtenerAplicativos(filtro: any): Observable<ResponseApi> {
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {
-                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR}`;
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.APLICATIVO.LISTAR}`;
+                return this._http.post<ResponseApi>(this.apiUrl, filtro);
+            }),
+            catchError(error => {
+                console.error(`Error al buscar usuarios. ${error}`);
+                return throwError(error);
+            })
+        )
+    }
+    obtenerJerarquias(filtro: any): Observable<ResponseApi> {
+        return from(this._configService.UrlApiPortal()).pipe(
+            switchMap(apiUrl => {
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.APLICATIVO.LISTAR_JERAQUIAS}`;
                 return this._http.post<ResponseApi>(this.apiUrl, filtro);
             }),
             catchError(error => {
@@ -31,7 +43,7 @@ export class AplicativoService {
 
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {
-                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.MANTENIMIENTO}${codigo}`;
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.APLICATIVO.MANTENIMIENTO}${codigo}`;
                 return this._http.post<ResponseApi>(this.apiUrl, obj);
             }),
             catchError(error => {
@@ -41,17 +53,4 @@ export class AplicativoService {
         )
     }
 
-    obtenerPerfiles(filtro: any): Observable<any> {
-        return from(this._configService.UrlApiPortal()).pipe(
-            switchMap(apiUrl => {
-                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.USUARIO.LISTAR_PERFIL}`;
-                return this._http.post<ResponseApi>(this.apiUrl, filtro);
-            }),
-            catchError(error => {
-                console.error(`Error al buscar usuarios. ${error}`);
-                return throwError(error);
-            })
-        )
-    }
-    
 }

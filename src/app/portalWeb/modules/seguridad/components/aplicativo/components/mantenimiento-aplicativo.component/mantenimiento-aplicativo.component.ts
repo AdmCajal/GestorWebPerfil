@@ -57,8 +57,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.mantenimientoForm = this._fb.group({
             nombreAplicativo: [{ value: '', disabled: this.bloquearComponente }],
             descripcion: [{ value: '', disabled: this.bloquearComponente }],
-            baseDatos: [{ value: '', disabled: this.bloquearComponente }],
-            estado: [{ value: '', disabled: this.bloquearComponente }]
+            urlSistema: [{ value: '', disabled: this.bloquearComponente }],
+            estado: [{ value: 1, disabled: this.bloquearComponente }]
 
         });
     }
@@ -74,6 +74,7 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
         });
     }
+
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -112,8 +113,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         const nodoAnterior: ModuloAplicativo = evento?.dropNode;
 
         if (nodoIngreso) {
-            const tipoIngreso = nodoIngreso.tipoNodo;
-            const tipoDestino = nodoAnterior.tipoNodo;
+            const tipoIngreso = nodoIngreso?.tipoNodo;
+            const tipoDestino = nodoAnterior?.tipoNodo;
             this.nodoModuloSeleccionado.esVisible = true;
             this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
                 nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
@@ -128,6 +129,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
         this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
         this.nodoModuloSeleccionado.nodo = nodoIngreso;
+
+        console.log(JSON.stringify(this.lstModulosAsignados))
     }
 
     onDialogNodoOptFormulario(): void {
@@ -172,5 +175,6 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: 'A', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
         ]
     }
+
 
 }

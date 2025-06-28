@@ -17,7 +17,7 @@ export class BaseComponenteMantenimiento {
     position: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright' = 'top';
 
     breadcrumb: string | undefined;
-    accion: 'AGREGAR' | 'EDITAR' | 'VER' | undefined;
+    accion: string | undefined;
     mantenimientoForm: FormGroup;
 
     lstEstados: ComboItem[] = [];
