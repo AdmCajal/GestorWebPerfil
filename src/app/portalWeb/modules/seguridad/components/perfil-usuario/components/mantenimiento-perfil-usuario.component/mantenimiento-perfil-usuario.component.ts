@@ -187,6 +187,10 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         });
     }
 
+    override obtenerDatosMantenimiento(): void {
+
+    }
+
     get optDetallePerfiles(): FormArray<any> {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
@@ -424,10 +428,6 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         ];
         this.aplicativoSeleccionado = [...data];
         this.MensajeToastComun('notification', 'success', 'Correcto', 'Módulos obtenidos');
-    }
-    @HostListener('document:keydown.enter', ['$event'])
-    handleEnter(event: KeyboardEvent) {
-        this.guardarMantenimiento();
     }
 
 

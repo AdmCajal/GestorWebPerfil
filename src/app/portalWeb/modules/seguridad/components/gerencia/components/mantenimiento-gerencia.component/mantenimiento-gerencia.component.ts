@@ -61,6 +61,7 @@ export class MantenimientoGerencia extends BaseComponenteMantenimiento implement
 
         });
     }
+    override obtenerDatosMantenimiento(): void { }
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;

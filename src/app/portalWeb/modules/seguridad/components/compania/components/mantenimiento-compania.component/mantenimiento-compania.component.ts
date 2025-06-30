@@ -124,7 +124,7 @@ export class MantenimientoCompania extends BaseComponenteMantenimiento implement
             this.lstDepartamentos = [...dataDepartamentos];
         });
     }
-
+    override obtenerDatosMantenimiento(): void { }
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;

@@ -95,6 +95,21 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
 
         });
     }
+    obtenerDatosSelect(): void {
+        forkJoin({
+            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
+            companias: this._CompaniaService.obtener({})
+        }).subscribe(resp => {
+            const dataEstados = resp.estados?.map((ele: any) => ({
+                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
+            }));
+            this.lstEstados = [...dataEstados];
+
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompanias = [...dataCompanias];
+        });
+    }
+    override obtenerDatosMantenimiento(): void { }
     get optDetallePerfiles(): FormArray<any> {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
@@ -228,20 +243,7 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         ];
     }
 
-    obtenerDatosSelect(): void {
-        forkJoin({
-            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            companias: this._CompaniaService.obtener({})
-        }).subscribe(resp => {
-            const dataEstados = resp.estados?.map((ele: any) => ({
-                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
-            }));
-            this.lstEstados = [...dataEstados];
 
-            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
-            this.lstCompanias = [...dataCompanias];
-        });
-    }
 
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;

@@ -62,7 +62,7 @@ export class MantenimientoSucursal extends BaseComponenteMantenimiento implement
             this.lstPerfiles = [...dataPerfiles];
         });
     }
-
+    override obtenerDatosMantenimiento(): void { }
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.mantenimientoForm.disable();

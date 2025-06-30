@@ -3,6 +3,7 @@ export interface AcccionesMantenimientoComponente {
 
     estructuraForm(): void;
     obtenerDatosSelect(): void;
+    obtenerDatosMantenimiento(): void;
 
-    guardarMantenimiento(): void; 
+    guardarMantenimiento(): void;
 }
