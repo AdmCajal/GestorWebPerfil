@@ -142,7 +142,7 @@ export class BaseComponenteBusqueda {
             case "I":
                 return "Activar";
         }
-        return "pi-info-circle"
+        return "Sin Desc Estado"
     }
 
     obtenerIconoAccionEstado(estado: string | number): string {

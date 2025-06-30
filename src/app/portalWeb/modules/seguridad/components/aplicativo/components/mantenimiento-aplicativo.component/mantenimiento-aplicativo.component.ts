@@ -39,6 +39,7 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
     nodoModuloSeleccionado: NodoSeleccionadoModulo = {
         esVisible: false, tituloDialog: '', tipo: '', nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
     };
+    comentarioModulos: string = 'Agregue un módulo o formulario...';
 
     constructor(override _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: AplicativoService,
@@ -56,13 +57,14 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
     }
 
     override estructuraForm(): void {
+        this.comentarioModulos = 'Agregue un módulo o formulario...';
+
         this.mantenimientoForm = this._fb.group({
             Sistema: [{ value: '', disabled: this.bloquearComponente }],
             Nombre: [{ value: '', disabled: this.bloquearComponente }],
             Descripcion: [{ value: '', disabled: this.bloquearComponente }],
             UrlSistema: [{ value: '', disabled: this.bloquearComponente }],
             Estado: [{ value: 1, disabled: this.bloquearComponente }]
-
         });
     }
 
@@ -112,14 +114,21 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
     }
 
     override obtenerDatosMantenimiento(): void {
+        this.comentarioModulos = 'Obteniendo módulos de aplicativo...';
+        this.lstModulosAsignados = [];
         forkJoin({
             modulos: this._PerfilUsuarioService.obtenerJerarquias({ Codigo: this.mantenimientoForm.get('Sistema')?.value || '' })
         }).subscribe(resp => {
-            if (resp.modulos.data) {
-                console.log(resp.modulos.data.result);
-                this.lstModulosAsignados = [...resp.modulos.data.result];
-            }
+            console.log(resp.modulos)
+            const modulos = resp.modulos;
 
+            if (modulos.success) {
+                this.lstModulosAsignados = [...resp.modulos.data?.result];
+                if (this.lstModulosAsignados.length == 0) this.comentarioModulos = 'No se encontró información...';
+            } else {
+                this.comentarioModulos = 'No se encontró información...';
+                this.MensajeToastComun('notification', 'error', 'Error', `${modulos.mensaje}`); return;
+            }
         });
     }
 

@@ -58,7 +58,8 @@
 
                             <div class=" w-12 flex justify-content-center align-items-top   ">
                                 <p class="flex flex-nowrap justify-content-between  w-10  ">
-                                    <span class="header-label ">Agregue un módulo o formulario...</span>
+                                    <span class="header-label ">{{comentarioModulos}}
+                                    </span>
                                 </p>
                             </div>
 
@@ -162,3 +163,4 @@
     </ng-template>
 </p-dialog>
 <p-confirmdialog key="confirmarRegistroMantenimiento" />
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-right"></p-toast>

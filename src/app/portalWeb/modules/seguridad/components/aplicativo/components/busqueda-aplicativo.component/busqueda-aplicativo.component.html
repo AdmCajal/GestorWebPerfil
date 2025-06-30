@@ -53,9 +53,9 @@
                     <p-button title="Editar Registro" icon="pi pi-pencil" rounded outlined
                         styleClass="border-yellow-500 text-yellow-500"
                         (onClick)="btnMantenimientoFormulario('EDITAR', data)" />
-                    <p-button title="{{obtenerDescAccionEstado(data.estado)}} Registro"
-                        icon="pi {{obtenerIconoAccionEstado(data.estado)}}"
-                        [severity]="obtenerColorAccionEstado(data.estado)" rounded outlined
+                    <p-button title="{{obtenerDescAccionEstado(data.Estado)}} Registro"
+                        icon="pi {{obtenerIconoAccionEstado(data.Estado)}}"
+                        [severity]="obtenerColorAccionEstado(data.Estado)" rounded outlined
                         (onClick)="btnInactivarRegistro($event, data)" />
                 </td>
                 <td>{{data.Nombre | titlecase}}</td>
