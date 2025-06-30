@@ -45,7 +45,7 @@ export class MantenimientoMiscelaneo extends BaseComponenteMantenimiento impleme
         this.estructuraForm();
     }
 
-    estructuraForm(): void {
+    override estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
             nroDocumento: [{ value: '', disabled: this.bloquearComponente }],
             nombres: [{ value: '', disabled: this.bloquearComponente }],

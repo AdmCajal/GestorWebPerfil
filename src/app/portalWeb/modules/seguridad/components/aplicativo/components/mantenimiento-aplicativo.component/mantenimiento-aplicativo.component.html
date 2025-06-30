@@ -4,25 +4,25 @@
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
     <div class="flex flex-wrap md:flex-nowrap gap-2">
         <p-fieldset legend="Datos Generales" class="col-3">
-            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
+            <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Aplicativo <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
-                        formControlName="nombreAplicativo" />
+                        formControlName="Nombre" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Descripción <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="descripcion" />
+                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="Descripcion" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Url APlicativo <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="urlSistema" />
+                    <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="UrlSistema" />
                 </div>
 
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        placeholder="Seleccione una opción" formControlName="estado"></p-dropdown>
+                        placeholder="Seleccione una opción" formControlName="Estado"></p-dropdown>
                 </div>
             </form>
         </p-fieldset>
@@ -134,15 +134,24 @@
             <input pInputText id="name1" placeholder="Ingrese nombre de {{nodoModuloSeleccionado.tipo}}" type="text"
                 [(ngModel)]="nodoModuloSeleccionado.nodo.label" [ngModelOptions]="{standalone: true}" />
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-            <label for="name1">Icono <span class="font-semibold text-red-500">*</span></label>
-            <input pInputText id="name1" placeholder="Obligatorio" type="text"
-                [(ngModel)]="nodoModuloSeleccionado.nodo.icono" [ngModelOptions]="{standalone: true}" />
-        </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+        <div
+            class="flex flex-col gap-2 pl-2 pr-2 md:col-{{nodoModuloSeleccionado.nodo.tipoNodo == 'A' ? '6':'12'}} col-12 ">
             <label for="name1">url <span class="font-semibold text-red-500">*</span></label>
             <input pInputText id="name1" placeholder="Obligatorio" type="text"
                 [(ngModel)]="nodoModuloSeleccionado.nodo.url" [ngModelOptions]="{standalone: true}" />
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 " *ngIf="nodoModuloSeleccionado.nodo.tipoNodo == 'A'">
+            <label for="name1">Icono <span class="font-semibold text-red-500">*</span></label>
+            <p-select appendTo="body" [options]="lstIconos" optionLabel="descripcion" optionValue="codigo"
+                placeholder="Seleccione una opción" [(ngModel)]="nodoModuloSeleccionado.nodo.icon"
+                [ngModelOptions]="{standalone: true}">
+                <ng-template let-data #item>
+                    <div class="flex items-center gap-2">
+                        <i class="{{data.codigo}}"></i>
+                        <div>{{ data.descripcion }}</div>
+                    </div>
+                </ng-template>
+            </p-select>
         </div>
     </div>
     <ng-template #footer>

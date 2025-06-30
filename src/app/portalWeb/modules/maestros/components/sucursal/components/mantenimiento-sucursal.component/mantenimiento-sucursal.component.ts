@@ -50,7 +50,7 @@ export class MantenimientoSucursal extends BaseComponenteMantenimiento implement
         this.estructuraForm();
     }
 
-    estructuraForm(): void {
+    override estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
             SedCodigo: [{ value: '', disabled: this.bloquearComponente }, [Validators.required, Validators.minLength(3)]],
             SedDescripcion: [{ value: '', disabled: this.bloquearComponente }, [Validators.required]],

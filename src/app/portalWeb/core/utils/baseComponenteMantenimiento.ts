@@ -4,6 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { SecurityService } from '../../security/services/Security.service';
 import { ActivatedRoute } from '@angular/router';
 import { ComboItem } from '../models/interfaces/comboItem';
+import { ACCION_FORMULARIO } from '../constants/acciones-formulario';
 
 @Injectable({
     providedIn: 'root'
@@ -39,6 +40,7 @@ export class BaseComponenteMantenimiento {
     public btnLogAuditoria(): void {
         this.visualizarLogMoficaciones = this.visualizarLogMoficaciones == true ? false : true;
     }
+    protected estructuraForm(): void { }
 
     protected btnConfirmarGuardarMantenimiento(event: Event) {
         console.log(event.target as EventTarget)
@@ -69,4 +71,29 @@ export class BaseComponenteMantenimiento {
         });
     }
     protected guardarMantenimiento(): void { }
+
+    public IniciarMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+        this.visualizarForm = true;
+        this.barraBusqueda = false;
+        this.bloquearComponente = false;
+        this.accion = accion;
+
+
+        switch (accion) {
+            case ACCION_FORMULARIO.AGREGAR:
+                this.estructuraForm();
+                break;
+            case ACCION_FORMULARIO.EDITAR:
+                this.mantenimientoForm.patchValue(registro);
+                this.obtenerDatosMantenimiento();
+                break;
+            case ACCION_FORMULARIO.VER:
+                this.bloquearComponente = true;
+                this.mantenimientoForm.patchValue(registro);
+                this.obtenerDatosMantenimiento();
+                break;
+        }
+    }
+
+    protected obtenerDatosMantenimiento(): void { }
 }

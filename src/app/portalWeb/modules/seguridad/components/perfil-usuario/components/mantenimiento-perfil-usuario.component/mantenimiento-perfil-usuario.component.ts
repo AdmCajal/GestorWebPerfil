@@ -150,7 +150,7 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         this.estructuraForm();
     }
 
-    estructuraForm(): void {
+    override estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
             empleadoBusqueda: [{ value: '', disabled: this.bloquearComponente }],
             PERSONA: [{ value: '', disabled: this.bloquearComponente }],

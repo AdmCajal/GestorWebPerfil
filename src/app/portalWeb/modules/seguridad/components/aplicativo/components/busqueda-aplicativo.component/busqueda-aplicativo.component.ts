@@ -17,6 +17,7 @@ import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-for
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { AplicativoService } from '../../services/aplicativo.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 @Component({
     selector: 'app-busqueda-aplicativo',
     standalone: true,
@@ -27,7 +28,7 @@ import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseCompone
 })
 export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoAplicativo) _MantenimientoUsuario!: MantenimientoAplicativo;
-    lstEstados: any[] = [];
+    lstEstados: ComboItem[] = [];
 
     constructor(
         private _PerfilUsuarioService: AplicativoService,
@@ -70,10 +71,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this._PerfilUsuarioService.obtenerAplicativos(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
-
                     this.lstBusqueda = [...consultaRepsonse.data];
-                    console.log(this.lstBusqueda)
-
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
                 } else {
@@ -123,32 +121,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        this._MantenimientoUsuario.estructuraForm();
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
-
-        forkJoin({
-            modulos: this._PerfilUsuarioService.obtenerJerarquias(registro)
-        }).subscribe(resp => {
-            console.log(resp.modulos.data);
-            
-            const moduloFormato: any[] = resp.modulos.data.map((m: any) => (
-                {
-                    titulo: m.NombreIndentado,
-                    ordenModulo: m.NombreIndentado,
-                    nombre: m.NombreIndentado,
-                    url: m.UrlOpcion,
-                    nivelModulo: m.Orden,
-                    id_menu: m.AplicacionCodigo + m.Grupo + m.Concepto,
-                    icono: 'pi pi-building-columns'
-                }
-            ));
-            
-
-        });
-
+        this._MantenimientoUsuario.IniciarMantenimientoFormulario(accion, registro);
     }
 
     rptaMantenimiento(respuesta: any): void {

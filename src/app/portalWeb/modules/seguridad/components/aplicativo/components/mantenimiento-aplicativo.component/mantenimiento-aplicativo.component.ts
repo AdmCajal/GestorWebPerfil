@@ -31,6 +31,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
 
 
+    lstIconos: ComboItem[] = [];
+
     lstModulosDisponibles: ModuloAplicativo[] = [];
     lstModulosAsignados: ModuloAplicativo[] = [];
 
@@ -53,12 +55,13 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.AgregarlstModulosDisponibles();
     }
 
-    estructuraForm(): void {
+    override estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
-            nombreAplicativo: [{ value: '', disabled: this.bloquearComponente }],
-            descripcion: [{ value: '', disabled: this.bloquearComponente }],
-            urlSistema: [{ value: '', disabled: this.bloquearComponente }],
-            estado: [{ value: 1, disabled: this.bloquearComponente }]
+            Sistema: [{ value: '', disabled: this.bloquearComponente }],
+            Nombre: [{ value: '', disabled: this.bloquearComponente }],
+            Descripcion: [{ value: '', disabled: this.bloquearComponente }],
+            UrlSistema: [{ value: '', disabled: this.bloquearComponente }],
+            Estado: [{ value: 1, disabled: this.bloquearComponente }]
 
         });
     }
@@ -71,6 +74,51 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
             }));
             this.lstEstados = [...dataEstados];
+
+            this.lstIconos = [
+                { codigo: 'pi pi-user-plus', descripcion: 'Agregar usuario' },
+                { codigo: 'pi pi-user-plus', descripcion: 'Agregar usuario' },
+                { codigo: 'pi pi-plus-circle', descripcion: 'Agregar (círculo)' },
+                { codigo: 'pi pi-plus', descripcion: 'Agregar' },
+                { codigo: 'pi pi-folder-plus', descripcion: 'Agregar carpeta' },
+                { codigo: 'pi pi-file-plus', descripcion: 'Agregar archivo' },
+                { codigo: 'pi pi-cart-plus', descripcion: 'Agregar al carrito' },
+                { codigo: 'pi pi-calendar-plus', descripcion: 'Agregar evento' },
+                { codigo: 'pi pi-search-plus', descripcion: 'Ampliar búsqueda' },
+                { codigo: 'pi pi-file-edit', descripcion: 'Editar archivo' },
+                { codigo: 'pi pi-pen-to-square', descripcion: 'Editar (cuadro)' },
+                { codigo: 'pi pi-pencil', descripcion: 'Editar' },
+                { codigo: 'pi pi-user-edit', descripcion: 'Editar usuario' },
+                { codigo: 'pi pi-minus', descripcion: 'Eliminar' },
+                { codigo: 'pi pi-minus-circle', descripcion: 'Eliminar (círculo)' },
+                { codigo: 'pi pi-search-minus', descripcion: 'Reducir búsqueda' },
+                { codigo: 'pi pi-user-minus', descripcion: 'Eliminar usuario' },
+                { codigo: 'pi pi-calendar-minus', descripcion: 'Eliminar evento' },
+                { codigo: 'pi pi-cart-minus', descripcion: 'Eliminar del carrito' },
+                { codigo: 'pi pi-trash', descripcion: 'Papelera / Eliminar' },
+                { codigo: 'pi pi-check', descripcion: 'Aceptar / Confirmar' },
+                { codigo: 'pi pi-check-circle', descripcion: 'Confirmar (círculo)' },
+                { codigo: 'pi pi-check-square', descripcion: 'Confirmar (cuadro)' },
+                { codigo: 'pi pi-file-check', descripcion: 'Archivo verificado' },
+                { codigo: 'pi pi-verified', descripcion: 'Verificado' },
+                { codigo: 'pi pi-clone', descripcion: 'Duplicar / Clonar' },
+                { codigo: 'pi pi-cog', descripcion: 'Configuración' },
+                { codigo: 'pi pi-download', descripcion: 'Descargar' },
+                { codigo: 'pi pi-upload', descripcion: 'Subir archivo' },
+                { codigo: 'pi pi-envelope', descripcion: 'Correo / Mensaje' },
+                { codigo: 'pi pi-exclamation-circle', descripcion: 'Advertencia / Alerta' },
+            ];
+        });
+    }
+
+    override obtenerDatosMantenimiento(): void {
+        forkJoin({
+            modulos: this._PerfilUsuarioService.obtenerJerarquias({ Codigo: this.mantenimientoForm.get('Sistema')?.value || '' })
+        }).subscribe(resp => {
+            if (resp.modulos.data) {
+                console.log(resp.modulos.data.result);
+                this.lstModulosAsignados = [...resp.modulos.data.result];
+            }
 
         });
     }
@@ -110,14 +158,23 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.AgregarlstModulosDisponibles();
 
         const nodoIngreso: ModuloAplicativo = evento?.dragNode;
-        const nodoAnterior: ModuloAplicativo = evento?.dropNode;
 
         if (nodoIngreso) {
-            const tipoIngreso = nodoIngreso?.tipoNodo;
-            const tipoDestino = nodoAnterior?.tipoNodo;
             this.nodoModuloSeleccionado.esVisible = true;
-            this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
-                nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
+
+            switch (nodoIngreso.tipoNodo) {
+                case 'M':
+                    nodoIngreso.icon = 'pi pi-folder-open';
+                    this.nodoModuloSeleccionado.tipo = 'módulo';
+                    break;
+                case 'F':
+                    nodoIngreso.icon = nodoIngreso.icon.replace('plus', 'check');
+                    this.nodoModuloSeleccionado.tipo = 'formulario';
+                    break;
+                case 'A':
+                    this.nodoModuloSeleccionado.tipo = 'acción';
+                    break;
+            }
             this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
             this.nodoModuloSeleccionado.nodo = nodoIngreso;
         }
@@ -144,9 +201,6 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             if (this.nodoModuloSeleccionado.nodo.codigoObj.length == 0) {
                 this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el código de objeto`); return;
             }
-            if (this.nodoModuloSeleccionado.nodo.icono.length == 0) {
-                this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el icono`); return;
-            }
 
             switch (tipoCod) {
                 case 'M':
@@ -157,6 +211,9 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                     }
                     break;
                 case 'A':
+                    // if (this.nodoModuloSeleccionado.nodo.icono.length == 0) {
+                    //     this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el icono`); return;
+                    // }
                     break;
                 default:
                     this.MensajeToastComun('notification', 'warn', 'Advertencia', `Tipo de opción no válida: ${tipoCod}`); return;
