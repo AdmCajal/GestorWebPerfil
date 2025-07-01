@@ -6,6 +6,11 @@
         <p-fieldset legend="Datos Generales" class="col-3">
             <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
+                    <label for="name1">Cod. Aplicativo <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
+                        formControlName="Sistema" maxlength="4"/>
+                </div>
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Aplicativo <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
                         formControlName="Nombre" />
@@ -31,7 +36,7 @@
                 <div class="col-3">
                     <p-tree [value]="lstModulosDisponibles" styleClass="w-full md:w-[30rem]" [draggableNodes]="true"
                         draggableScope="self" [droppableNodes]="true" droppableScope="self"
-                        (onNodeDrop)="AgregarlstModulosDisponibles()">
+                        (onNodeDrop)="onNodeDropEliminarNodo($event)">
                         <ng-template let-node #header>
                             <div class=" w-12 flex justify-content-center  ">
                                 <p class="flex flex-nowrap justify-content-between  w-12  ">
@@ -74,7 +79,7 @@
                                     *ngIf="node.esEditable && node.sobreEscribir" [pAutoFocus]="true" [fluid]="true">
                                 <p-button icon="pi pi-check" class="ml-2" raised severity="success" title="Aceptar"
                                     *ngIf="node.esEditable && node.sobreEscribir"
-                                    (onClick)="node.sobreEscribir = false" />
+                                    (onClick)="btnNodoCambioNombre(node)" />
                                 <p-button icon="pi pi-ellipsis-v" class="ml-2" raised severity="info" title="Opciones"
                                     *ngIf="node.esEditable && node.sobreEscribir"
                                     (onClick)="btnNodoSeleccionado(node)" />

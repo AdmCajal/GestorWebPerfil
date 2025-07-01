@@ -48,8 +48,10 @@ export const API_PORTAL_ROUTES = {
     },
     APLICATIVO: {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListarSistema`,
-        MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoSistema/`,
         LISTAR_JERAQUIAS: `${API_CUERPO.SEGURIDAD}/ListarOpcionJerarquia`,
+        MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoSistema/`,
+        MANTENIMIENTO_MODULO: `${API_CUERPO.SEGURIDAD}/MantenimientoOpcion/`,
+        MANTENIMIENTO_MODULO_MASSIVO: `${API_CUERPO.SEGURIDAD}/MantenimientoOpcionMasivo/`,
     },
 
 }

@@ -20,6 +20,7 @@ import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { AplicativoService } from '../../../aplicativo/services/aplicativo.service';
 
 @Component({
     selector: 'app-mantenimiento-perfil-usuario',
@@ -31,9 +32,8 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 })
 export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
-    lstUsuariosBusqueda: any[] = [];
-    lstPerfiles: ComboItem[] = [];
     lstCompanias: ComboItem[] = [];
+    lstAplicativos: ComboItem[] = [];
 
     lstaplicativosSeleccionados: TreeNode[] = [
         {
@@ -137,7 +137,7 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
     constructor(override _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _CompaniaService: CompaniaService,
-        private _PersonaService: PersonaService,
+        private _AplicativoService: AplicativoService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -171,8 +171,8 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
-            perfiles: this._PerfilUsuarioService.obtenerPerfiles({ ESTADO: 'A' }),
-            companias: this._CompaniaService.obtener({})
+            companias: this._CompaniaService.obtener({}),
+            aplicativos: this._AplicativoService.obtenerAplicativos({}),
         }).subscribe(resp => {
             const dataEstados = resp.estados?.map((ele: any) => ({
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
@@ -182,50 +182,13 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
             this.lstCompanias = [...dataCompanias];
 
-            const dataPerfiles: any[] = resp.perfiles.map((m: any) => ({ codigo: m.Codigo, descripcion: m.Descripcion }));
-            this.lstPerfiles = [...dataPerfiles];
+            const datAplicativos: any[] = resp.aplicativos?.data?.map((m: any) => ({ codigo: m.Sistema, descripcion: m.Nombre.trim() }));
+            this.lstAplicativos = [...datAplicativos];
         });
     }
 
-    override obtenerDatosMantenimiento(): void {
+    override obtenerDatosMantenimiento(): void { }
 
-    }
-
-    get optDetallePerfiles(): FormArray<any> {
-        return this.mantenimientoForm.get('detallePerfiles') as FormArray;
-    }
-
-    btnAgregarLineaDetallePerfiles(): void {
-        this.optDetallePerfiles.push(this._fb.group({
-            uuidv4: [uuidv4()],
-            ordenVista: [this.optDetallePerfiles.length + 1],
-            companiaCod: '0',
-            companiaNom: 'Seleccionar',
-            sucursalCod: '0',
-            sucursalNom: 'Seleccionar',
-            gerenciaCod: '0',
-            gerenciaNom: 'Seleccionar',
-            centroCostoCod: '0',
-            centroCostoNom: 'Seleccionar',
-            perfilCod: '0',
-            perfilNom: 'Seleccionar',
-        }));
-    }
-    btnEliminarYReordenarDetallePerfiles(codDetalle: number) {
-        let detalleArray = this.optDetallePerfiles;
-
-        let index = detalleArray.value.findIndex((detalle: any) => detalle.uuidv4 === codDetalle);
-
-        if (index >= 0) {
-            detalleArray.removeAt(index);
-
-            detalleArray.controls.forEach((detalle, i) => {
-                detalle.get('ordenVista')?.setValue(i + 1);
-            });
-        } else {
-            console.log(`No se encontró el detalle con codDetalle: ${codDetalle}`);
-        }
-    }
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
@@ -256,83 +219,9 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         ).subscribe();
 
     }
-    btnBuscarEmpleado(campo: string): void {
-        this.mantenimientoForm
-            .get(campo)
-            ?.valueChanges.pipe(
-                debounceTime(1000),
-                switchMap(res => {
-                    if (res.length >= 0) {
-                        if (res.length == 0) {
-                            this.mantenimientoForm.get('PERSONA')?.setValue('');
-                            this.mantenimientoForm.get('USUARIO')?.setValue('');
-                            this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue('');
-                            this.mantenimientoForm.get('CorreoElectronico')?.setValue('');
-                        }
-                        const filtroForm = {
-                            Documento: res.trim(),
-                            tipopersona: "N", // Natural
-                            SoloBeneficiarios: "0",
-                            UneuNegocioId: "0"
-                        }
-                        return this._PersonaService.obtener(filtroForm);
-                    }
-                    return [];
-                })
-            )
-            .subscribe((responseApi) => {
-                this.lstUsuariosBusqueda = [];
-                const dataResponse: any[] = responseApi.data;
-                if (dataResponse.length > 0) {
-                    const dataFormato = dataResponse.map(res => {
-                        return {
-                            ...res,
-                            visible: res.Documento.trim() + ' - ' + res.NombreCompleto.trim(),
-                        }
-                    });
-                    this.lstUsuariosBusqueda = [...dataFormato];
-                }
-            });
-    }
 
-    onEmpleadoSeleccionado(evento: any): void {
-        this.mantenimientoForm.get('PERSONA')?.setValue(evento.value.Persona);
-        this.mantenimientoForm.get('USUARIO')?.setValue(evento.value.Documento);
-        this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue(evento.value.NombreCompleto);
-        this.mantenimientoForm.get('CorreoElectronico')?.setValue(evento.value.CorreoInterno);
-
-        this.mantenimientoForm.get('empleadoBusqueda')?.setValue({ visible: evento.value.Documento });
-    }
-    onAsignarDescripcionDetalle(evento: any, detalle: FormGroup, tipo: string): void {
-        switch (tipo) {
-            case 'COMPANIA':
-                const companiSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(companiSeleccionado?.descripcion);
-                break;
-            case 'SUCURSAL':
-                const sucursalSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(sucursalSeleccionado?.descripcion);
-                break;
-            case 'GERENCIA':
-                const gerenciaSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(gerenciaSeleccionado?.descripcion);
-                break;
-            case 'CENTROCOSTO':
-                const centroCostoSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(centroCostoSeleccionado?.descripcion);
-                break;
-            case 'PERFIL':
-                const perfilSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(perfilSeleccionado?.descripcion);
-                break;
-            default:
-                this.MensajeToastComun('notification', 'error', 'Error', `el tipo: '${tipo}' no está considerado .`);
-                return;
-        }
-
-    }
     onAgregarAplicativoSeleccionado(): void {
-        const item = this.lstPerfiles.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
+        const item = this.lstAplicativos.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
 
         if (item) {
             const aplicativoAgregar: TreeNode = { key: item.codigo, label: item.descripcion };

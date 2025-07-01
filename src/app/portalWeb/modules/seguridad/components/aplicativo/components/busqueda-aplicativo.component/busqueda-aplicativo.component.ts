@@ -18,6 +18,7 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
 import { AplicativoService } from '../../services/aplicativo.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-registro';
 @Component({
     selector: 'app-busqueda-aplicativo',
     standalone: true,
@@ -31,7 +32,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
     lstEstados: ComboItem[] = [];
 
     constructor(
-        private _PerfilUsuarioService: AplicativoService,
+        private _AplicativoService: AplicativoService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -68,7 +69,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this.filtroForm.disable();
 
         this.lstBusqueda = [];
-        this._PerfilUsuarioService.obtenerAplicativos(this.filtroForm.value).pipe(
+        this._AplicativoService.obtenerAplicativos(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
                     this.lstBusqueda = [...consultaRepsonse.data];
@@ -95,8 +96,9 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this.filtroForm.disable();
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
-        registro.SedEstado = 2;
-        this._PerfilUsuarioService.mantenimiento(valorAccionServicio, registro).pipe(
+        registro.Estado = registro.Estado == ESTADO_REGISTRO.ACTIVO_NUM ? ESTADO_REGISTRO.INACTIVO_NUM : ESTADO_REGISTRO.ACTIVO_NUM;
+        
+        this._AplicativoService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
                     this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);

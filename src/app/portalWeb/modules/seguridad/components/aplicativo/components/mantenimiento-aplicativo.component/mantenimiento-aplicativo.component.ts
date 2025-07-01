@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
-import { catchError, finalize, forkJoin, of, tap } from 'rxjs';
+import { catchError, finalize, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
@@ -30,19 +30,25 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 export class MantenimientoAplicativo extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
 
-
+    @Output() override msjMantenimiento = new EventEmitter<any>();
     lstIconos: ComboItem[] = [];
 
     lstModulosDisponibles: ModuloAplicativo[] = [];
     lstModulosAsignados: ModuloAplicativo[] = [];
 
     nodoModuloSeleccionado: NodoSeleccionadoModulo = {
-        esVisible: false, tituloDialog: '', tipo: '', nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
+        esVisible: false,
+        tituloDialog: '',
+        tipo: '',
+        accionRealizar: ACCION_MANTENIMIENTO.AGREGAR,
+        nodoPadre: null,
+        nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
     };
+
     comentarioModulos: string = 'Agregue un módulo o formulario...';
 
     constructor(override _ActivatedRoute: ActivatedRoute,
-        private _PerfilUsuarioService: AplicativoService,
+        private _AplicativoService: AplicativoService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -58,9 +64,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
     override estructuraForm(): void {
         this.comentarioModulos = 'Agregue un módulo o formulario...';
-
         this.mantenimientoForm = this._fb.group({
-            Sistema: [{ value: '', disabled: this.bloquearComponente }],
+            Sistema: [{ value: this.generarCodigoAP(), disabled: this.bloquearComponente }, [Validators.maxLength(4)]],
             Nombre: [{ value: '', disabled: this.bloquearComponente }],
             Descripcion: [{ value: '', disabled: this.bloquearComponente }],
             UrlSistema: [{ value: '', disabled: this.bloquearComponente }],
@@ -110,16 +115,21 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                 { codigo: 'pi pi-envelope', descripcion: 'Correo / Mensaje' },
                 { codigo: 'pi pi-exclamation-circle', descripcion: 'Advertencia / Alerta' },
             ];
+
+
         });
     }
 
     override obtenerDatosMantenimiento(): void {
         this.comentarioModulos = 'Obteniendo módulos de aplicativo...';
+        const Sistema = this.mantenimientoForm.get('Sistema');
+        if (Sistema)
+            Sistema.disable();
+
         this.lstModulosAsignados = [];
         forkJoin({
-            modulos: this._PerfilUsuarioService.obtenerJerarquias({ Codigo: this.mantenimientoForm.get('Sistema')?.value || '' })
+            modulos: this._AplicativoService.obtenerJerarquias({ Codigo: this.mantenimientoForm.get('Sistema')?.value || '' })
         }).subscribe(resp => {
-            console.log(resp.modulos)
             const modulos = resp.modulos;
 
             if (modulos.success) {
@@ -137,39 +147,149 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        const valorAccionServicio = this.accion === ACCION_FORMULARIO.AGREGAR
+            ? ACCION_MANTENIMIENTO.AGREGAR
+            : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
-        this._PerfilUsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
-            tap((response: ResponseApi) => {
-                if (response.success) {
-                    this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
-                    this.visualizarForm = false;
-                    this.estructuraForm();
-                    this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
-                } else {
-                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
-                }
+        if (valorAccionServicio === ACCION_MANTENIMIENTO.AGREGAR) {
+            this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+                switchMap((response: ResponseApi) => {
+                    if (!response.success) {
+                        this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                        return of(response);
+                    } else {
 
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                return of(null);
-            }),
-            finalize(() => {
-                this.bloquearComponente = false;
-                this.barraBusqueda = false;
-                this.mantenimientoForm.enable();
-            })
-        ).subscribe();
+                        return this._AplicativoService.mantenimientoModulo('MASIVO', this.nodoModuloSeleccionado.accionRealizar, this.lstModulosAsignados);
+                    }
+                }),
+                tap((response: ResponseApi) => {
+                    if (response.success) {
+                        this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+                        this.visualizarForm = false;
+                        this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+                    } else {
+                        this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                    }
+                }), catchError((error) => {
+                    console.error(`Error. ${JSON.stringify(error)}`);
 
+                    if (error.message.includes('Http failure response')) {
+                        this.MensajeToastComun('notification', 'error', 'Sin respuesta', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
+                    } else {
+                        this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                    }
+                    console.error(`Error. ${JSON.stringify(error)}`);
+                    return of(error);
+                }),
+                finalize(() => {
+                    this.bloquearComponente = false;
+                    this.barraBusqueda = false;
+                    this.mantenimientoForm.enable();
+                })
+            ).subscribe();
+        }
+    }
+
+    // override guardarMantenimiento(): void {
+    //     this.bloquearComponente = true;
+    //     this.barraBusqueda = true;
+    //     this.mantenimientoForm.disable();
+
+    //     let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+
+    //     this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+    //         tap((response: ResponseApi) => {
+    //             if (response.success) {
+    //                 this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+    //                 this.visualizarForm = false;
+    //                 this.estructuraForm();
+    //                 this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+    //             } else {
+    //                 this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+    //             }
+
+    //         }), catchError((error) => {
+    //             this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+    //             return of(null);
+    //         }),
+    //         finalize(() => {
+    //             this.bloquearComponente = false;
+    //             this.barraBusqueda = false;
+    //             this.mantenimientoForm.enable();
+    //         })
+    //     ).subscribe();
+
+
+
+    //     if (valorAccionServicio == ACCION_MANTENIMIENTO.ACTUALIZAR) {
+    //         this._AplicativoService.mantenimientoModulo('MASIVO', this.nodoModuloSeleccionado.accionRealizar, this.lstModulosAsignados).pipe(
+    //             tap((response: ResponseApi) => {
+    //                 if (response.success) {
+    //                     this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+    //                     this.visualizarForm = false;
+    //                     this.estructuraForm();
+    //                     this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+    //                 } else {
+    //                     this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+    //                 }
+
+    //             }), catchError((error) => {
+    //                 this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+    //                 return of(null);
+    //             }),
+    //             finalize(() => {
+    //                 this.bloquearComponente = false;
+    //                 this.barraBusqueda = false;
+    //                 this.mantenimientoForm.enable();
+    //             })
+    //         ).subscribe();
+    //     }
+
+    // }
+    generarCodigoAP(): string {
+        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const aleatorio = Array.from({ length: 2 }, () =>
+            caracteres.charAt(Math.floor(Math.random() * caracteres.length))
+        ).join('');
+
+        return `AP${aleatorio}`;
+    }
+    onNodeDropEliminarNodo(evento: any): void {
+        this.AgregarlstModulosDisponibles();
+
+        const nodoIngreso: ModuloAplicativo = evento?.dragNode;
+        if (nodoIngreso) {
+            const nodoPadre = this.buscarNodoPadre(this.lstModulosAsignados, nodoIngreso);
+
+            if (nodoPadre)
+                nodoIngreso.IdOpcionPadre = nodoPadre.key;
+
+            this.nodoModuloSeleccionado.esVisible = false;
+            this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.ELIMINAR;
+            this.nodoModuloSeleccionado.nodo = nodoIngreso;
+            this.nodoModuloSeleccionado.nodoPadre = nodoPadre;
+            this.actualizarModulosAsignados();
+        }
     }
 
     onNodeDropLstModulosAsignados(evento: any): void {
         this.AgregarlstModulosDisponibles();
 
         const nodoIngreso: ModuloAplicativo = evento?.dragNode;
-
         if (nodoIngreso) {
+            const nodoPadre = this.buscarNodoPadre(this.lstModulosAsignados, nodoIngreso);
+
+            if (nodoPadre) {
+                nodoIngreso.IdOpcionPadre = nodoPadre.key;
+                nodoIngreso.NivelOpcion = nodoPadre.NivelOpcion + 1;
+
+            } else {
+                nodoIngreso.NivelOpcion = 1;
+                nodoIngreso.Orden = 1;
+            }
+
             this.nodoModuloSeleccionado.esVisible = true;
+            this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.AGREGAR;
 
             switch (nodoIngreso.tipoNodo) {
                 case 'M':
@@ -186,19 +306,72 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             }
             this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
             this.nodoModuloSeleccionado.nodo = nodoIngreso;
+            this.nodoModuloSeleccionado.nodoPadre = nodoPadre; this.asignarOrdenPorUbicacion(this.lstModulosAsignados, this.nodoModuloSeleccionado.nodo);
+            setTimeout(() => {
+                this.asignarOrdenPorUbicacion(this.lstModulosAsignados, nodoIngreso);
+            });
+
         }
     }
 
+    buscarNodoPadre(nodos: ModuloAplicativo[], nodoBuscado: ModuloAplicativo): ModuloAplicativo | null {
+        for (let nodo of nodos) {
+            if (nodo.children?.includes(nodoBuscado)) {
+                return nodo;
+            }
+
+            const posiblePadre = this.buscarNodoPadre(nodo.children || [], nodoBuscado);
+            if (posiblePadre) {
+                return posiblePadre;
+            }
+        }
+        return null;
+    }
+
+    asignarOrdenPorUbicacion(nodos: ModuloAplicativo[], nodoBuscado: ModuloAplicativo): boolean {
+        for (let i = 0; i < nodos.length; i++) {
+            const nodo = nodos[i];
+
+            if (nodo === nodoBuscado) {
+                nodos.sort((a, b) => a.label.localeCompare(b.label));
+
+                nodos.forEach((n, index) => {
+                    n.Orden = index + 1;
+                });
+
+                return true;
+            }
+
+            // Revisión recursiva en hijos
+            if (nodo.children?.length) {
+                const encontrado = this.asignarOrdenPorUbicacion(nodo.children, nodoBuscado);
+                if (encontrado) return true;
+            }
+        }
+
+        return false;
+    }
+
+
     btnNodoSeleccionado(nodoIngreso: any): void {
         this.nodoModuloSeleccionado.esVisible = true;
+        this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.ACTUALIZAR;
+
         this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
             nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
         this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
         this.nodoModuloSeleccionado.nodo = nodoIngreso;
-
-        console.log(JSON.stringify(this.lstModulosAsignados))
     }
 
+    btnNodoCambioNombre(nodo: ModuloAplicativo): void {
+        this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.ACTUALIZAR;
+        this.nodoModuloSeleccionado.tipo = `${nodo.tipoNodo == 'M' ? 'módulo' :
+            nodo.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
+        this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
+        this.nodoModuloSeleccionado.nodo = nodo;
+        nodo.sobreEscribir = false;
+        this.actualizarModulosAsignados();
+    }
     onDialogNodoOptFormulario(): void {
         if (this.nodoModuloSeleccionado && this.nodoModuloSeleccionado?.nodo) {
             const tipoCod = this.nodoModuloSeleccionado.nodo.tipoNodo;
@@ -231,15 +404,48 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
             this.nodoModuloSeleccionado.nodo.sobreEscribir = false;
             this.nodoModuloSeleccionado.esVisible = false;
+            this.actualizarModulosAsignados();
         }
     }
 
     AgregarlstModulosDisponibles(): void {
         this.lstModulosDisponibles = [
-            { key: 1, icon: 'pi pi-folder-plus', label: 'Módulo', tipoNodo: 'M', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] },
-            { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: 'F', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] },
-            { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: 'A', data: '', url: '', sobreEscribir: false, esEditable: true, codigoObj: '', icono: '', children: [] }
+            { key: 1, icon: 'pi pi-folder-plus', label: 'Módulo', tipoNodo: 'M', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
+            { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: 'F', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
+            { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: 'A', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] }
         ]
+    }
+
+    actualizarModulosAsignados(): void {
+
+        const nodo: ModuloAplicativo = this.nodoModuloSeleccionado.nodo;
+        nodo.Sistema = this.mantenimientoForm.get('Sistema')?.value; // acción realizada por todo tipó de evento
+
+        switch (this.accion) {
+            case ACCION_FORMULARIO.EDITAR:
+                this.barraBusqueda = true;
+
+                this._AplicativoService.mantenimientoModulo('INDIVIDUAL', this.nodoModuloSeleccionado.accionRealizar, nodo).pipe(
+                    tap((response: ResponseApi) => {
+                        if (response.success) {
+                            this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+                            if (this.nodoModuloSeleccionado.accionRealizar == ACCION_MANTENIMIENTO.AGREGAR)
+                                nodo.key = response.data.key;
+                        } else {
+                            this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                        }
+
+                    }), catchError((error) => {
+                        console.log(error)
+                        this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                        return of(null);
+                    }),
+                    finalize(() => {
+                        this.barraBusqueda = false;
+                    })
+                ).subscribe();
+                break;
+        }
     }
 
 

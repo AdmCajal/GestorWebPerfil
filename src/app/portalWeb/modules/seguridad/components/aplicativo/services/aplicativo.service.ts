@@ -52,5 +52,25 @@ export class AplicativoService {
             })
         )
     }
-
+    mantenimientoModulo(tipo: 'MASIVO' | 'INDIVIDUAL', codigo: number, obj: any): Observable<ResponseApi> {
+        let tipoUrl: string = '';
+        switch (tipo) {
+            case 'MASIVO':
+                tipoUrl = `${API_PORTAL_ROUTES.APLICATIVO.MANTENIMIENTO_MODULO_MASSIVO}${codigo}`;
+                break;
+            case 'INDIVIDUAL':
+                tipoUrl = `${API_PORTAL_ROUTES.APLICATIVO.MANTENIMIENTO_MODULO}${codigo}`;
+                break;
+        }
+        return from(this._configService.UrlApiPortal()).pipe(
+            switchMap(apiUrl => {
+                this.apiUrl = `${apiUrl}${tipoUrl}`;
+                return this._http.post<ResponseApi>(this.apiUrl, obj);
+            }),
+            catchError(error => {
+                console.error(`Error al registrar. ${error}`);
+                return throwError(error);
+            })
+        )
+    }
 }

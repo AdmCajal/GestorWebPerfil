@@ -5,20 +5,20 @@
 
     <div class="flex flex-wrap md:flex-nowrap gap-2">
         <p-fieldset legend="Datos Generales" class="col-6">
-            <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
+            <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                    <p-dropdown appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="name1">Sucursal <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="name1">Gerencia <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
@@ -28,7 +28,7 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="name1">Centro De Costo <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
@@ -42,7 +42,7 @@
             <section class="flex flex-wrap">
                 <div class="col-6">
                     <div class="flex col-12 ">
-                        <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion"
+                        <p-dropdown appendTo="body" [options]="lstAplicativos" optionLabel="descripcion"
                             optionValue="codigo" [(ngModel)]="codigoAplicativoAgregar" [styleClass]="'w-12'"
                             placeholder="Seleccione una opción"></p-dropdown>
                         <p-button icon="pi pi-plus" class="ml-2" raised severity="success"

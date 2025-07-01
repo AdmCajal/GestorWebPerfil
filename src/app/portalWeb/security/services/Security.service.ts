@@ -67,11 +67,7 @@ export class SecurityService {
             const data: any[] = JSON.parse(this._EncryptService.Desencriptar(dataEncriptada)) || [];
             const subMenu: any = data.find(sm => sm.id_menu === idMenu );
 
-            console.log(lastSegment);
 
-            // console.log(idMenu)
-            console.log(data)
-            // console.log(subMenu)
 
             if (subMenu) return subMenu.nombre;
         }

@@ -33,7 +33,7 @@ export class BaseComponenteMantenimiento {
     }
 
     protected MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
+        // this._MessageService.clear();
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
 

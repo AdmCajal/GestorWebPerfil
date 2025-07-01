@@ -1,0 +1,6 @@
+export const ESTADO_REGISTRO = {
+    ACTIVO_NUM:1,
+    ACTIVO_STRI:'A',
+    INACTIVO_NUM:2,
+    INACTIVO_STR:'I',
+}
