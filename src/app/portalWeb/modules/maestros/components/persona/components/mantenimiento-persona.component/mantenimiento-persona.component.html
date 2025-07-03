@@ -2,23 +2,25 @@
     [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="bloquearComponente" />
 
-    <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
+    <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
         <p-fieldset legend="Información General" class="col-6">
             <div class="w-12 flex flex-wrap">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="compania">Tipo de persona</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="compania" formControlName="compania"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="compania">Tipo de Persona</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="compania" formControlName="compania"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="compania">Sexo</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="Código">Nro. Documento</label>
@@ -47,7 +49,7 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="Código">Fecha de nacimiento</label>
-                    <p-datepicker formControlName="rangoFechaCreacion" [styleClass]="'col-12 p-0'"
+                    <p-datepicker formControlName="rangoFechaCreacion" [styleClass]="'col-12 p-0'" appendTo="body"
                         [iconDisplay]="'input'" [showIcon]="false" inputId="icondisplay" />
                 </div>
             </div>
@@ -76,8 +78,9 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="Estado">Estado</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="Estado" formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="Estado" formControlName="estado"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="Código">Referencia</label>
@@ -86,19 +89,20 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Departamento">Departamento</label>
-                    <p-dropdown appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
-                        id="Departamento" formControlName="departamento"
-                        placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
+                        id="Departamento" formControlName="departamento" appendTo="body"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Provincia">Provincia</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="Provincia" formControlName="provincia" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="Provincia" formControlName="provincia"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Distrito">Distrito</label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="Distrito" formControlName="distrito" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        id="Distrito" formControlName="distrito" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="Distrito">Comentario</label>

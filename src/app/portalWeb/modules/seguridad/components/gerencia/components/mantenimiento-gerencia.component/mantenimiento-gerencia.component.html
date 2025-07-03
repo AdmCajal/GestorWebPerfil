@@ -7,8 +7,8 @@
             <form class="flex flex-wrap" [formGroup]="mantenimientoForm" >
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        placeholder="Seleccione una opción" formControlName="estado"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstCompania" optionLabel="descripcion" optionValue="codigo"
+                        placeholder="Seleccione una opción" formControlName="estado"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Descripción <span class="font-semibold text-red-500">*</span></label>
@@ -21,8 +21,8 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        placeholder="Seleccione una opción" formControlName="estado"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        placeholder="Seleccione una opción" formControlName="estado"></p-select>
                 </div>
             </form>
         </p-fieldset>

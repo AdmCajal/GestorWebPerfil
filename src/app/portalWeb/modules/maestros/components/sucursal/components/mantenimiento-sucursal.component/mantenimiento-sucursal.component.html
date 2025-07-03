@@ -31,15 +31,15 @@
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
             <label for="compania">Compania <span class="font-semibold text-red-500">*</span></label>
-            <p-dropdown appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
-                id="compania" formControlName="IdEmpresa" placeholder="Obligatorio"></p-dropdown>
+            <p-select appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
+                id="compania" formControlName="IdEmpresa" placeholder="Obligatorio"></p-select>
             <span *ngIf="mantenimientoForm.get('IdEmpresa')?.invalid && mantenimientoForm.get('IdEmpresa')?.touched"
                 class="text-red-500 text-sm italic"> La selección de compañia es obligatorio. </span>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
             <label for="Estado">Estado <span class="font-semibold text-red-500">*</span></label>
-            <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                id="Estado" formControlName="SedEstado" placeholder="Obligatorio"></p-dropdown>
+            <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                id="Estado" formControlName="SedEstado" placeholder="Obligatorio"></p-select>
             <span *ngIf="mantenimientoForm.get('SedEstado')?.invalid && mantenimientoForm.get('SedEstado')?.touched"
                 class="text-red-500 text-sm italic"> La selección de estado es obligatorio. </span>
         </div>

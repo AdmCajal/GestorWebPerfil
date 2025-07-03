@@ -13,8 +13,8 @@
             </div>
             <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                 <label for="name1">Gerencia</label>
-                <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                    formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+                <p-select [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                    formControlName="estado" placeholder="Seleccione una opción"></p-select>
             </div>
             <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                 <label for="name1">Responsable</label>
@@ -22,8 +22,8 @@
             </div>
             <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                 <label for="name1">Puesto</label>
-                <p-dropdown [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                    formControlName="estado" placeholder="Seleccione una opción"></p-dropdown>
+                <p-select [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                    formControlName="estado" placeholder="Seleccione una opción"></p-select>
             </div>
             <div class="flex justify-content-center col-12">
                 <p-button icon="pi pi-check" label="Asignar puesto" raised />

@@ -22,6 +22,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 import { VisualizarPerfilUsuario } from '../../../../../../core/models/interfaces/usuario/visualizarPerfil.usuario';
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
+import { UsuarioMantenimientoService } from '../../services/usuario-mantenimiento.service';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
@@ -81,6 +82,7 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
     ngOnInit(): void {
         this.obtenerDatosSelect();
         this.estructuraForm();
+        this.obtenerDatosMantenimiento();
     }
 
     override estructuraForm(): void {
@@ -96,7 +98,7 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             contraseniaConfirmacion: [{ value: '', disabled: this.bloquearComponente }],
             ExpirarPasswordFlag: [{ value: '', disabled: this.bloquearComponente }],
             FechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
-            
+
             IndicadorValidarUsuarioRed: [{ value: '', disabled: this.bloquearComponente }],
             UsuarioRed: [{ value: '', disabled: this.bloquearComponente }],
             UnidadReplicacionDominioRed: [{ value: '', disabled: this.bloquearComponente }],
@@ -119,7 +121,15 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             this.lstCompania = [...dataCompanias || []];
         });
     }
-    override obtenerDatosMantenimiento(): void { }
+    override obtenerDatosMantenimiento(): void {
+        switch (this.accion) {
+            case ACCION_FORMULARIO.EDITAR:
+            case ACCION_FORMULARIO.VER:
+                const usuario = this._ActivatedRoute.snapshot.data['usuario'];
+                this.mantenimientoForm.patchValue(usuario);
+                break;
+        }
+    }
     get optDetallePerfiles() {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
@@ -255,8 +265,9 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             });
     }
 
-    btnMantenimientoFormulario(): void {
-        this._Router.navigate(['../../'], { relativeTo: this._ActivatedRoute });
+    btnRegresarBusquedaComponente(): void {
+        const parentRoute = this._ActivatedRoute.parent;
+        this._Router.navigate(['.'], { relativeTo: parentRoute });
     }
 
     onEmpleadoSeleccionado(evento: any): void {

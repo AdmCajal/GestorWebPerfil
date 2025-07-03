@@ -58,27 +58,27 @@
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
             <label for="Estado">Estado <span class="font-semibold text-red-500">*</span></label>
-            <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                id="Estado" formControlName="Estado" placeholder="Seleccione una opción"></p-dropdown>
+            <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                id="Estado" formControlName="Estado" placeholder="Seleccione una opción"></p-select>
             <span *ngIf="mantenimientoForm.get('Estado')?.invalid && mantenimientoForm.get('Estado')?.touched"
                 class="text-red-500 text-sm italic"> La selección de estado es obligatorio. </span>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Departamento">Departamento</label>
-            <p-dropdown appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion" optionValue="codigo"
+            <p-select appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion" optionValue="codigo"
                 [filter]="true" id="Departamento" formControlName="CodDep" placeholder="Seleccione una opción"
-                (onChange)="btnObtenerProvincia($event)"></p-dropdown>
+                (onChange)="btnObtenerProvincia($event)"></p-select>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Provincia">Provincia</label>
-            <p-dropdown appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo"
+            <p-select appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo"
                 [filter]="true" id="Provincia" formControlName="CodPro" placeholder="Seleccione una opción"
-                (onChange)="btnObtenerDistritos($event)"></p-dropdown>
+                (onChange)="btnObtenerDistritos($event)"></p-select>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Distrito">Distrito</label>
-            <p-dropdown appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo"
-                [filter]="true" id="Distrito" formControlName="CodDis" placeholder="Seleccione una opción"></p-dropdown>
+            <p-select appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo"
+                [filter]="true" id="Distrito" formControlName="CodDis" placeholder="Seleccione una opción"></p-select>
         </div>
     </form>
 

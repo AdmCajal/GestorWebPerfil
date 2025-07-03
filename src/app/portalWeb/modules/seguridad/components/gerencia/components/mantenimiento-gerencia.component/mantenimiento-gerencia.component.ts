@@ -15,6 +15,8 @@ import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-
 import { GerenciaService } from '../../services/gerencia.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { CompaniaService } from '../../../compania/services/compania.service';
 
 @Component({
     selector: 'app-mantenimiento-gerencia',
@@ -25,9 +27,11 @@ import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseCo
     providers: [TreeDragDropService, ConfirmationService, MessageService]
 })
 export class MantenimientoGerencia extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
+    lstCompania: ComboItem[] = [];
 
     constructor(override _ActivatedRoute: ActivatedRoute,
         private _GerenciaService: GerenciaService,
+        private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -46,19 +50,21 @@ export class MantenimientoGerencia extends BaseComponenteMantenimiento implement
             descripcion: [{ value: '', disabled: this.bloquearComponente }],
             baseDatos: [{ value: '', disabled: this.bloquearComponente }],
             estado: [{ value: '', disabled: this.bloquearComponente }]
-
         });
     }
 
     obtenerDatosSelect(): void {
         forkJoin({
-            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN')
+            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
+            companias: this._CompaniaService.obtener({})
+
         }).subscribe(resp => {
             const dataEstados = resp.estados?.map((ele: any) => ({
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
             }));
             this.lstEstados = [...dataEstados];
-
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompania = [...dataCompanias || []];
         });
     }
     override obtenerDatosMantenimiento(): void { }

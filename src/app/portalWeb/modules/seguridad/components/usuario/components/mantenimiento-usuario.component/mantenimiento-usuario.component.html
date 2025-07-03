@@ -2,7 +2,7 @@
     <div class="w-full flex flex-nowrap ">
         <h4 class="w-12 ml-2 mb-0 text-2xl font-bold"> {{accion | titlecase}} {{ breadcrumb | titlecase}} </h4>
         <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="secondary"
-            (onClick)="btnMantenimientoFormulario()" />
+            (onClick)="btnRegresarBusquedaComponente()" />
     </div>
     <form class="flex flex-wrap md:flex-nowrap gap-2" [formGroup]="mantenimientoForm">
         <p-fieldset legend="Datos De Usuario" class="col-3">
@@ -30,8 +30,8 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Tipo Usuario <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="TipoUsuario" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="TipoUsuario" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Correo Electrónico <span class="font-semibold text-red-500">*</span></label>
@@ -56,8 +56,8 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="ESTADO"
-                        formControlName="ESTADO" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="ESTADO"
+                        formControlName="ESTADO" placeholder="Seleccione una opción"></p-select>
                 </div>
             </section>
         </p-fieldset>

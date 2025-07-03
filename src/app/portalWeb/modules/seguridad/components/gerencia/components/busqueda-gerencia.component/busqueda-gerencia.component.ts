@@ -17,6 +17,9 @@ import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-for
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { GerenciaService } from '../../services/gerencia.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
+import { CompaniaService } from '../../../compania/services/compania.service';
+import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
 @Component({
     selector: 'app-busqueda-gerencia',
     standalone: true,
@@ -27,10 +30,14 @@ import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseCompone
 })
 export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
     @ViewChild(MantenimientoGerencia) _Mantenimiento!: MantenimientoGerencia;
-    lstEstados: any[] = [];
+    lstEstado: ComboItem[] = [];
+    lstCompania: ComboItem[] = [];
+    lstSucursal: ComboItem[] = [];
 
     constructor(
         private _GerenciaService: GerenciaService,
+        private _CompaniaService: CompaniaService,
+        private _SucursalService: SucursalService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -55,8 +62,12 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
+            companias: this._CompaniaService.obtener({})
+
         }).subscribe(resp => {
-            this.lstEstados = [...resp.estados];
+            this.lstEstado = [...resp.estados];
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompania = [...dataCompanias || []];
         });
     }
 
@@ -163,5 +174,18 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
                     break;
             }
         }
+    }
+
+    btnObtenerSucursal(evento: any): void {
+        this.lstSucursal = [];
+
+        forkJoin({
+            sucursales: this._SucursalService.obtener({ IdEmpresa: evento.value }),
+        }).subscribe(resp => {
+            const data = resp.sucursales?.data?.map((ele: any) => ({
+                descripcion: ele.SedDescripcion?.trim()?.toUpperCase() || "", codigo: ele.SedCodigo
+            }));
+            this.lstSucursal = [...data];
+        });
     }
 }

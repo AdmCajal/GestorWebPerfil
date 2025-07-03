@@ -15,6 +15,8 @@ import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccion
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { UsuarioMantenimientoService } from '../../services/usuario-mantenimiento.service';
 
 @Component({
     selector: 'app-busqueda-usuario',
@@ -30,6 +32,7 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
     lstEstados: ComboItem[] = [];
     constructor(private _ActivatedRoute: ActivatedRoute,
         private _UsuarioService: UsuarioService,
+        private _UsuarioMantenimientoService: UsuarioMantenimientoService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -119,8 +122,16 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
+
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._Router.navigate(['mantenimiento', accion], { relativeTo: this._ActivatedRoute });
+        this._Router.navigate([accion], { relativeTo: this._ActivatedRoute });
+
+        switch (accion) {
+            case ACCION_FORMULARIO.EDITAR:
+            case ACCION_FORMULARIO.VER:
+                this._UsuarioMantenimientoService.setUsuario(registro);
+                break;
+        }
     }
 
     rptaMantenimiento(respuesta: any): void {

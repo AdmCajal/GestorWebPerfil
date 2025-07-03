@@ -8,19 +8,19 @@
             <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
+                    <p-select appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"
-                        (onChange)="btnObtenerSucursal($event)"></p-dropdown>
+                        (onChange)="btnObtenerSucursal($event)"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Sucursal <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstSucursal" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstSucursal" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Gerencia <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Responsable <span class="font-semibold text-red-500">*</span></label>
@@ -29,8 +29,8 @@
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Centro De Costo <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
+                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
@@ -43,9 +43,9 @@
             <section class="flex flex-wrap">
                 <div class="col-5">
                     <div class="flex col-12 ">
-                        <p-dropdown appendTo="body" [options]="lstAplicativo" optionLabel="descripcion"
+                        <p-select appendTo="body" [options]="lstAplicativo" optionLabel="descripcion"
                             optionValue="codigo" [(ngModel)]="codigoAplicativoAgregar" [styleClass]="'w-12'"
-                            placeholder="Seleccione una opción"></p-dropdown>
+                            placeholder="Seleccione una opción"></p-select>
                         <p-button icon="pi pi-plus" class="ml-2" raised severity="success"
                             title="Agregar aplicativo seleccionado" (onClick)="onAgregarAplicativoSeleccionado()" />
                     </div>
