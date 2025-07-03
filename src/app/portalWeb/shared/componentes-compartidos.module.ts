@@ -78,6 +78,8 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { FocusTrapModule } from 'primeng/focustrap';
 import { AutoFocusModule } from 'primeng/autofocus';
+import { TooltipModule } from 'primeng/tooltip';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [
 
@@ -157,6 +159,8 @@ import { AutoFocusModule } from 'primeng/autofocus';
     SelectModule,
     FocusTrapModule,
     AutoFocusModule,
+    TooltipModule,
+    CardModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ],
@@ -244,6 +248,8 @@ import { AutoFocusModule } from 'primeng/autofocus';
     SelectModule,
     FocusTrapModule,
     AutoFocusModule,
+    TooltipModule,
+    CardModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ], providers: [DatePipe, MessageService],

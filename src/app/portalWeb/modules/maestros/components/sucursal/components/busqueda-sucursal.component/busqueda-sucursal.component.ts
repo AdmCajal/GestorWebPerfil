@@ -21,6 +21,7 @@ import { CompaniaService } from '../../../../../seguridad/components/compania/se
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-registro';
 
 @Component({
     selector: 'app-busqueda-sucursal',
@@ -31,7 +32,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [ConfirmationService, MessageService]
 })
 export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
-    @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
+    @ViewChild(MantenimientoSucursal) _Mantenimiento!: MantenimientoSucursal;
 
     lstEstados: ComboItem[] = [];
     lstCompanias: ComboItem[] = [];
@@ -57,12 +58,11 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
             SedCodigo: [{ value: '', disabled: this.bloquearComponente }],
             SedDescripcion: [{ value: '', disabled: this.bloquearComponente }],
             IdEmpresa: [{ value: '', disabled: this.bloquearComponente }],
-            SedEstado: [{ value: '', disabled: this.bloquearComponente }],
+            SedEstado: [{ value: null, disabled: this.bloquearComponente }],
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
     obtenerDatosSelect(): void {
-        const optTodos = { descripcion: 'TODOS', codigo: '' };
 
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
@@ -71,10 +71,10 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
             const dataEstados = resp.estados?.map((ele: any) => ({
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
             }));
-            this.lstEstados = [optTodos, ...dataEstados];
+            this.lstEstados = [this.optTodos, ...dataEstados];
 
             const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
-            this.lstCompanias = [optTodos, ...dataCompanias];
+            this.lstCompanias = [this.optTodos, ...dataCompanias];
         });
     }
 
@@ -112,7 +112,8 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
         this.filtroForm.disable();
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
-        registro.SedEstado = 2;
+        registro.SedEstado = registro.Estado == ESTADO_REGISTRO.ACTIVO_NUM ? ESTADO_REGISTRO.INACTIVO_NUM : ESTADO_REGISTRO.ACTIVO_NUM;
+
         this._SucursalService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
@@ -138,11 +139,7 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        this._MantenimientoUsuario.estructuraForm();
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+        this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
     rptaMantenimiento(respuesta: any): void {

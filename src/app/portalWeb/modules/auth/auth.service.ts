@@ -84,37 +84,37 @@ export class AuthService {
     //     )
 
     // }
-    
 
-    guardarCredenciales(usuario: any) {
-        localStorage.setItem("cred_msv_portal", JSON.stringify(this._encryptService.Encriptar(JSON.stringify(usuario))));
-    }
+
+    // guardarCredenciales(usuario: any) {
+    //     localStorage.setItem("cred_msv_portal", JSON.stringify(this._encryptService.Encriptar(JSON.stringify(usuario))));
+    // }
 
     guardarCredencialesRecarga(usuario: any) {
-        localStorage.setItem("cred_msv_portal_reload", JSON.stringify(this._encryptService.Encriptar(JSON.stringify(usuario))));
+        sessionStorage.setItem("data_user_reload", JSON.stringify(this._encryptService.Encriptar(JSON.stringify(usuario))));
     }
 
-    obtenerCredenciales(): any {
-        let usuarioGuardado: any;
-        try {
-            if (localStorage.getItem("cred_msv_portal")) {
-                const dataEncriptada: string = JSON.parse(localStorage.getItem("cred_msv_portal") || "");
-                const data: any = JSON.parse(this._encryptService.Desencriptar(dataEncriptada))
-                usuarioGuardado = data;
-                return usuarioGuardado;
-            }
-        } catch (error) {
-            throw Error(`Las crendenciales están corruptas. ${error}`);
-        } finally {
-            return usuarioGuardado
-        }
+    // obtenerCredenciales(): any {
+    //     let usuarioGuardado: any;
+    //     try {
+    //         if (localStorage.getItem("cred_msv_portal")) {
+    //             const dataEncriptada: string = JSON.parse(localStorage.getItem("cred_msv_portal") || "");
+    //             const data: any = JSON.parse(this._encryptService.Desencriptar(dataEncriptada))
+    //             usuarioGuardado = data;
+    //             return usuarioGuardado;
+    //         }
+    //     } catch (error) {
+    //         throw Error(`Las crendenciales están corruptas. ${error}`);
+    //     } finally {
+    //         return usuarioGuardado
+    //     }
 
-    }
+    // }
     obtenerCredencialesRecarga(): any {
         let usuarioGuardado: any;
         try {
-            if (localStorage.getItem("cred_msv_portal_reload")) {
-                const dataEncriptada: string = JSON.parse(localStorage.getItem("cred_msv_portal_reload") || "");
+            if (sessionStorage.getItem("data_user_reload")) {
+                const dataEncriptada: string = JSON.parse(sessionStorage.getItem("data_user_reload") || "");
                 const data: any = JSON.parse(this._encryptService.Desencriptar(dataEncriptada))
                 usuarioGuardado = data;
                 return usuarioGuardado;

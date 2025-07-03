@@ -21,6 +21,7 @@ import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseCo
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 import { VisualizarPerfilUsuario } from '../../../../../../core/models/interfaces/usuario/visualizarPerfil.usuario';
 import { SecurityService } from '../../../../../../security/services/Security.service';
+import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
@@ -33,11 +34,15 @@ import { SecurityService } from '../../../../../../security/services/Security.se
 export class MantenimientoUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
     lstUsuariosBusqueda: any[] = [];
-    lstCompanias: ComboItem[] = [];
+    lstCompania: ComboItem[] = [];
+    lstSucursal: ComboItem[] = [];
+    lstGerencia: ComboItem[] = [];
+    lstCentroCosto: ComboItem[] = [];
+    lstPerfilUsuario: ComboItem[] = [];
 
     perfilSeleccionadoVisualizar: VisualizarPerfilUsuario = {
         nombrePerfil: '',
-        data: []
+        aplicativos: []
     }
 
     constructor(override _ActivatedRoute: ActivatedRoute,
@@ -45,6 +50,7 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         override _MessageService: MessageService,
         private _UsuarioService: UsuarioService,
         private _CompaniaService: CompaniaService,
+        private _SucursalService: SucursalService,
         private _PersonaService: PersonaService,
         private _fb: FormBuilder,
         private _MenuLayoutService: MenuLayoutService,
@@ -90,9 +96,13 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             contraseniaConfirmacion: [{ value: '', disabled: this.bloquearComponente }],
             ExpirarPasswordFlag: [{ value: '', disabled: this.bloquearComponente }],
             FechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
+            
+            IndicadorValidarUsuarioRed: [{ value: '', disabled: this.bloquearComponente }],
+            UsuarioRed: [{ value: '', disabled: this.bloquearComponente }],
+            UnidadReplicacionDominioRed: [{ value: '', disabled: this.bloquearComponente }],
+
             ESTADO: [{ value: '', disabled: this.bloquearComponente }],
             detallePerfiles: this._fb.array([])
-
         });
     }
     obtenerDatosSelect(): void {
@@ -103,14 +113,14 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             const dataEstados = resp.estados?.map((ele: any) => ({
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
             }));
-            this.lstEstados = [...dataEstados];
+            this.lstEstados = [...dataEstados || []];
 
             const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
-            this.lstCompanias = [...dataCompanias];
+            this.lstCompania = [...dataCompanias || []];
         });
     }
     override obtenerDatosMantenimiento(): void { }
-    get optDetallePerfiles(): FormArray<any> {
+    get optDetallePerfiles() {
         return this.mantenimientoForm.get('detallePerfiles') as FormArray;
     }
 
@@ -130,6 +140,7 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             perfilNom: 'Seleccionar',
         }));
     }
+
     btnEliminarYReordenarDetallePerfiles(codDetalle: number): void {
         let detalleArray = this.optDetallePerfiles;
 
@@ -146,99 +157,29 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         }
     }
 
-    btnVisualizarPerfil(detalle: FormGroup): void {
-        this.perfilSeleccionadoVisualizar.nombrePerfil = detalle.get('perfilNom')?.value || '';
-        this.perfilSeleccionadoVisualizar.data = [
+    btnLimpiarPerfil(): void {
+        this.perfilSeleccionadoVisualizar = {
+            nombrePerfil: '',
+            aplicativos: []
+        }
+    }
+    btnVisualizarPerfil(detalle?: FormGroup): void {
+        this.perfilSeleccionadoVisualizar.nombrePerfil = detalle?.get('perfilNom')?.value || '';
+        this.perfilSeleccionadoVisualizar.aplicativos = [
             {
-                key: '0',
-                label: 'Aplicativos',
-                data: 'Documents Folder',
-                icon: 'pi pi-fw pi-inbox',
-                children: [
+                Sistema: '', Nombre: 'app', Descripcion: 'Descripcion de aplicativo nro 1', UrlSistema: 'http://aplicativon.ro1.com', Estado: 1, DesEstado: 'Activo', modulos: [
                     {
-                        key: '0-0',
-                        label: 'Spring',
-                        data: 'Work Folder',
-                        icon: 'pi pi-fw pi-cog',
-                        children: [
-                            {
-                                key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                children: [
-                                    { key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                    { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                ]
-                            },
-                            {
-                                key: '0-0-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                                children: [
-                                    {
-                                        key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                        children: [
-                                            { key: '0-0-0', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                            { key: '0-0-1', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                        ]
-                                    },
-                                    {
-                                        key: '0-0-1', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                                        children: [
-                                            {
-                                                key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                                children: [
-                                                    { key: '0-0-0', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                                    { key: '0-0-1', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                                    { key: '0-0-1', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                                    { key: '0-0-1', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                key: '0-0-1', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                                children: [
-                                    {
-                                        key: '0-0-0', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                        children: [
-                                            { key: '0-0-0', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                            { key: '0-0-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                            { key: '0-0-1', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        ]
-                                    },
-                                    {
-                                        key: '0-0-0', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                        children: [
-                                            { key: '0-0-0', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                            { key: '0-0-1', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                            { key: '0-0-1', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                key: '0-0-1', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                                children: [
-                                    {
-                                        key: '0-0-0', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                        children: [
-                                            { key: '0-0-0', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                            { key: '0-0-1', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                            { key: '0-0-1', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        ]
-                                    },
-                                    {
-                                        key: '0-0-0', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                        children: [
-                                            { key: '0-0-0', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        ]
-                                    }
-                                ]
-                            }
+                        key: 1, icon: 'pi pi-folder', label: 'Módulo', tipoNodo: 'M', data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [
+                            { key: 2, icon: 'pi pi-file', label: 'Formulario', tipoNodo: 'F', data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
                         ]
                     }
                 ]
+            },
+            {
+                Sistema: '', Nombre: 'app 2', Descripcion: 'Descripcion de aplicativo nro 2', UrlSistema: 'http://aplicativo.nro2.com', Estado: 1, DesEstado: 'Activo', modulos: []
+            },
+            {
+                Sistema: '', Nombre: 'app 3', Descripcion: 'Descripcion de aplicativo nro 3', UrlSistema: 'http://aplicativo.nro3.com', Estado: 1, DesEstado: 'Activo', modulos: []
             }
         ];
     }
@@ -330,30 +271,57 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
     onAsignarDescripcionDetalle(evento: any, detalle: FormGroup, tipo: string): void {
         switch (tipo) {
             case 'COMPANIA':
-                const companiSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
+                const companiSeleccionado: any = this.lstCompania.filter((item) => item.codigo == evento.value)[0];
                 detalle.get('companiaNom')?.setValue(companiSeleccionado?.descripcion);
+                detalle.get('sucursalNom')?.setValue('');
+                detalle.get('gerenciaNom')?.setValue('');
+                detalle.get('centroCostoNom')?.setValue('');
+                detalle.get('perfilNom')?.setValue('');
+
+                this.btnObtenerSucursal(evento);
                 break;
             case 'SUCURSAL':
-                const sucursalSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(sucursalSeleccionado?.descripcion);
+                const sucursalSeleccionado: any = this.lstSucursal.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('sucursalNom')?.setValue(sucursalSeleccionado?.descripcion);
+                detalle.get('gerenciaNom')?.setValue('');
+                detalle.get('centroCostoNom')?.setValue('');
+                detalle.get('perfilNom')?.setValue('');
                 break;
             case 'GERENCIA':
-                const gerenciaSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(gerenciaSeleccionado?.descripcion);
+                const gerenciaSeleccionado: any = this.lstGerencia.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('gerenciaNom')?.setValue(gerenciaSeleccionado?.descripcion);
+                detalle.get('centroCostoNom')?.setValue('');
+                detalle.get('perfilNom')?.setValue('');
                 break;
             case 'CENTROCOSTO':
-                const centroCostoSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(centroCostoSeleccionado?.descripcion);
+                const centroCostoSeleccionado: any = this.lstCentroCosto.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('centroCostoNom')?.setValue(centroCostoSeleccionado?.descripcion);
+                detalle.get('perfilNom')?.setValue('');
                 break;
             case 'PERFIL':
-                const perfilSeleccionado: any = this.lstCompanias.filter((item) => item.codigo == evento.value)[0];
-                detalle.get('companiaNom')?.setValue(perfilSeleccionado?.descripcion);
+                const perfilSeleccionado: any = this.lstPerfilUsuario.filter((item) => item.codigo == evento.value)[0];
+                detalle.get('perfilNom')?.setValue(perfilSeleccionado?.descripcion);
                 break;
             default:
                 this.MensajeToastComun('notification', 'error', 'Error', `el tipo: '${tipo}' no está considerado .`);
                 return;
         }
-
     }
 
+    btnObtenerSucursal(evento: any): void {
+        this.lstSucursal = [];
+        this.lstGerencia = [];
+        this.lstCentroCosto = [];
+        this.lstPerfilUsuario = [];
+
+        forkJoin({
+            sucursales: this._SucursalService.obtener({ IdEmpresa: evento.value }),
+        }).subscribe(resp => {
+            const data = resp.sucursales?.data?.map((ele: any) => ({
+                descripcion: ele.SedDescripcion?.trim()?.toUpperCase() || "", codigo: ele.SedCodigo
+            }));
+            console.log(data)
+            this.lstSucursal = [...data];
+        });
+    }
 }

@@ -32,6 +32,7 @@ import { SecurityService } from '../../../../../../security/services/Security.se
     providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoSucursal extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
+    @Output() override msjMantenimiento = new EventEmitter<any>();
 
     lstCompanias: ComboItem[] = [];
 

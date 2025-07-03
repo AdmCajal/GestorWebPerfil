@@ -13,7 +13,6 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoAplicativo } from '../mantenimiento-aplicativo.component/mantenimiento-aplicativo.component';
 import { AccionesBusquedaComponente as AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { AplicativoService } from '../../services/aplicativo.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
@@ -28,7 +27,7 @@ import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-regist
     providers: [ConfirmationService, MessageService]
 })
 export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
-    @ViewChild(MantenimientoAplicativo) _MantenimientoUsuario!: MantenimientoAplicativo;
+    @ViewChild(MantenimientoAplicativo) _Mantenimiento!: MantenimientoAplicativo;
     lstEstados: ComboItem[] = [];
 
     constructor(
@@ -47,19 +46,17 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
     }
     estructuraForm(): void {
         this.filtroForm = this._fb.group({
-
             Nombre: [{ value: '', disabled: this.bloquearComponente }],
-            Estado: [{ value: '', disabled: this.bloquearComponente }],
+            Estado: [{ value: null, disabled: this.bloquearComponente }],
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
     obtenerDatosSelect(): void {
-        const optTodos = { descripcion: 'TODOS', codigo: '' };
 
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
         }).subscribe(resp => {
-            this.lstEstados = [optTodos, ...resp.estados];
+            this.lstEstados = [this.optTodos, ...resp.estados];
         });
     }
 
@@ -123,7 +120,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.IniciarMantenimientoFormulario(accion, registro);
+        this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
     rptaMantenimiento(respuesta: any): void {

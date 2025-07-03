@@ -4,11 +4,11 @@
     <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
             <label for="name1">usuario</label>
-            <input pInputText id="name1" type="text" formControlName="USUARIO" />
+            <input pInputText id="name1" type="text" formControlName="USUARIO" placeholder="Ingrese el nombre de usuario" />
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
             <label for="name1">Nombre</label>
-            <input pInputText id="name1" type="text" formControlName="NOMBRECOMPLETO" />
+            <input pInputText id="name1" type="text" formControlName="NOMBRECOMPLETO" placeholder="Ingrese el nombre"/>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="name1">Estado</label>

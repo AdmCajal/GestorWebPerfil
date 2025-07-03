@@ -33,6 +33,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [ConfirmationService, MessageService]
 })
 export class MantenimientoCompania extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
+    @Output() override msjMantenimiento = new EventEmitter<any>();
 
     lstEmpresaBusqueda: any[] = [];
     lstRepresentanteBusqueda: any[] = [];
@@ -124,7 +125,8 @@ export class MantenimientoCompania extends BaseComponenteMantenimiento implement
             this.lstDepartamentos = [...dataDepartamentos];
         });
     }
-    override obtenerDatosMantenimiento(): void { }
+    override obtenerDatosMantenimiento(): void {
+    }
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;

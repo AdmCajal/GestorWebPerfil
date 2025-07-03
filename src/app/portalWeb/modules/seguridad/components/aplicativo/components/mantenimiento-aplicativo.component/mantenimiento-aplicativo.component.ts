@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { ComponentesCompartidosModule } from '../../../../../../shared/componentes-compartidos.module';
 import { CommonModule } from '@angular/common';
-import { catchError, finalize, forkJoin, map, of, switchMap, tap, throwError } from 'rxjs';
+import { catchError, concatMap, EMPTY, finalize, forkJoin, from, map, Observable, of, switchMap, tap, throwError, toArray } from 'rxjs';
 import { ResponseApi } from '../../../../../../core/models/response/response.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
@@ -18,6 +18,7 @@ import { ModuloAplicativo } from '../../../../../../core/models/interfaces/aplic
 import { NodoSeleccionadoModulo } from '../../../../../../core/models/interfaces/aplicativo/NodoSeleccionadoModulo.aplicativo';
 import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { TIPO_NODO_APLICATIVO } from '../../../../../../core/constants/tipo-nodo.aplicativo';
 
 @Component({
     selector: 'app-mantenimiento-aplicativo',
@@ -28,25 +29,28 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [TreeDragDropService, ConfirmationService, MessageService]
 })
 export class MantenimientoAplicativo extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
-
-
     @Output() override msjMantenimiento = new EventEmitter<any>();
     lstIconos: ComboItem[] = [];
 
     lstModulosDisponibles: ModuloAplicativo[] = [];
     lstModulosAsignados: ModuloAplicativo[] = [];
 
+    lstKeyGeneradas: number[] = [];
     nodoModuloSeleccionado: NodoSeleccionadoModulo = {
         esVisible: false,
         tituloDialog: '',
         tipo: '',
         accionRealizar: ACCION_MANTENIMIENTO.AGREGAR,
         nodoPadre: null,
-        nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
+        nodo: { key: 1, icon: '', label: '', tipoNodo: '', data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
     };
+
 
     comentarioModulos: string = 'Agregue un módulo o formulario...';
 
+    tipoNodoModulo: any = TIPO_NODO_APLICATIVO.MODULO;
+    tipoNodoFormulario: any = TIPO_NODO_APLICATIVO.FORMULARIO;
+    tipoNodoAccion: any = TIPO_NODO_APLICATIVO.ACCION;
     constructor(override _ActivatedRoute: ActivatedRoute,
         private _AplicativoService: AplicativoService,
         private _fb: FormBuilder,
@@ -81,7 +85,6 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
             }));
             this.lstEstados = [...dataEstados];
-
             this.lstIconos = [
                 { codigo: 'pi pi-user-plus', descripcion: 'Agregar usuario' },
                 { codigo: 'pi pi-user-plus', descripcion: 'Agregar usuario' },
@@ -113,10 +116,8 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                 { codigo: 'pi pi-download', descripcion: 'Descargar' },
                 { codigo: 'pi pi-upload', descripcion: 'Subir archivo' },
                 { codigo: 'pi pi-envelope', descripcion: 'Correo / Mensaje' },
-                { codigo: 'pi pi-exclamation-circle', descripcion: 'Advertencia / Alerta' },
+                { codigo: 'pi pi-exclamation-circle', descripcion: 'Advertencia / Alerta' }
             ];
-
-
         });
     }
 
@@ -142,52 +143,179 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         });
     }
 
+    guardarModuloRecursivo(nodo: ModuloAplicativo): Observable<any> {
+        return this._AplicativoService.mantenimientoModulo('INDIVIDUAL', ACCION_MANTENIMIENTO.AGREGAR, nodo).pipe(
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    nodo.key = response.data.key;
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                }
+            }),
+            concatMap((response: ResponseApi) => {
+                if (!response.success) return EMPTY;
+
+                if (nodo.children?.length > 0) {
+                    return from(nodo.children).pipe(
+                        concatMap((child: ModuloAplicativo) => {
+                            child.IdOpcionPadre = nodo.key;
+                            return this.guardarModuloRecursivo(child);
+                        })
+                    );
+                }
+                return of(null);
+            }),
+            catchError((error) => {
+                console.error(error);
+                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                return of(null);
+            })
+        );
+    }
+
+    private recolectarGuardados(nodo: ModuloAplicativo): Observable<any>[] {
+        const operaciones: Observable<any>[] = [];
+
+        const operacion = this._AplicativoService.mantenimientoModulo('INDIVIDUAL', ACCION_MANTENIMIENTO.AGREGAR, nodo).pipe(
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    nodo.key = response.data.key;
+                    this.MensajeToastComun('notification', 'success', 'Correcto', `Guardado ${nodo.label}`);
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                }
+            }),
+            concatMap((response: ResponseApi) => {
+                if (!response.success || !nodo.children || nodo.children.length == 0) {
+                    return of(null);
+                }
+
+                const hijosObs = nodo.children.map(child => {
+                    child.IdOpcionPadre = nodo.key;
+                    return this.recolectarGuardados(child);
+                });
+
+                // Aplanamos todos los hijos (recursivamente)
+                return forkJoin(hijosObs.map(obsList => forkJoin(obsList))).pipe(concatMap(() => of(null)));
+            }),
+            catchError((error) => {
+                this.MensajeToastComun('notification', 'error', 'Error', `Error en ${nodo.label}`);
+                console.error(error);
+                return of(null);
+            })
+        );
+
+        operaciones.push(operacion);
+        return operaciones;
+    }
+
+
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        const valorAccionServicio = this.accion === ACCION_FORMULARIO.AGREGAR
+        const valorAccionServicio = this.accion == ACCION_FORMULARIO.AGREGAR
             ? ACCION_MANTENIMIENTO.AGREGAR
             : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+            switchMap((response: ResponseApi) => {
+                if (!response.success) {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                    return of(response);
+                } else {
 
-        if (valorAccionServicio === ACCION_MANTENIMIENTO.AGREGAR) {
-            this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
-                switchMap((response: ResponseApi) => {
-                    if (!response.success) {
-                        this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
-                        return of(response);
-                    } else {
+                    return this._AplicativoService.mantenimientoModulo('MASIVO', this.nodoModuloSeleccionado.accionRealizar, this.lstModulosAsignados);
+                }
+            }),
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+                    this.visualizarForm = false;
+                    this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                }
+            }), catchError((error) => {
+                console.error(`Error. ${JSON.stringify(error)}`);
 
-                        return this._AplicativoService.mantenimientoModulo('MASIVO', this.nodoModuloSeleccionado.accionRealizar, this.lstModulosAsignados);
-                    }
-                }),
-                tap((response: ResponseApi) => {
-                    if (response.success) {
-                        this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
-                        this.visualizarForm = false;
-                        this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
-                    } else {
-                        this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
-                    }
-                }), catchError((error) => {
-                    console.error(`Error. ${JSON.stringify(error)}`);
+                if (error.message.includes('Http failure response')) {
+                    this.MensajeToastComun('notification', 'error', 'Sin respuesta', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                }
+                console.error(`Error. ${JSON.stringify(error)}`);
+                return of(error);
+            }),
+            finalize(() => {
+                this.bloquearComponente = false;
+                this.barraBusqueda = false;
+                this.mantenimientoForm.enable();
+            })
+        ).subscribe();
 
-                    if (error.message.includes('Http failure response')) {
-                        this.MensajeToastComun('notification', 'error', 'Sin respuesta', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
-                    } else {
-                        this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                    }
-                    console.error(`Error. ${JSON.stringify(error)}`);
-                    return of(error);
-                }),
-                finalize(() => {
-                    this.bloquearComponente = false;
-                    this.barraBusqueda = false;
-                    this.mantenimientoForm.enable();
-                })
-            ).subscribe();
-        }
+        // if (valorAccionServicio == ACCION_MANTENIMIENTO.AGREGAR) {
+        //     this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+        //         switchMap((response: ResponseApi) => {
+        //             if (!response.success) {
+        //                 this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+        //                 return of(response);
+        //             } else {
+
+        //                 return this._AplicativoService.mantenimientoModulo('MASIVO', this.nodoModuloSeleccionado.accionRealizar, this.lstModulosAsignados);
+        //             }
+        //         }),
+        //         tap((response: ResponseApi) => {
+        //             if (response.success) {
+        //                 this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+        //                 this.visualizarForm = false;
+        //                 this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+        //             } else {
+        //                 this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+        //             }
+        //         }), catchError((error) => {
+        //             console.error(`Error. ${JSON.stringify(error)}`);
+
+        //             if (error.message.includes('Http failure response')) {
+        //                 this.MensajeToastComun('notification', 'error', 'Sin respuesta', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
+        //             } else {
+        //                 this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+        //             }
+        //             console.error(`Error. ${JSON.stringify(error)}`);
+        //             return of(error);
+        //         }),
+        //         finalize(() => {
+        //             this.bloquearComponente = false;
+        //             this.barraBusqueda = false;
+        //             this.mantenimientoForm.enable();
+        //         })
+        //     ).subscribe();
+        // } else {
+        //     this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+        //         tap((response: ResponseApi) => {
+        //             if (response.success) {
+        //                 this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
+        //                 this.visualizarForm = false;
+        //                 this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
+        //             } else {
+        //                 this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+        //             }
+        //         }), catchError((error) => {
+        //             console.error(`Error. ${JSON.stringify(error)}`);
+
+        //             if (error.message.includes('Http failure response')) {
+        //                 this.MensajeToastComun('notification', 'error', 'Sin respuesta', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
+        //             } else {
+        //                 this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+        //             }
+        //             console.error(`Error. ${JSON.stringify(error)}`);
+        //             return of(error);
+        //         }),
+        //         finalize(() => {
+        //             this.barraBusqueda = false;
+        //         })
+        //     ).subscribe();
+        // }
     }
 
     // override guardarMantenimiento(): void {
@@ -277,37 +405,39 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
         const nodoIngreso: ModuloAplicativo = evento?.dragNode;
         if (nodoIngreso) {
-            const nodoPadre = this.buscarNodoPadre(this.lstModulosAsignados, nodoIngreso);
-
-            if (nodoPadre) {
-                nodoIngreso.IdOpcionPadre = nodoPadre.key;
-                nodoIngreso.NivelOpcion = nodoPadre.NivelOpcion + 1;
-
-            } else {
-                nodoIngreso.NivelOpcion = 1;
-                nodoIngreso.Orden = 1;
-            }
-
-            this.nodoModuloSeleccionado.esVisible = true;
-            this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.AGREGAR;
-
-            switch (nodoIngreso.tipoNodo) {
-                case 'M':
-                    nodoIngreso.icon = 'pi pi-folder-open';
-                    this.nodoModuloSeleccionado.tipo = 'módulo';
-                    break;
-                case 'F':
-                    nodoIngreso.icon = nodoIngreso.icon.replace('plus', 'check');
-                    this.nodoModuloSeleccionado.tipo = 'formulario';
-                    break;
-                case 'A':
-                    this.nodoModuloSeleccionado.tipo = 'acción';
-                    break;
-            }
-            this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
-            this.nodoModuloSeleccionado.nodo = nodoIngreso;
-            this.nodoModuloSeleccionado.nodoPadre = nodoPadre; this.asignarOrdenPorUbicacion(this.lstModulosAsignados, this.nodoModuloSeleccionado.nodo);
             setTimeout(() => {
+                const nodoPadre = this.buscarNodoPadre(this.lstModulosAsignados, nodoIngreso);
+                nodoIngreso.key = this.generarCodigoUnico();
+                nodoIngreso.Sistema = this.mantenimientoForm.get('Sistema')?.value; // acción realizada por todo tipó de evento
+
+                if (nodoPadre) {
+                    nodoIngreso.IdOpcionPadre = nodoPadre.key;
+                    nodoIngreso.NivelOpcion = nodoPadre.NivelOpcion + 1;
+
+                } else {
+                    nodoIngreso.NivelOpcion = 1;
+                    nodoIngreso.Orden = 1;
+                }
+
+                this.nodoModuloSeleccionado.esVisible = true;
+                this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.AGREGAR;
+
+                switch (nodoIngreso.tipoNodo) {
+                    case TIPO_NODO_APLICATIVO.MODULO:
+                        nodoIngreso.icon = 'pi pi-folder-open';
+                        this.nodoModuloSeleccionado.tipo = 'módulo';
+                        break;
+                    case TIPO_NODO_APLICATIVO.FORMULARIO:
+                        nodoIngreso.icon = nodoIngreso.icon.replace('plus', 'check');
+                        this.nodoModuloSeleccionado.tipo = 'formulario';
+                        break;
+                    case TIPO_NODO_APLICATIVO.ACCION:
+                        this.nodoModuloSeleccionado.tipo = 'acción';
+                        break;
+                }
+                this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
+                this.nodoModuloSeleccionado.nodo = nodoIngreso;
+                this.nodoModuloSeleccionado.nodoPadre = nodoPadre;
                 this.asignarOrdenPorUbicacion(this.lstModulosAsignados, nodoIngreso);
             });
 
@@ -342,7 +472,6 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
                 return true;
             }
 
-            // Revisión recursiva en hijos
             if (nodo.children?.length) {
                 const encontrado = this.asignarOrdenPorUbicacion(nodo.children, nodoBuscado);
                 if (encontrado) return true;
@@ -371,7 +500,35 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.nodoModuloSeleccionado.nodo = nodo;
         nodo.sobreEscribir = false;
         this.actualizarModulosAsignados();
+        console.log(this.convListaPlana(this.lstModulosAsignados))
+
     }
+
+
+    convListaPlana(nodes: ModuloAplicativo[]): ModuloAplicativo[] {
+        const flat: ModuloAplicativo[] = [];
+
+        function recurse(current: ModuloAplicativo[], parentKey: number | null) {
+            for (const node of current) {
+                // Extraemos los campos que no queremos propagar
+                const { children, ...rest } = node;
+
+                // Creamos el nuevo nodo plano
+                const flatNode: ModuloAplicativo = {
+                    ...rest,
+                    children: [],
+                };
+
+                flat.push(flatNode);
+                if (children && children.length > 0) {
+                    recurse(children, flatNode.key);
+                }
+            }
+        }
+        recurse(nodes, null);
+        return flat;
+    }
+
     onDialogNodoOptFormulario(): void {
         if (this.nodoModuloSeleccionado && this.nodoModuloSeleccionado?.nodo) {
             const tipoCod = this.nodoModuloSeleccionado.nodo.tipoNodo;
@@ -385,14 +542,14 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             }
 
             switch (tipoCod) {
-                case 'M':
+                case TIPO_NODO_APLICATIVO.MODULO:
                     break;
-                case 'F':
+                case TIPO_NODO_APLICATIVO.FORMULARIO:
                     if (this.nodoModuloSeleccionado.nodo.url.length == 0) {
                         this.MensajeToastComun('notification', 'warn', 'Advertencia', 'Debe ingresar una url'); return;
                     }
                     break;
-                case 'A':
+                case TIPO_NODO_APLICATIVO.ACCION:
                     // if (this.nodoModuloSeleccionado.nodo.icono.length == 0) {
                     //     this.MensajeToastComun('notification', 'warn', 'Advertencia', `Debe ingresar el icono`); return;
                     // }
@@ -410,21 +567,28 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
     AgregarlstModulosDisponibles(): void {
         this.lstModulosDisponibles = [
-            { key: 1, icon: 'pi pi-folder-plus', label: 'Módulo', tipoNodo: 'M', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
-            { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: 'F', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
-            { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: 'A', data: '', url: '', sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] }
-        ]
+            { key: 1, icon: 'pi pi-folder-plus', label: 'Módulo', tipoNodo: TIPO_NODO_APLICATIVO.MODULO, data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
+            { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: TIPO_NODO_APLICATIVO.FORMULARIO, data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
+            { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: TIPO_NODO_APLICATIVO.ACCION, data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] }
+        ];
+    }
+
+    generarCodigoUnico(longitud: number = 6): number {
+        let nuevoCodigo: number;
+        do {
+            nuevoCodigo = Math.floor(Math.random() * Math.pow(10, longitud));
+        } while (this.lstKeyGeneradas.includes(nuevoCodigo));
+        return nuevoCodigo;
     }
 
     actualizarModulosAsignados(): void {
 
         const nodo: ModuloAplicativo = this.nodoModuloSeleccionado.nodo;
-        nodo.Sistema = this.mantenimientoForm.get('Sistema')?.value; // acción realizada por todo tipó de evento
 
         switch (this.accion) {
+
             case ACCION_FORMULARIO.EDITAR:
                 this.barraBusqueda = true;
-
                 this._AplicativoService.mantenimientoModulo('INDIVIDUAL', this.nodoModuloSeleccionado.accionRealizar, nodo).pipe(
                     tap((response: ResponseApi) => {
                         if (response.success) {

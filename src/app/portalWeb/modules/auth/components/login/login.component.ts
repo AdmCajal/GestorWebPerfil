@@ -135,6 +135,7 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
                     this._SecurityService.cerrarSesion();
                     return of(validacionResponse);
                 } else {
+                    this._AuthService.guardarCredencialesRecarga(usuarioLogin);
                     this._SecurityService.guardarLogin(validacionResponse);
                     this._SecurityService.guardarUsuarioLogueado(validacionResponse.data);
                     this.obtenerDatosMaestros();
@@ -171,9 +172,9 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
                     location.reload();
                 }
             }), catchError((error) => {
-                if(error.message.includes('Http failure response')){
+                if (error.message.includes('Http failure response')) {
                     this.MensajeToastComun('notification', 'error', 'Sin respuesta de inicio de sesión', 'Hubo un problema de conexión. Por favor, verifica tu red e inténtalo nuevamente.');
-                }else{
+                } else {
                     this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
                 }
                 console.error(`Error al iniciar sesión. ${JSON.stringify(error)}`);
@@ -213,10 +214,10 @@ export class Login extends NotificacionesSweet implements OnInit, OnDestroy {
      */
     obtenerUsuarioGuardado(): void {
         try {
-            const savedCredentials = this._AuthService.obtenerCredenciales();
-            if (savedCredentials !== null) {
-                this.usuarioLogin = { ...savedCredentials };
-            }
+            // const savedCredentials = this._AuthService.obtenerCredenciales();
+            // if (savedCredentials !== null) {
+            //     this.usuarioLogin = { ...savedCredentials };
+            // }
         } catch (error) {
             this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
             console.error('Error al obtener usuario.', error);

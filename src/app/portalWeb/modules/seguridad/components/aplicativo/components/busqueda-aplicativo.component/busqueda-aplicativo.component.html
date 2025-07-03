@@ -39,6 +39,7 @@
         <ng-template #header>
             <tr>
                 <th class="w-1">Acciones</th>
+                <th>Cod. Aplicativo</th>
                 <th>Aplicativo</th>
                 <th>Descripción</th>
                 <th>Url Aplicativo</th>
@@ -58,6 +59,7 @@
                         [severity]="obtenerColorAccionEstado(data.Estado)" rounded outlined
                         (onClick)="btnInactivarRegistro($event, data)" />
                 </td>
+                <td>{{data.Sistema}}</td>
                 <td>{{data.Nombre | titlecase}}</td>
                 <td>{{data.Descripcion | titlecase}}</td>
                 <td>{{data.UrlSistema | lowercase }}</td>

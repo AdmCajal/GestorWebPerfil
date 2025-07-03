@@ -25,7 +25,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [ConfirmationService, MessageService]
 })
 export class BusquedaPersona extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
-    @ViewChild(MantenimientoSucursal) _MantenimientoUsuario!: MantenimientoSucursal;
+    @ViewChild(MantenimientoSucursal) _Mantenimiento!: MantenimientoSucursal;
 
     lstEstados: ComboItem[] = [];
     constructor(
@@ -107,9 +107,9 @@ export class BusquedaPersona extends BaseComponenteBusqueda implements OnInit, A
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+        this._Mantenimiento.visualizarForm = true;
+        this._Mantenimiento.accion = accion;
+        this._Mantenimiento.mantenimientoForm.patchValue(registro);
         console.log(registro);
     }
 

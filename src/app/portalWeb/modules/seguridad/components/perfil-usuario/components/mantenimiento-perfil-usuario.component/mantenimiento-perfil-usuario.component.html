@@ -1,48 +1,49 @@
 <p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!barraBusqueda"
-    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-12 w-11'" [maximizable]="true">
 
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="barraBusqueda" />
 
     <div class="flex flex-wrap md:flex-nowrap gap-2">
-        <p-fieldset legend="Datos Generales" class="col-6">
+        <p-fieldset legend="Datos Generales" class="col-3">
             <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
+                        formControlName="PERFIL" placeholder="Seleccione una opción"
+                        (onChange)="btnObtenerSucursal($event)"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Sucursal <span class="font-semibold text-red-500">*</span></label>
-                    <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
+                    <p-dropdown appendTo="body" [options]="lstSucursal" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Gerencia <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Responsable <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre" type="text"
                         formControlName="NOMBRECOMPLETO" />
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Centro De Costo <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
                         formControlName="PERFIL" placeholder="Seleccione una opción"></p-dropdown>
                 </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" type="text" placeholder="Ingrese el nombre del perfil" />
                 </div>
             </form>
         </p-fieldset>
-        <p-fieldset legend="Asignación De Aplicativos" class="col-6">
+        <p-fieldset legend="Asignación De Aplicativos" class="col-9">
 
             <section class="flex flex-wrap">
-                <div class="col-6">
+                <div class="col-5">
                     <div class="flex col-12 ">
-                        <p-dropdown appendTo="body" [options]="lstAplicativos" optionLabel="descripcion"
+                        <p-dropdown appendTo="body" [options]="lstAplicativo" optionLabel="descripcion"
                             optionValue="codigo" [(ngModel)]="codigoAplicativoAgregar" [styleClass]="'w-12'"
                             placeholder="Seleccione una opción"></p-dropdown>
                         <p-button icon="pi pi-plus" class="ml-2" raised severity="success"
@@ -50,35 +51,42 @@
                     </div>
                     <div class="border-round border-solid  border-1 border-300 col-12">
                         <h4 class="w-12 ml-2 mb-0 text-lg font-bold"> Aplicativos seleccionados:</h4>
+                        <span class="header-label ml-4 mt-2" *ngIf="lstaplicativosSeleccionados.length ==0">Agregue
+                            aplicativos...</span>
                         <div class="w-12 ml-3">
                             <div class="flex" *ngFor="let item of lstaplicativosSeleccionados">
-                                <b> <p-button pButton pRipple type="button" severity="danger" icon="pi pi-minus" text
-                                        rounded></p-button> <span (click)="onVerAplicativoSeleccionado(item)"
-                                        style="cursor: pointer;">{{item.label}}</span> </b>
+                                <b>
+                                    <p-button pButton pRipple type="button" severity="danger" icon="pi pi-minus" text
+                                        [disabled]="!this.barraBusqueda" title="Eliminar Aplicativo" rounded></p-button>
+                                    <span class="span-seleccion" pTooltip="Clic para ver módulos"
+                                        tooltipPosition="right"
+                                        (click)="onVerAplicativoSeleccionado(item)">{{item.Nombre}}</span>
+                                </b>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6 div-accesos-perfil">
+                <div class="col-7 div-accesos-perfil">
                     <div class="flex">
-                        <p-tree [value]="aplicativoSeleccionado" styleClass="w-full md:w-[30rem]" class="w-full"
+                        <p-tree [value]="aplicativoSeleccionado.modulos" styleClass="w-full md:w-[30rem]" class="w-full"
                             selectionMode="checkbox">
                             <ng-template let-node #header>
                                 <div class="w-12 flex justify-content-left ">
-                                    <p class="flex flex-nowrap justify-content-between">
-                                        <span class="header-label ">Accesos del aplicativo:
+                                    <p class="w-12 flex flex-nowrap justify-content-between">
+                                        <span class="header-label flex flex-wrap">
+                                            Accesos del aplicativo:
                                             <span class="text-green-500 font-bold">
-                                                {{nombreAplicativoSeleccionado}}
+                                                {{aplicativoSeleccionado.Nombre}}
                                             </span>
                                         </span>
                                     </p>
                                 </div>
-                                <hr>
+                                <hr class="mt-0">
                             </ng-template>
                             <ng-template let-node pTemplate="empty">
                                 <div class=" w-12 flex justify-content-center align-items-top   ">
                                     <p class="flex flex-nowrap justify-content-between  w-10  ">
-                                        <span class="header-label ">Seleccione un aplicativo asignado...</span>
+                                        <span class="header-label ">{{comentarioModulos}}</span>
                                     </p>
                                 </div>
                             </ng-template></p-tree>
@@ -123,3 +131,4 @@
     </ng-template>
 </p-dialog>
 <p-confirmdialog key="confirmarRegistroMantenimiento" />
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-right"></p-toast>

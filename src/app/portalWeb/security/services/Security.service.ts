@@ -14,9 +14,6 @@ export class SecurityService {
     guardarLogin(response: ResponseApi): void {
         sessionStorage.setItem("data_login", JSON.stringify(this._EncryptService.Encriptar(JSON.stringify(response))));
     }
-    eliminarLogin(): void {
-        sessionStorage.removeItem('data_login');
-    }
 
     obtenerToken(): string {
         let token: string = '';
@@ -47,15 +44,13 @@ export class SecurityService {
             const dataEncriptada: string = JSON.parse(sessionStorage.getItem("data_menu") || "");
             const data: any[] = JSON.parse(this._EncryptService.Desencriptar(dataEncriptada)) || [];
             const subMenu: any = data.find(sm => sm.id_menu === idMenu);
-            console.log(idMenu)
-            console.log(data)
-            console.log(subMenu)
+
             return subMenu && subMenu.estado == 1 ? true : false
         }
         return false;
     }
 
-    nombreComponente(idMenu: string): string |undefined {
+    nombreComponente(idMenu: string): string | undefined {
 
         if (idMenu == 'public') return 'true';
 
@@ -65,7 +60,7 @@ export class SecurityService {
             //&& sm.url.includes(lastSegment)
             const dataEncriptada: string = JSON.parse(sessionStorage.getItem("data_menu") || "");
             const data: any[] = JSON.parse(this._EncryptService.Desencriptar(dataEncriptada)) || [];
-            const subMenu: any = data.find(sm => sm.id_menu === idMenu );
+            const subMenu: any = data.find(sm => sm.id_menu === idMenu);
 
 
 
@@ -74,11 +69,13 @@ export class SecurityService {
         return undefined;
     }
 
-    cerrarSesion():void {
+    cerrarSesion(): void {
         sessionStorage.removeItem('Menu_Session');
         sessionStorage.removeItem('data_menu');
         sessionStorage.removeItem('data_login');
         sessionStorage.removeItem('data_user');
+        sessionStorage.removeItem('data_user_reload');
+        sessionStorage.removeItem('data_maestra');
     }
 
 

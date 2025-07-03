@@ -14,6 +14,18 @@
 		}
 	}
 
+	.span-seleccion {
+		cursor: pointer;
+		display: inline-block;
+		transition: transform 0.2s ease-in-out;
+
+		&:hover {
+			font-size: calc(1rem + 0.03rem);
+		}
+
+	}
+
+
 
 
 	:host ::ng-deep {

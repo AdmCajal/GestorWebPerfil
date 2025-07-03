@@ -5,11 +5,12 @@ import { SecurityService } from '../../security/services/Security.service';
 import { ActivatedRoute } from '@angular/router';
 import { ComboItem } from '../models/interfaces/comboItem';
 import { ACCION_FORMULARIO } from '../constants/acciones-formulario';
+import { BaseGeneral } from './baseGeneral';
 
 @Injectable({
     providedIn: 'root'
 })
-export class BaseComponenteMantenimiento {
+export class BaseComponenteMantenimiento extends BaseGeneral {
     @Output() msjMantenimiento = new EventEmitter<any>(); //BehaviorSubject
     bloquearComponente = false;
     barraBusqueda = false;
@@ -28,6 +29,7 @@ export class BaseComponenteMantenimiento {
         protected _ActivatedRoute: ActivatedRoute,
         protected _ConfirmationService: ConfirmationService
     ) {
+        super();
         this.mantenimientoForm = new FormGroup({});
         this.breadcrumb = this._SecurityService.nombreComponente(this._ActivatedRoute.snapshot.data['idMenu']) || this._ActivatedRoute.snapshot.data['breadcrumb'] || 'Nombre encontrado';
     }
@@ -77,11 +79,11 @@ export class BaseComponenteMantenimiento {
         this.barraBusqueda = false;
         this.bloquearComponente = false;
         this.accion = accion;
+        this.estructuraForm();
 
 
         switch (accion) {
             case ACCION_FORMULARIO.AGREGAR:
-                this.estructuraForm();
                 break;
             case ACCION_FORMULARIO.EDITAR:
                 this.mantenimientoForm.patchValue(registro);
@@ -90,6 +92,7 @@ export class BaseComponenteMantenimiento {
             case ACCION_FORMULARIO.VER:
                 this.bloquearComponente = true;
                 this.mantenimientoForm.patchValue(registro);
+                this.mantenimientoForm.disable();
                 this.obtenerDatosMantenimiento();
                 break;
         }

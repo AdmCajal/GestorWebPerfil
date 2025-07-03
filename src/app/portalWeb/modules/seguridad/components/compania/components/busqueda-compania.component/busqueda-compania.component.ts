@@ -17,6 +17,7 @@ import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-for
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-registro';
 
 @Component({
     selector: 'app-busqueda-compania',
@@ -27,10 +28,10 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [ConfirmationService, MessageService]
 })
 export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
-    @ViewChild(MantenimientoCompania) _MantenimientoUsuario!: MantenimientoCompania;
+    @ViewChild(MantenimientoCompania) _Mantenimiento!: MantenimientoCompania;
 
     lstEstados: ComboItem[] = [];
-    constructor(private _ActivatedRoute: ActivatedRoute,
+    constructor(
         private _CompaniaService: CompaniaService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
@@ -49,20 +50,18 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
         this.filtroForm = this._fb.group({
             DocumentoFiscal: [{ value: '', disabled: this.bloquearComponente }],
             descripcioncorta: [{ value: '', disabled: this.bloquearComponente }],
-            estado: [{ value: '', disabled: this.bloquearComponente }],
+            estado: [{ value: null, disabled: this.bloquearComponente }],
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
     }
     obtenerDatosSelect(): void {
-        const optTodos = { descripcion: 'TODOS', codigo: '' };
-
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
         }).subscribe(resp => {
             const dataEstados = resp.estados?.map((ele: any) => ({
                 descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: ele.codigo
             }));
-            this.lstEstados = [optTodos, ...dataEstados];
+            this.lstEstados = [this.optTodos, ...dataEstados];
         });
     }
 
@@ -77,6 +76,16 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
                 if (consultaRepsonse.success) {
 
                     this.lstBusqueda = [...consultaRepsonse.data];
+                    this.lstBusqueda = this.lstBusqueda.map((m: any) => {
+                        return {
+                            ...m,
+                            EmpRucBusqueda: { visible: m?.RUC || '' },
+                            EmpRazonSocialBusqueda: { visible: m?.DescripcionCorta || '' },
+                            DocumentoFiscalBusqueda: { visible: m?.DocumentoFiscal || '' },
+                            RepresentanteLegalBusqueda: { visible: m?.RepresentanteLegal || '' },
+                        }
+                    });
+
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
                 } else {
@@ -100,7 +109,8 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
         this.filtroForm.disable();
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
-        registro.SedEstado = 2;
+        registro.SedEstado = registro.Estado == ESTADO_REGISTRO.ACTIVO_NUM ? ESTADO_REGISTRO.INACTIVO_NUM : ESTADO_REGISTRO.ACTIVO_NUM;
+
         this._CompaniaService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
@@ -126,15 +136,7 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        this._MantenimientoUsuario.estructuraForm();
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
-        this._MantenimientoUsuario.mantenimientoForm.get('EmpRucBusqueda')?.setValue({ visible: registro?.RUC || '' });
-        this._MantenimientoUsuario.mantenimientoForm.get('EmpRazonSocialBusqueda')?.setValue({ visible: registro?.DescripcionCorta || '' });
-        this._MantenimientoUsuario.mantenimientoForm.get('DocumentoFiscalBusqueda')?.setValue({ visible: registro?.DocumentoFiscal || '' });
-        this._MantenimientoUsuario.mantenimientoForm.get('RepresentanteLegalBusqueda')?.setValue({ visible: registro?.RepresentanteLegal || '' });
+        this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
     rptaMantenimiento(respuesta: any): void {
         console.log(respuesta)

@@ -21,6 +21,8 @@ import { SecurityService } from '../../../../../../security/services/Security.se
 import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 import { AplicativoService } from '../../../aplicativo/services/aplicativo.service';
+import { ModuloAplicativo } from '../../../../../../core/models/interfaces/aplicativo/modulo.aplicativo';
+import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
 
 @Component({
     selector: 'app-mantenimiento-perfil-usuario',
@@ -33,110 +35,22 @@ import { AplicativoService } from '../../../aplicativo/services/aplicativo.servi
 export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento implements OnInit, AcccionesMantenimientoComponente {
 
     lstCompanias: ComboItem[] = [];
-    lstAplicativos: ComboItem[] = [];
+    lstSucursal: ComboItem[] = [];
+    lstGerencia: ComboItem[] = [];
+    lstCentroCosto: ComboItem[] = [];
 
-    lstaplicativosSeleccionados: TreeNode[] = [
-        {
-            key: '0',
-            label: 'Spring',
-            data: 'Documents Folder',
-            children: [
-                {
-                    key: '0-0-0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                    children: [
-                        {
-                            key: '0-0-0', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            // children: [
-                            //     { key: '0-0-0-1', label: 'Agregar', icon: 'pi pi-fw pi-file', data: 'Expenses Document' }
-                            // ]
-                        },
-                        { key: '0-0-1', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                        { key: '0-0-1', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                        { key: '0-0-1', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                    ]
-                },
-                {
-                    key: '0-0-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                    children: [
-                        {
-                            key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                { key: '0-0-1', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                            ]
-                        },
-                        {
-                            key: '0-0-1', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                            children: [
-                                {
-                                    key: '0-0-0', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                    children: [
-                                        { key: '0-0-0', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                        { key: '0-0-1', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        { key: '0-0-1', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                        { key: '0-0-1', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    key: '0-0-1', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                    children: [
-                        {
-                            key: '0-0-0', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                { key: '0-0-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                { key: '0-0-1', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            ]
-                        },
-                        {
-                            key: '0-0-0', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                { key: '0-0-1', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                { key: '0-0-1', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            ]
-                        }
-                    ]
-                },
-                {
-                    key: '0-0-1', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                    children: [
-                        {
-                            key: '0-0-0', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                { key: '0-0-1', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                { key: '0-0-1', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            ]
-                        },
-                        {
-                            key: '0-0-0', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                            children: [
-                                { key: '0-0-0', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            key: '1',
-            label: 'HCE',
-            data: 'Documents Folder',
-        }
-    ]
+    lstAplicativo: ComboItem[] = [];
 
-    aplicativoSeleccionado: TreeNode[] = []
-    nombreAplicativoSeleccionado: string = '';
+    lstaplicativosSeleccionados: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }[] = []
+
+    aplicativoSeleccionado: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] } = { Sistema: '', Nombre: '', modulos: [] };
     codigoAplicativoAgregar: any;
+    comentarioModulos: string = 'Seleccione un aplicativo asignado...';
 
     constructor(override _ActivatedRoute: ActivatedRoute,
         private _PerfilUsuarioService: PerfilUsuarioService,
         private _CompaniaService: CompaniaService,
+        private _SucursalService: SucursalService,
         private _AplicativoService: AplicativoService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
@@ -165,7 +79,6 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             FechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
             ESTADO: [{ value: '', disabled: this.bloquearComponente }],
             detallePerfiles: this._fb.array([])
-
         });
     }
     obtenerDatosSelect(): void {
@@ -183,7 +96,7 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             this.lstCompanias = [...dataCompanias];
 
             const datAplicativos: any[] = resp.aplicativos?.data?.map((m: any) => ({ codigo: m.Sistema, descripcion: m.Nombre.trim() }));
-            this.lstAplicativos = [...datAplicativos];
+            this.lstAplicativo = [...datAplicativos];
         });
     }
 
@@ -221,11 +134,11 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
     }
 
     onAgregarAplicativoSeleccionado(): void {
-        const item = this.lstAplicativos.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
+        const item = this.lstAplicativo.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
 
         if (item) {
-            const aplicativoAgregar: TreeNode = { key: item.codigo, label: item.descripcion };
-            const yaExiste = this.lstaplicativosSeleccionados.some((a: any) => a.key === aplicativoAgregar.key);
+            const aplicativoAgregar: any = { Sistema: item.codigo, Nombre: item.descripcion };
+            const yaExiste = this.lstaplicativosSeleccionados.some((a: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }) => a.Sistema === aplicativoAgregar.Sistema);
 
             if (yaExiste) {
                 this.MensajeToastComun('notification', 'warn', 'Advertencia', 'El aplicativo ya fue agregado. No se permiten duplicados.');
@@ -236,88 +149,49 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             this.MensajeToastComun('notification', 'warn', 'Advertencia', 'No se encontró el aplicativo al momento de agregar');
         }
     }
-    onVerAplicativoSeleccionado(item: any): void {
-        this.nombreAplicativoSeleccionado = item.label;
-        let data = [
-            {
-                key: '0', label: 'Salud', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                children: [
-                    { key: '0-1', label: 'Pedido', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                    { key: '0-2', label: 'Presupuestos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                    { key: '0-3', label: 'Caja / Admisión', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                    { key: '0-4', label: 'Farmacia', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                ]
-            },
-            {
-                key: '1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                children: [
-                    {
-                        key: '1-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                        children: [
-                            { key: '1-1-1', label: 'Resumen Comprobantes Electrónicos', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            { key: '1-1-2', label: 'Log de comprobantes electrónicos', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                        ]
-                    },
-                    {
-                        key: '1-2', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                        children: [
-                            {
-                                key: '1-2-1', label: 'Comercial', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                                children: [
-                                    { key: '1-2-1-1', label: 'Terminal Caja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                                    { key: '1-2-1-2', label: 'banco', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    { key: '1-2-1-3', label: 'Caja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                                    { key: '1-2-1-4', label: 'Componentes Caracteristicas', icon: 'pi pi-fw pi-file', data: 'Resume Document' }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                key: '2', label: 'General', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                children: [
-                    {
-                        key: '2-1', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                        children: [
-                            { key: '2-1-1', label: 'Agente Bandeja', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            { key: '2-1-2', label: 'Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            { key: '2-1-3', label: 'Formato Bandeja', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                        ]
-                    },
-                    {
-                        key: '2-2', label: 'Maestros', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                        children: [
-                            { key: '2-2-1', label: 'Médicos y prestaciones por U.N', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            { key: '2-2-2', label: 'Correlativos de OA por U.N', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            { key: '2-2-3', label: 'Artículos', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                        ]
-                    }
-                ]
-            },
-            {
-                key: '3', label: 'Sistema', icon: 'pi pi-fw pi-file', data: 'Resume Document',
-                children: [
-                    {
-                        key: '3-1', label: 'Seguridad', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                        children: [
-                            { key: '3-1-1', label: 'Cuentas Correo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                            { key: '3-1-2', label: 'Ticketera', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                            { key: '3-1-3', label: 'Agente', icon: 'pi pi-fw pi-file', data: 'Resume Document' },
-                        ]
-                    },
-                    {
-                        key: '3-2', label: 'Imágenes', icon: 'pi pi-fw pi-file', data: 'Expenses Document',
-                        children: [
-                            { key: '3-2-1', label: 'Imagen Archivo', icon: 'pi pi-fw pi-file', data: 'Expenses Document' },
-                        ]
-                    }
-                ]
-            }
-        ];
-        this.aplicativoSeleccionado = [...data];
-        this.MensajeToastComun('notification', 'success', 'Correcto', 'Módulos obtenidos');
+    onVerAplicativoSeleccionado(aplicativo: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }): void {
+        console.log(this.aplicativoSeleccionado);
+
+        this.aplicativoSeleccionado = aplicativo;
+
+        this.barraBusqueda = true;
+        this.comentarioModulos = 'Buscando módulos de aplicativo...';
+        this._AplicativoService.obtenerJerarquias({ Codigo: aplicativo.Sistema || '' }).pipe(
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    this.aplicativoSeleccionado.modulos = [...response.data?.result];
+                    if (this.aplicativoSeleccionado.modulos.length == 0) this.comentarioModulos = 'No se encontró información...';
+                    this.MensajeToastComun('notification', 'success', 'Correcto', `${response.mensaje}`);
+
+                } else {
+                    this.comentarioModulos = 'No se encontró información...';
+                    this.MensajeToastComun('notification', 'error', 'Error', `${response.mensaje}`); return;
+                }
+
+            }), catchError((error) => {
+                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                return of(null);
+            }),
+            finalize(() => {
+                this.barraBusqueda = false;
+            })
+        ).subscribe();
     }
 
+    btnObtenerSucursal(evento: any): void {
+        this.lstSucursal = [];
+        this.lstGerencia = [];
+        this.lstCentroCosto = [];
+
+        forkJoin({
+            sucursales: this._SucursalService.obtener({ IdEmpresa: evento.value }),
+        }).subscribe(resp => {
+            const data = resp.sucursales?.data?.map((ele: any) => ({
+                descripcion: ele.SedDescripcion?.trim()?.toUpperCase() || "", codigo: ele.SedCodigo
+            }));
+            console.log(data)
+            this.lstSucursal = [...data];
+        });
+    }
 
 }

@@ -1,9 +1,10 @@
 export interface ModuloAplicativo {
-    key: number;
+    key: number ;
     icon: string;
     label: string;
     data: string;
     url: string;
+    checked: boolean;
 
     IdOpcionPadre: number;
     codigoObj: string;

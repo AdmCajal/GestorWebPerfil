@@ -31,7 +31,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
     providers: [ConfirmationService, MessageService]
 })
 export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnInit, AccionesBusquedaComponente {
-    @ViewChild(MantenimientoPerfilUsuario) _MantenimientoUsuario!: MantenimientoPerfilUsuario;
+    @ViewChild(MantenimientoPerfilUsuario) _Mantenimiento!: MantenimientoPerfilUsuario;
 
     lstEstados: ComboItem[] = [];
     constructor(
@@ -127,11 +127,7 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
         throw new Error('Method not implemented.');
     }
     btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
-        this._MantenimientoUsuario.visualizarForm = true;
-        this._MantenimientoUsuario.accion = accion;
-        this._MantenimientoUsuario.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
-        this._MantenimientoUsuario.estructuraForm();
-        this._MantenimientoUsuario.mantenimientoForm.patchValue(registro);
+        this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
     rptaMantenimiento(respuesta: any): void {

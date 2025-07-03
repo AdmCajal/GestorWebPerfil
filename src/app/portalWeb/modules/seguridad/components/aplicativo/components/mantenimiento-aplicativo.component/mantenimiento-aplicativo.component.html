@@ -8,7 +8,7 @@
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Cod. Aplicativo <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre de aplicativo" type="text"
-                        formControlName="Sistema" maxlength="4"/>
+                        formControlName="Sistema" maxlength="4" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Aplicativo <span class="font-semibold text-red-500">*</span></label>
@@ -23,7 +23,6 @@
                     <label for="name1">Url APlicativo <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Obligatorio" type="text" formControlName="UrlSistema" />
                 </div>
-
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Estado <span class="font-semibold text-red-500">*</span></label>
                     <p-dropdown appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
@@ -141,12 +140,12 @@
                 [(ngModel)]="nodoModuloSeleccionado.nodo.label" [ngModelOptions]="{standalone: true}" />
         </div>
         <div
-            class="flex flex-col gap-2 pl-2 pr-2 md:col-{{nodoModuloSeleccionado.nodo.tipoNodo == 'A' ? '6':'12'}} col-12 ">
+            class="flex flex-col gap-2 pl-2 pr-2 md:col-{{nodoModuloSeleccionado.nodo.tipoNodo == tipoNodoFormulario ? '6':'12'}} col-12 ">
             <label for="name1">url <span class="font-semibold text-red-500">*</span></label>
             <input pInputText id="name1" placeholder="Obligatorio" type="text"
                 [(ngModel)]="nodoModuloSeleccionado.nodo.url" [ngModelOptions]="{standalone: true}" />
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 " *ngIf="nodoModuloSeleccionado.nodo.tipoNodo == 'A'">
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 " *ngIf="nodoModuloSeleccionado.nodo.tipoNodo == tipoNodoFormulario">
             <label for="name1">Icono <span class="font-semibold text-red-500">*</span></label>
             <p-select appendTo="body" [options]="lstIconos" optionLabel="descripcion" optionValue="codigo"
                 placeholder="Seleccione una opción" [(ngModel)]="nodoModuloSeleccionado.nodo.icon"
