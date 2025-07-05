@@ -19,6 +19,7 @@ import { CabeceraVistaComponent } from '../../../../../../shared/components/cabe
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 
 @Component({
     selector: 'app-busqueda-usuario',
@@ -68,7 +69,7 @@ export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit
         this.bloquearComponente = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
+        this.lstDataBusqueda = [{ miscelaneoCod: '1', descripcion: 'Descripcion', companiaCod: 1, companiaDesc: 'Compañia 1', tipoCod: 1, tipoDesc: 'Tipo 1', estado: 'A', estadoDesc: 'Activo' }];
         this.bloquearComponente = false;
         this.filtroForm.enable();
     }
@@ -78,7 +79,7 @@ export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._MantenimientoMiscelaneo.visualizarForm = true;
         this._MantenimientoMiscelaneo.accion = accion;
         this._MantenimientoMiscelaneo.mantenimientoForm.patchValue(registro);
@@ -91,9 +92,9 @@ export class BusquedaMiscelaneo extends BaseComponenteBusqueda implements OnInit
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

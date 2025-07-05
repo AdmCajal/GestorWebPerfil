@@ -47,9 +47,9 @@
     <ng-template #footer>
         <div class="gap-2">
             <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
-                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
-            <p-button icon="pi pi-{{accion == 'AGREGAR' ? 'plus':'pencil'}}" class="ml-2" label="{{accion | titlecase}}"
-                raised *ngIf="accion != 'VER'" />
+                *ngIf="accion != AccionFormulario.AGREGAR" (onClick)="btnLogAuditoria()" />
+            <p-button icon="pi pi-{{accion == AccionFormulario.AGREGAR ? 'plus':'pencil'}}" class="ml-2" label="{{accion | titlecase}}"
+                raised *ngIf="accion != AccionFormulario.VER" />
         </div>
     </ng-template>
 </p-dialog>

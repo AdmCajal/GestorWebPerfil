@@ -14,6 +14,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { PuestoService } from '../puesto.service';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 
 @Component({
     selector: 'app-asignar-puesto',
@@ -32,7 +33,7 @@ export class AsingarPuesto implements OnInit {
 
     filtroForm: FormGroup;
 
-    lstBusqueda: any[] = [];
+    lstDataBusqueda: any[] = [];
 
     lstEstados: any[] = [];
 
@@ -114,9 +115,9 @@ export class AsingarPuesto implements OnInit {
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

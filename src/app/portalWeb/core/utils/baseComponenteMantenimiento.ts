@@ -4,7 +4,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { SecurityService } from '../../security/services/Security.service';
 import { ActivatedRoute } from '@angular/router';
 import { ComboItem } from '../models/interfaces/comboItem';
-import { ACCION_FORMULARIO } from '../constants/acciones-formulario';
+import { AccionFormulario } from '../enums/accionFormulario.enum';
 import { BaseGeneral } from './baseGeneral';
 
 @Injectable({
@@ -74,7 +74,7 @@ export class BaseComponenteMantenimiento extends BaseGeneral {
     }
     protected guardarMantenimiento(): void { }
 
-    public IniciarMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    public IniciarMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this.visualizarForm = true;
         this.barraBusqueda = false;
         this.bloquearComponente = false;
@@ -83,13 +83,13 @@ export class BaseComponenteMantenimiento extends BaseGeneral {
 
 
         switch (accion) {
-            case ACCION_FORMULARIO.AGREGAR:
+            case AccionFormulario.AGREGAR:
                 break;
-            case ACCION_FORMULARIO.EDITAR:
+            case AccionFormulario.EDITAR:
                 this.mantenimientoForm.patchValue(registro);
                 this.obtenerDatosMantenimiento();
                 break;
-            case ACCION_FORMULARIO.VER:
+            case AccionFormulario.VER:
                 this.bloquearComponente = true;
                 this.mantenimientoForm.patchValue(registro);
                 this.mantenimientoForm.disable();

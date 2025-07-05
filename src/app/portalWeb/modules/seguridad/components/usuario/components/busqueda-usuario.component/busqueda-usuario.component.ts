@@ -15,7 +15,7 @@ import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccion
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { UsuarioMantenimientoService } from '../../services/usuario-mantenimiento.service';
 
 @Component({
@@ -67,12 +67,12 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
         this._UsuarioService.obtenerUsuarios(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
-                    this.lstBusqueda = [...consultaRepsonse.data];
+                    this.lstDataBusqueda = [...consultaRepsonse.data.map((m: any) => { return { ...m, empleadoBusqueda: { visible: m.USUARIO }, Clave: '' } })];
 
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
@@ -123,12 +123,12 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
         throw new Error('Method not implemented.');
     }
 
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Router.navigate([accion], { relativeTo: this._ActivatedRoute });
 
         switch (accion) {
-            case ACCION_FORMULARIO.EDITAR:
-            case ACCION_FORMULARIO.VER:
+            case AccionFormulario.EDITAR:
+            case AccionFormulario.VER:
                 this._UsuarioMantenimientoService.setUsuario(registro);
                 break;
         }
@@ -141,9 +141,9 @@ export class BusquedaUsuario extends BaseComponenteBusqueda implements OnInit, A
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

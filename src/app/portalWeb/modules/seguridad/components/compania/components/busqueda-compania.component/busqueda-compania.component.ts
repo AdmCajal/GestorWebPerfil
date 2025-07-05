@@ -13,7 +13,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoCompania } from '../mantenimiento-compania.component/mantenimiento-compania.component';
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
@@ -70,13 +70,13 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
         this._CompaniaService.obtener(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
-                    this.lstBusqueda = [...consultaRepsonse.data];
-                    this.lstBusqueda = this.lstBusqueda.map((m: any) => {
+                    this.lstDataBusqueda = [...consultaRepsonse.data];
+                    this.lstDataBusqueda = this.lstDataBusqueda.map((m: any) => {
                         return {
                             ...m,
                             EmpRucBusqueda: { visible: m?.RUC || '' },
@@ -135,7 +135,7 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
     rptaMantenimiento(respuesta: any): void {
@@ -144,9 +144,9 @@ export class BusquedaCompania extends BaseComponenteBusqueda implements OnInit, 
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

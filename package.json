@@ -30,6 +30,7 @@
         "primeclt": "^0.1.5",
         "primeflex": "^4.0.0",
         "primeicons": "^7.0.0",
+        "primelocale": "^2.1.4",
         "primeng": "^19.0.8",
         "rxjs": "~7.8.0",
         "sweetalert2": "^11.17.2",

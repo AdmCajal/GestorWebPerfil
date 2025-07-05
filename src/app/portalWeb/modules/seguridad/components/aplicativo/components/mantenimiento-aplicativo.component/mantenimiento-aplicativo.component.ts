@@ -10,7 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { AplicativoService } from '../../services/aplicativo.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
@@ -215,7 +215,7 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        const valorAccionServicio = this.accion == ACCION_FORMULARIO.AGREGAR
+        const valorAccionServicio = this.accion == AccionFormulario.AGREGAR
             ? ACCION_MANTENIMIENTO.AGREGAR
             : ACCION_MANTENIMIENTO.ACTUALIZAR;
         this._AplicativoService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
@@ -486,16 +486,16 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
         this.nodoModuloSeleccionado.esVisible = true;
         this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.ACTUALIZAR;
 
-        this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == 'M' ? 'módulo' :
-            nodoIngreso.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
+        this.nodoModuloSeleccionado.tipo = `${nodoIngreso.tipoNodo == TIPO_NODO_APLICATIVO.MODULO ? 'módulo' :
+            nodoIngreso.tipoNodo == TIPO_NODO_APLICATIVO.FORMULARIO ? 'formulario' : 'acción'}`;
         this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
         this.nodoModuloSeleccionado.nodo = nodoIngreso;
     }
 
     btnNodoCambioNombre(nodo: ModuloAplicativo): void {
         this.nodoModuloSeleccionado.accionRealizar = ACCION_MANTENIMIENTO.ACTUALIZAR;
-        this.nodoModuloSeleccionado.tipo = `${nodo.tipoNodo == 'M' ? 'módulo' :
-            nodo.tipoNodo == 'F' ? 'formulario' : 'acción'}`;
+        this.nodoModuloSeleccionado.tipo = `${nodo.tipoNodo == TIPO_NODO_APLICATIVO.MODULO ? 'módulo' :
+            nodo.tipoNodo == TIPO_NODO_APLICATIVO.FORMULARIO ? 'formulario' : 'acción'}`;
         this.nodoModuloSeleccionado.tituloDialog = `Opciones de ${this.nodoModuloSeleccionado.tipo}`;
         this.nodoModuloSeleccionado.nodo = nodo;
         nodo.sobreEscribir = false;
@@ -571,6 +571,10 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
             { key: 2, icon: 'pi pi-file-plus', label: 'Formulario', tipoNodo: TIPO_NODO_APLICATIVO.FORMULARIO, data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] },
             { key: 3, icon: 'pi pi-objects-column', label: 'Acción', tipoNodo: TIPO_NODO_APLICATIVO.ACCION, data: '', url: '', checked: false, sobreEscribir: false, esEditable: true, IdOpcionPadre: 0, codigoObj: '', icono: '', Compania: '00000100', DescripcionCorta: '', Sistema: '', NivelOpcion: 0, Orden: 0, children: [] }
         ];
+
+        // const existeModulo: boolean = this.lstModulosDisponibles.filter((f: ModuloAplicativo) => f.tipoNodo == TIPO_NODO_APLICATIVO.MODULO).length > 0;
+        // const existeFormulario: boolean = this.lstModulosDisponibles.filter((f: ModuloAplicativo) => f.tipoNodo == TIPO_NODO_APLICATIVO.FORMULARIO).length > 0;
+        // const existeAccion: boolean = this.lstModulosDisponibles.filter((f: ModuloAplicativo) => f.tipoNodo == TIPO_NODO_APLICATIVO.ACCION).length > 0;
     }
 
     generarCodigoUnico(longitud: number = 6): number {
@@ -587,7 +591,7 @@ export class MantenimientoAplicativo extends BaseComponenteMantenimiento impleme
 
         switch (this.accion) {
 
-            case ACCION_FORMULARIO.EDITAR:
+            case AccionFormulario.EDITAR:
                 this.barraBusqueda = true;
                 this._AplicativoService.mantenimientoModulo('INDIVIDUAL', this.nodoModuloSeleccionado.accionRealizar, nodo).pipe(
                     tap((response: ResponseApi) => {

@@ -10,7 +10,7 @@ import { FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService, TreeDragDropService } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { GerenciaService } from '../../services/gerencia.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
@@ -73,7 +73,7 @@ export class MantenimientoGerencia extends BaseComponenteMantenimiento implement
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        let valorAccionServicio: number = this.accion == AccionFormulario.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
         this._GerenciaService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
             tap((response: ResponseApi) => {

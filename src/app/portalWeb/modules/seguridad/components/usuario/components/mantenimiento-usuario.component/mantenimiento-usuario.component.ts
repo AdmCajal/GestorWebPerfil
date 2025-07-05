@@ -12,7 +12,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
 import { UsuarioService } from '../../services/usuario.service';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,6 +23,7 @@ import { VisualizarPerfilUsuario } from '../../../../../../core/models/interface
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
 import { UsuarioMantenimientoService } from '../../services/usuario-mantenimiento.service';
+import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-registro';
 
 @Component({
     selector: 'app-mantenimiento-usuario',
@@ -64,9 +65,9 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             if (params.get('accion')) {
                 const accionObtenida: any = params.get('accion') || '';
                 switch (accionObtenida) {
-                    case 'AGREGAR':
-                    case 'EDITAR':
-                    case 'VER':
+                    case AccionFormulario.AGREGAR:
+                    case AccionFormulario.EDITAR:
+                    case AccionFormulario.VER:
                         this.accion = accionObtenida;
                         break;
                     default:
@@ -103,30 +104,28 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
             UsuarioRed: [{ value: '', disabled: this.bloquearComponente }],
             UnidadReplicacionDominioRed: [{ value: '', disabled: this.bloquearComponente }],
 
-            ESTADO: [{ value: '', disabled: this.bloquearComponente }],
+            ESTADO: [{ value: 'A', disabled: this.bloquearComponente }],
             detallePerfiles: this._fb.array([])
         });
     }
     obtenerDatosSelect(): void {
         forkJoin({
-            estados: this._MenuLayoutService.obtenerDataMaestro('ESTGEN'),
+            estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
             companias: this._CompaniaService.obtener({})
         }).subscribe(resp => {
-            const dataEstados = resp.estados?.map((ele: any) => ({
-                descripcion: ele.descripcion?.trim()?.toUpperCase() || "", codigo: Number.parseInt(ele.codigo)
-            }));
-            this.lstEstados = [...dataEstados || []];
-
+            this.lstEstados = [...resp.estados || []];
+            console.log(resp.estados)
             const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
             this.lstCompania = [...dataCompanias || []];
         });
     }
     override obtenerDatosMantenimiento(): void {
         switch (this.accion) {
-            case ACCION_FORMULARIO.EDITAR:
-            case ACCION_FORMULARIO.VER:
+            case AccionFormulario.EDITAR:
+            case AccionFormulario.VER:
                 const usuario = this._ActivatedRoute.snapshot.data['usuario'];
                 this.mantenimientoForm.patchValue(usuario);
+                console.log(usuario)
                 break;
         }
     }
@@ -194,35 +193,31 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
         ];
     }
 
-
-
     override guardarMantenimiento(): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
-        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        let valorAccionServicio: number = this.accion == AccionFormulario.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
-        // this._UsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
-        //     tap((response: ResponseApi) => {
-        //         if (response.success) {
-        //             this.MensajeToastComun('notification', 'success', 'Correcto', response.mensaje);
-        //             this.visualizarForm = false;
-        //             this.estructuraForm();
-        //             this.msjMantenimiento.emit({ accion: this.accion, buscar: true });
-        //         } else {
-        //             this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
-        //         }
+        this._UsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
+            tap((response: ResponseApi) => {
+                if (response.success) {
+                    const parentRoute = this._ActivatedRoute.parent;
+                    this._Router.navigate(['.'], { relativeTo: parentRoute });
+                } else {
+                    this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
+                }
 
-        //     }), catchError((error) => {
-        //         this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-        //         return of(null);
-        //     }),
-        //     finalize(() => {
-        //         this.bloquearComponente = false;
-        //         this.barraBusqueda = false;
-        //         this.mantenimientoForm.enable();
-        //     })
-        // ).subscribe();
+            }), catchError((error) => {
+                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                return of(null);
+            }),
+            finalize(() => {
+                this.bloquearComponente = false;
+                this.barraBusqueda = false;
+                this.mantenimientoForm.enable();
+            })
+        ).subscribe();
 
     }
 
@@ -241,9 +236,10 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
                         }
                         const filtroForm = {
                             Documento: res.trim(),
-                            tipopersona: "N", // Natural
-                            SoloBeneficiarios: "0",
-                            UneuNegocioId: "0"
+                            TipoPersona: "N", // Natural
+                            TipoDocumento: "D", // Natural
+                            // SoloBeneficiarios: "0",
+                            // UneuNegocioId: "0"
                         }
                         return this._PersonaService.obtener(filtroForm);
                     }
@@ -272,9 +268,9 @@ export class MantenimientoUsuario extends BaseComponenteMantenimiento implements
 
     onEmpleadoSeleccionado(evento: any): void {
         this.mantenimientoForm.get('PERSONA')?.setValue(evento.value.Persona);
-        this.mantenimientoForm.get('USUARIO')?.setValue(evento.value.Documento);
-        this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue(evento.value.NombreCompleto);
-        this.mantenimientoForm.get('CorreoElectronico')?.setValue(evento.value.CorreoInterno);
+        this.mantenimientoForm.get('USUARIO')?.setValue(evento.value.Documento?.trim());
+        this.mantenimientoForm.get('NOMBRECOMPLETO')?.setValue(evento.value.NombreCompleto?.trim());
+        this.mantenimientoForm.get('CorreoElectronico')?.setValue(evento.value.CorreoElectronico);
 
         this.mantenimientoForm.get('empleadoBusqueda')?.setValue({ visible: evento.value.Documento });
     }

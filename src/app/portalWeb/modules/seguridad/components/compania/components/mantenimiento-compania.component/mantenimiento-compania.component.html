@@ -65,19 +65,19 @@
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Departamento">Departamento</label>
-            <p-select appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion" optionValue="codigo"
+            <p-select appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion" optionValue="codigo" [filter]="true"
                 [filter]="true" id="Departamento" formControlName="CodDep" placeholder="Seleccione una opción"
                 (onChange)="btnObtenerProvincia($event)"></p-select>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Provincia">Provincia</label>
-            <p-select appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo"
+            <p-select appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo" [filter]="true"
                 [filter]="true" id="Provincia" formControlName="CodPro" placeholder="Seleccione una opción"
                 (onChange)="btnObtenerDistritos($event)"></p-select>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="Distrito">Distrito</label>
-            <p-select appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo"
+            <p-select appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo" [filter]="true"
                 [filter]="true" id="Distrito" formControlName="CodDis" placeholder="Seleccione una opción"></p-select>
         </div>
     </form>
@@ -106,10 +106,10 @@
 
         <div class="gap-2">
             <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
-                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+                *ngIf="accion != AccionFormulario.AGREGAR" (onClick)="btnLogAuditoria()" />
             <p-button
-                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
-                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'" (onClick)="btnConfirmarGuardarMantenimiento($event)"
+                icon="pi {{!bloquearComponente ?  accion == AccionFormulario.AGREGAR ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != AccionFormulario.VER" (onClick)="btnConfirmarGuardarMantenimiento($event)"
                 [disabled]="!mantenimientoForm.valid" />
         </div>
     </ng-template>

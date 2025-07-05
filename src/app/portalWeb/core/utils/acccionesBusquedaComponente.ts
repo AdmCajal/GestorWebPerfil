@@ -1,4 +1,8 @@
+import { FormGroup } from "@angular/forms";
+import { AccionFormulario } from "../enums/accionFormulario.enum";
+
 export declare interface AccionesBusquedaComponente {
+    filtroForm: FormGroup;
     bloquearComponente: boolean;
     barraBusqueda: boolean;
 
@@ -8,7 +12,7 @@ export declare interface AccionesBusquedaComponente {
     btnBuscar(): void;
     inactivarRegistro(registro: any): void;
     btnExportar(): void;
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void;
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void;
 
     rptaMantenimiento(respuesta: any): void;
 

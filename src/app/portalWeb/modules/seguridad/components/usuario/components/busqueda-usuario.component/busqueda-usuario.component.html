@@ -24,7 +24,7 @@
 </section>
 
 <section class="card">
-    <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
+    <p-table #dt1 [value]="lstDataBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
         [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
         currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" responsiveLayout="scroll"
@@ -47,9 +47,9 @@
             <tr>
                 <td class="flex flex-nowrap gap-2">
                     <p-button title="Ver Registro" icon="pi pi-eye" severity="info" rounded outlined
-                        (onClick)="btnMantenimientoFormulario('VER',data)" />
+                        (onClick)="btnMantenimientoFormulario(AccionFormulario.VER,data)" />
                     <p-button title="Editar Registro" icon="pi pi-pencil"  rounded outlined styleClass="border-yellow-500 text-yellow-500"
-                        (onClick)="btnMantenimientoFormulario('EDITAR', data)" />
+                        (onClick)="btnMantenimientoFormulario(AccionFormulario.EDITAR, data)" />
                     <p-button title="{{obtenerDescAccionEstado(data.ESTADO)}} Registro"
                         icon="pi {{obtenerIconoAccionEstado(data.ESTADO)}}"
                         [severity]="obtenerColorAccionEstado(data.ESTADO)" rounded outlined

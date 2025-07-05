@@ -15,12 +15,14 @@ import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoPerfilUsuario } from '../mantenimiento-perfil-usuario.component/mantenimiento-perfil-usuario.component';
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { PerfilUsuarioService } from '../../services/perfil-usuario.service';
 import { SecurityService } from '../../../../../../security/services/Security.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
+import { CompaniaService } from '../../../compania/services/compania.service';
+import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
 
 @Component({
     selector: 'app-busqueda-perfil-usuario',
@@ -34,8 +36,14 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
     @ViewChild(MantenimientoPerfilUsuario) _Mantenimiento!: MantenimientoPerfilUsuario;
 
     lstEstados: ComboItem[] = [];
+    lstCompanias: ComboItem[] = [];
+    lstSucursales: ComboItem[] = [];
+    lstGerencias: ComboItem[] = [];
+    lstCentroCostos: ComboItem[] = [];
     constructor(
         private _PerfilUsuarioService: PerfilUsuarioService,
+        private _CompaniaService: CompaniaService,
+        private _SucursalService: SucursalService,
         private _fb: FormBuilder,
         override _MessageService: MessageService,
         private _MenuLayoutService: MenuLayoutService,
@@ -52,31 +60,35 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
 
     estructuraForm(): void {
         this.filtroForm = this._fb.group({
-            USUARIO: [{ value: '', disabled: this.bloquearComponente }],
-            NOMBRECOMPLETO: [{ value: '', disabled: this.bloquearComponente }],
-            ESTADO: [{ value: '', disabled: this.bloquearComponente }],
-            rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
+            Perfil: [{ value: '', disabled: this.bloquearComponente }],
+            CompaniaCodigo: [{ value: this.optTodos.codigo, disabled: this.bloquearComponente }],
+            Sucursal: [{ value: this.optTodos.codigo, disabled: this.bloquearComponente }],
+            CostCenter: [{ value: this.optTodos.codigo, disabled: this.bloquearComponente }]
         });
     }
     obtenerDatosSelect(): void {
         forkJoin({
             estados: this._MenuLayoutService.obtenerDataMaestro('ESTLETRAS'),
+            companias: this._CompaniaService.obtener({})
         }).subscribe(resp => {
-            this.lstEstados = [...resp.estados];
+            this.lstEstados = [this.optTodos, ...resp.estados];
+
+            const dataCompanias: any[] = resp.companias?.data?.map((m: any) => ({ codigo: m.Persona, descripcion: m.DescripcionCorta.trim() }));
+            this.lstCompanias = [this.optTodos, ...dataCompanias || []];
         });
     }
 
     btnBuscar(): void {
-        this.bloquearComponente = true;
-        this.barraBusqueda = true;
-        this.filtroForm.disable();
+        // this.bloquearComponente = true;
+        // this.barraBusqueda = true;
+        // this.filtroForm.disable();
 
-        this.lstBusqueda = [];
-        this._PerfilUsuarioService.obtenerUsuarios(this.filtroForm.value).pipe(
+        this.lstDataBusqueda = [];
+        this._PerfilUsuarioService.obtener({}).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
-                    this.lstBusqueda = [...consultaRepsonse.data];
+                    this.lstDataBusqueda = [...consultaRepsonse.data];
 
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
@@ -94,14 +106,26 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
                 this.filtroForm.enable();
             })
         ).subscribe();
+
+
+        // this.lstDataBusqueda = [
+        //     {
+        //         perfil: 'Perfil 1',
+        //         sucursalNom: 'sucursal 1',
+        //         sucursalNom: 'sucursal 1',
+        //         GerenciaNom: 'Gerencia 1',
+        //         CentroCostoNom: 'Centro de costo 1',
+        //         estado: 'A',
+        //         estadoDesc: 'Activo',
+        //     }
+        // ]
     }
     override inactivarRegistro(registro: any): void {
         this.bloquearComponente = true;
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
-        registro.SedEstado = 2;
+        let valorAccionServicio: number = ACCION_MANTENIMIENTO.ELIMINAR
         this._PerfilUsuarioService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
@@ -110,7 +134,6 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
                 } else {
                     this.MensajeToastComun('notification', 'error', 'Error', response.mensaje);
                 }
-
             }), catchError((error) => {
                 this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
                 return of(null);
@@ -126,7 +149,7 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
@@ -137,13 +160,28 @@ export class BusquedaPerfilUsuario extends BaseComponenteBusqueda implements OnI
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    btnObtenerSucursal(evento: any): void {
+        this.lstSucursales = [];
+        this.lstGerencias = [];
+        this.lstCentroCostos = [];
+
+        forkJoin({
+            sucursales: this._SucursalService.obtener({ IdEmpresa: evento.value }),
+        }).subscribe(resp => {
+            const data = resp.sucursales?.data?.map((ele: any) => ({
+                descripcion: ele.SedDescripcion?.trim()?.toUpperCase() || "", codigo: ele.SedCodigo
+            }));
+            this.lstSucursales = [this.optTodos, ...data];
+        });
     }
 }

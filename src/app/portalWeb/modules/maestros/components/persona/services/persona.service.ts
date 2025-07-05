@@ -27,6 +27,21 @@ export class PersonaService {
             })
         )
     }
+
+    mantenimiento(codigo: number, obj: any): Observable<ResponseApi> {
+
+        return from(this._configService.UrlApiPortal()).pipe(
+            switchMap(apiUrl => {
+                this.apiUrl = `${apiUrl}${API_PORTAL_ROUTES.PERSONA.MANTENIMIENTO}${codigo}`;
+                return this._http.post<ResponseApi>(this.apiUrl, obj);
+            }),
+            catchError(error => {
+                console.error(`Error al registrar. ${error}`);
+                return throwError(error);
+            })
+        )
+    }
+
     obtenerPersonaUsuario(filtro: any): Observable<ResponseApi> {
         return from(this._configService.UrlApiPortal()).pipe(
             switchMap(apiUrl => {

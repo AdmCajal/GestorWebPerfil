@@ -25,7 +25,7 @@ export const API_PORTAL_ROUTES = {
         LISTAR: `${API_CUERPO.MAESTRO}/ListaPersona`,
         LISTAR_REPRESENTANTE: `${API_CUERPO.MAESTRO}/ListaPersonaUsuario`,
         LISTAR_UBIGEO: `${API_CUERPO.MAESTRO}/ListaUbigeo`,
-        MANTENIMIENTO: `${API_CUERPO.MAESTRO}/ListaPersona`,
+        MANTENIMIENTO: `${API_CUERPO.MAESTRO}/MantenimientoPersona/`,
     },
     SUCURSAL: {
         LISTAR: `${API_CUERPO.MAESTRO}/ListaSede`,
@@ -41,6 +41,10 @@ export const API_PORTAL_ROUTES = {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListaUsuario`,
         LISTAR_PERFIL: `${API_CUERPO.SEGURIDAD}/ListarComboPerfil`,
         MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoUsuario/`,
+    },
+    PERFIL: {
+        LISTAR: `${API_CUERPO.SEGURIDAD}/ListarSeguridadPerfilUsuario`,
+        MANTENIMIENTO: `${API_CUERPO.SEGURIDAD}/MantenimientoSeguridadPerfilUsuario/`,
     },
     COMPANIA: {
         LISTAR: `${API_CUERPO.SEGURIDAD}/ListarCompania`,

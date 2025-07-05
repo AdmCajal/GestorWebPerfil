@@ -80,6 +80,7 @@ import { FocusTrapModule } from 'primeng/focustrap';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { TooltipModule } from 'primeng/tooltip';
 import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
 @NgModule({
   declarations: [
 
@@ -161,6 +162,7 @@ import { CardModule } from 'primeng/card';
     AutoFocusModule,
     TooltipModule,
     CardModule,
+    MessageModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ],
@@ -250,6 +252,7 @@ import { CardModule } from 'primeng/card';
     AutoFocusModule,
     TooltipModule,
     CardModule,
+    MessageModule,
     CabeceraVistaComponent,
     LogModificacionesComponent
   ], providers: [DatePipe, MessageService],

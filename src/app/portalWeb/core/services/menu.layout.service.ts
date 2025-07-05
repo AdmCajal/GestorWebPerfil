@@ -114,7 +114,7 @@ export class MenuLayoutService {
     let maestroFormateado: any[] = data.map((d: any) => ({
       tipo: d.CodigoTabla,
       codigo: d.Codigo,
-      descripcion: d.Descripcion
+      descripcion: d.Descripcion || d.Nombre
     }))
       .filter((f) =>
         f.tipo == tipoMaestro

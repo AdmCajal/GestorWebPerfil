@@ -3,17 +3,30 @@
 
     <form class="flex flex-wrap" [formGroup]="filtroForm" (ngSubmit)="btnBuscar()">
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
-            <label for="name1">usuario</label>
-            <input pInputText id="name1" type="text" formControlName="USUARIO" placeholder="Ingrese el nombre de usuario" />
+            <label for="name1">Compañia</label>
+            <p-select [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
+                formControlName="CompaniaCodigo" placeholder="Seleccione una opción"
+                (onChange)="btnObtenerSucursal($event)"></p-select>
         </div>
         <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
-            <label for="name1">Nombre</label>
-            <input pInputText id="name1" type="text" formControlName="NOMBRECOMPLETO" placeholder="Ingrese el nombre"/>
+            <label for="name1">Sucursal</label>
+            <p-select [options]="lstSucursales" optionLabel="descripcion" optionValue="codigo"
+                formControlName="Sucursal" placeholder="Seleccione una opción"></p-select>
         </div>
-        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
-            <label for="name1">Estado</label>
-            <p-select [options]="lstEstados" optionLabel="descripcion" optionValue="codigo" formControlName="ESTADO"
-                placeholder="Seleccione una opción"></p-select>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Gerencia</label>
+            <p-select [options]="lstGerencias" optionLabel="descripcion" optionValue="codigo"
+                formControlName="CompaniaCodigo" placeholder="Seleccione una opción"></p-select>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Centro Costo</label>
+            <p-select [options]="lstCentroCostos" optionLabel="descripcion" optionValue="codigo"
+                formControlName="CostCenter" placeholder="Seleccione una opción"></p-select>
+        </div>
+        <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-6 ">
+            <label for="name1">Perfil</label>
+            <input pInputText id="name1" type="text" formControlName="Perfil"
+                placeholder="Ingrese el nombre de usuario" />
         </div>
         <!-- <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
             <label for="name1">Fecha Creación</label>
@@ -24,7 +37,7 @@
 </section>
 
 <section class="card">
-    <p-table #dt1 [value]="lstBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
+    <p-table #dt1 [value]="lstDataBusqueda" [tableStyle]="{'min-width': '40rem', 'max-heigth': '50vh'}"
         [selectionPageOnly]="false" [paginator]="true" [rows]="cntRegistros" [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }" [rowHover]="true" [paginator]="true" selectionMode="single"
         currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros" responsiveLayout="scroll"
@@ -37,9 +50,11 @@
         <ng-template #header>
             <tr>
                 <th class="w-1">Acciones</th>
-                <th>Nro Documento</th>
-                <th>Usuario</th>
-                <th>Correo Electrónico</th>
+                <th>Perfil</th>
+                <th>Compañia</th>
+                <th>Sucursal</th>
+                <th>Gerencia</th>
+                <th>Centro De Costo</th>
                 <th>Estado</th>
             </tr>
         </ng-template>
@@ -47,24 +62,20 @@
             <tr>
                 <td class="flex flex-nowrap gap-2">
                     <p-button title="Ver Registro" icon="pi pi-eye" severity="info" rounded outlined
-                        (onClick)="btnMantenimientoFormulario('VER',data)" />
+                        (onClick)="btnMantenimientoFormulario(AccionFormulario.VER,data)" />
                     <p-button title="Editar Registro" icon="pi pi-pencil" rounded outlined
                         styleClass="border-yellow-500 text-yellow-500"
-                        (onClick)="btnMantenimientoFormulario('EDITAR', data)" />
-                    <p-button title="{{obtenerDescAccionEstado(data.ESTADO)}} Registro"
-                        icon="pi {{obtenerIconoAccionEstado(data.ESTADO)}}"
-                        [severity]="obtenerColorAccionEstado(data.ESTADO)" rounded outlined
+                        (onClick)="btnMantenimientoFormulario(AccionFormulario.EDITAR, data)" />
+                    <p-button title="{{obtenerDescAccionEstado(data.Estado)}} Registro"
+                        icon="pi {{obtenerIconoAccionEstado(data.Estado)}}"
+                        [severity]="obtenerColorAccionEstado(data.Estado)" rounded outlined
                         (onClick)="btnInactivarRegistro($event, data)" />
                 </td>
-                <td> {{data.USUARIO | titlecase}}</td>
-                <td>{{data.NOMBRECOMPLETO | titlecase}}</td>
-                <td>{{data.CorreoElectronico | lowercase}}</td>
-                <td [style]="{'white-space':'nowrap'}">
-                    <p-tag [icon]="'pi ' + obtenerIconoEstado(data.ESTADO)"
-                        [severity]="obtenerColorEstado(data.ESTADO) || 'info'" [value]="data.DesEstado">
-                    </p-tag>
-                </td>
-
+                <td> {{data.Perfil | titlecase}}</td>
+                <td> {{data.DescripcionCorta | titlecase}}</td>
+                <td> {{data.SedDescripcion | titlecase}}</td>
+                <td> {{data.GerenciaNom | titlecase}}</td>
+                <td> {{data.CentroCostoNom | titlecase}}</td>
             </tr>
         </ng-template>
         <ng-template #emptymessage>

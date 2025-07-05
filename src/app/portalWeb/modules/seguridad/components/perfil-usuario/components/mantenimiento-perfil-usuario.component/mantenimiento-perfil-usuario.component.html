@@ -9,32 +9,33 @@
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Compañia <span class="font-semibold text-red-500">*</span></label>
                     <p-select appendTo="body" [options]="lstCompanias" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"
+                        formControlName="CompaniaCodigo" placeholder="Seleccione una opción"
                         (onChange)="btnObtenerSucursal($event)"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Sucursal <span class="font-semibold text-red-500">*</span></label>
                     <p-select appendTo="body" [options]="lstSucursal" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
+                        formControlName="Sucursal" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Gerencia <span class="font-semibold text-red-500">*</span></label>
                     <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
+                        formControlName="CostCenter" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Responsable <span class="font-semibold text-red-500">*</span></label>
                     <input pInputText id="name1" placeholder="Ingrese nombre" type="text"
-                        formControlName="NOMBRECOMPLETO" />
+                        formControlName="CostCenter" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Centro De Costo <span class="font-semibold text-red-500">*</span></label>
                     <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        formControlName="PERFIL" placeholder="Seleccione una opción"></p-select>
+                        formControlName="CostCenter" placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="name1">Perfil <span class="font-semibold text-red-500">*</span></label>
-                    <input pInputText id="name1" type="text" placeholder="Ingrese el nombre del perfil" />
+                    <input pInputText id="name1" type="text" placeholder="Ingrese el nombre del perfil"
+                        formControlName="Perfil" />
                 </div>
             </form>
         </p-fieldset>
@@ -43,14 +44,16 @@
             <section class="flex flex-wrap">
                 <div class="col-5">
                     <div class="flex col-12 ">
-                        <p-select appendTo="body" [options]="lstAplicativo" optionLabel="descripcion"
+                        <p-select appendTo="body" [options]="lstAplicativo" optionLabel="descripcion" [filter]="true"
                             optionValue="codigo" [(ngModel)]="codigoAplicativoAgregar" [styleClass]="'w-12'"
                             placeholder="Seleccione una opción"></p-select>
                         <p-button icon="pi pi-plus" class="ml-2" raised severity="success"
                             title="Agregar aplicativo seleccionado" (onClick)="onAgregarAplicativoSeleccionado()" />
                     </div>
-                    <div class="border-round border-solid  border-1 border-300 col-12">
-                        <h4 class="w-12 ml-2 mb-0 text-lg font-bold"> Aplicativos seleccionados:</h4>
+                    <p-card class="w-4">
+                        <ng-template #title>
+                            <h4 class="w-12 ml-2 mb-0 text-lg font-bold"> Aplicativos seleccionados:</h4>
+                        </ng-template>
                         <span class="header-label ml-4 mt-2" *ngIf="lstaplicativosSeleccionados.length ==0">Agregue
                             aplicativos...</span>
                         <div class="w-12 ml-3">
@@ -64,12 +67,13 @@
                                 </b>
                             </div>
                         </div>
-                    </div>
+                    </p-card>
                 </div>
                 <div class="col-7 div-accesos-perfil">
                     <div class="flex">
                         <p-tree [value]="aplicativoSeleccionado.modulos" styleClass="w-full md:w-[30rem]" class="w-full"
-                            selectionMode="checkbox">
+                            (onNodeSelect)="onNodeSelectModulos($event)" selectionMode="checkbox"
+                            [(selection)]="aplicativoSeleccionado.modulosSeleccionados">
                             <ng-template let-node #header>
                                 <div class="w-12 flex justify-content-left ">
                                     <p class="w-12 flex flex-nowrap justify-content-between">
@@ -122,10 +126,10 @@
 
         <div class="gap-2">
             <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
-                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+                *ngIf="accion != AccionFormulario.AGREGAR" (onClick)="btnLogAuditoria()" />
             <p-button
-                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
-                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
+                icon="pi {{!bloquearComponente ?  accion == AccionFormulario.AGREGAR ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != AccionFormulario.VER"
                 (onClick)="btnConfirmarGuardarMantenimiento($event)" />
         </div>
     </ng-template>

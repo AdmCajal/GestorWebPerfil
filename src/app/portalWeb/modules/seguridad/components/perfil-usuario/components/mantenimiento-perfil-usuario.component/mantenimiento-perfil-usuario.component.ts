@@ -11,7 +11,7 @@ import { ConfirmationService, MessageService, TreeNode } from 'primeng/api';
 import { MenuLayoutService } from '../../../../../../core/services/menu.layout.service';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/acccionesMantenimientoComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,6 +23,7 @@ import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 import { AplicativoService } from '../../../aplicativo/services/aplicativo.service';
 import { ModuloAplicativo } from '../../../../../../core/models/interfaces/aplicativo/modulo.aplicativo';
 import { SucursalService } from '../../../../../maestros/components/sucursal/services/sucursal.service';
+import { AplicativoPerfil } from '../../../../../../core/models/interfaces/perfil/apliactivo.perfil';
 
 @Component({
     selector: 'app-mantenimiento-perfil-usuario',
@@ -41,9 +42,8 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
 
     lstAplicativo: ComboItem[] = [];
 
-    lstaplicativosSeleccionados: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }[] = []
-
-    aplicativoSeleccionado: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] } = { Sistema: '', Nombre: '', modulos: [] };
+    lstaplicativosSeleccionados: AplicativoPerfil[] = []
+    aplicativoSeleccionado: AplicativoPerfil = { Sistema: '', Nombre: '', modulos: [], modulosSeleccionados: [] };
     codigoAplicativoAgregar: any;
     comentarioModulos: string = 'Seleccione un aplicativo asignado...';
 
@@ -66,19 +66,13 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
 
     override estructuraForm(): void {
         this.mantenimientoForm = this._fb.group({
-            empleadoBusqueda: [{ value: '', disabled: this.bloquearComponente }],
-            PERSONA: [{ value: '', disabled: this.bloquearComponente }],
-            USUARIO: [{ value: '', disabled: this.bloquearComponente }],
-            NOMBRECOMPLETO: [{ value: '', disabled: true }],
-            PERFIL: [{ value: '', disabled: this.bloquearComponente }],
-            TipoUsuario: [{ value: '', disabled: this.bloquearComponente }],
-            CorreoElectronico: [{ value: '', disabled: this.bloquearComponente }],
-            Clave: [{ value: '', disabled: this.bloquearComponente }],
-            contraseniaConfirmacion: [{ value: '', disabled: this.bloquearComponente }],
-            ExpirarPasswordFlag: [{ value: '', disabled: this.bloquearComponente }],
-            FechaExpiracion: [{ value: new Date(), disabled: this.bloquearComponente }],
-            ESTADO: [{ value: '', disabled: this.bloquearComponente }],
-            detallePerfiles: this._fb.array([])
+
+            Perfil: [{ value: '', disabled: this.bloquearComponente }],
+            CompaniaCodigo: [{ value: '', disabled: this.bloquearComponente }],
+            Sucursal: [{ value: '', disabled: this.bloquearComponente }],
+            CostCenter: [{ value: '', disabled: this.bloquearComponente }],
+            Usuario: [{ value: '', disabled: this.bloquearComponente }],
+            UltimoUsuario: [{ value: '', disabled: this.bloquearComponente }],
         });
     }
     obtenerDatosSelect(): void {
@@ -107,7 +101,7 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        let valorAccionServicio: number = this.accion == AccionFormulario.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
         this._PerfilUsuarioService.mantenimiento(valorAccionServicio, this.mantenimientoForm.value).pipe(
             tap((response: ResponseApi) => {
@@ -134,11 +128,11 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
     }
 
     onAgregarAplicativoSeleccionado(): void {
-        const item = this.lstAplicativo.find((item: any) => item.codigo === this.codigoAplicativoAgregar);
+        const item = this.lstAplicativo.find((item: ComboItem) => item.codigo === this.codigoAplicativoAgregar);
 
         if (item) {
-            const aplicativoAgregar: any = { Sistema: item.codigo, Nombre: item.descripcion };
-            const yaExiste = this.lstaplicativosSeleccionados.some((a: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }) => a.Sistema === aplicativoAgregar.Sistema);
+            const aplicativoAgregar: AplicativoPerfil = { Sistema: item.codigo, Nombre: item.descripcion, modulos: [], modulosSeleccionados: [] };
+            const yaExiste = this.lstaplicativosSeleccionados.some((a: AplicativoPerfil) => a.Sistema === aplicativoAgregar.Sistema);
 
             if (yaExiste) {
                 this.MensajeToastComun('notification', 'warn', 'Advertencia', 'El aplicativo ya fue agregado. No se permiten duplicados.');
@@ -149,35 +143,40 @@ export class MantenimientoPerfilUsuario extends BaseComponenteMantenimiento impl
             this.MensajeToastComun('notification', 'warn', 'Advertencia', 'No se encontró el aplicativo al momento de agregar');
         }
     }
-    onVerAplicativoSeleccionado(aplicativo: { Sistema: string, Nombre: string, modulos: ModuloAplicativo[] }): void {
-        console.log(this.aplicativoSeleccionado);
+    onVerAplicativoSeleccionado(aplicativo: AplicativoPerfil): void {
 
         this.aplicativoSeleccionado = aplicativo;
 
-        this.barraBusqueda = true;
-        this.comentarioModulos = 'Buscando módulos de aplicativo...';
-        this._AplicativoService.obtenerJerarquias({ Codigo: aplicativo.Sistema || '' }).pipe(
-            tap((response: ResponseApi) => {
-                if (response.success) {
-                    this.aplicativoSeleccionado.modulos = [...response.data?.result];
-                    if (this.aplicativoSeleccionado.modulos.length == 0) this.comentarioModulos = 'No se encontró información...';
-                    this.MensajeToastComun('notification', 'success', 'Correcto', `${response.mensaje}`);
+        if (aplicativo.modulos.length == 0) {
+            this.barraBusqueda = true;
+            this.comentarioModulos = 'Buscando módulos de aplicativo...';
+            this._AplicativoService.obtenerJerarquias({ Codigo: aplicativo.Sistema || '' }).pipe(
+                tap((response: ResponseApi) => {
+                    if (response.success) {
+                        this.aplicativoSeleccionado.modulos = [...response.data?.result];
+                        if (this.aplicativoSeleccionado.modulos.length == 0) this.comentarioModulos = 'No se encontró información...';
+                        this.MensajeToastComun('notification', 'success', 'Correcto', `${response.mensaje}`);
 
-                } else {
-                    this.comentarioModulos = 'No se encontró información...';
-                    this.MensajeToastComun('notification', 'error', 'Error', `${response.mensaje}`); return;
-                }
+                    } else {
+                        this.comentarioModulos = 'No se encontró información...';
+                        this.MensajeToastComun('notification', 'error', 'Error', `${response.mensaje}`); return;
+                    }
 
-            }), catchError((error) => {
-                this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
-                return of(null);
-            }),
-            finalize(() => {
-                this.barraBusqueda = false;
-            })
-        ).subscribe();
+                }), catchError((error) => {
+                    this.MensajeToastComun('notification', 'error', 'Error', 'Se generó un error. Pongase en contacto con los administradores.');
+                    return of(null);
+                }),
+                finalize(() => {
+                    this.barraBusqueda = false;
+                })
+            ).subscribe();
+        }
     }
-
+    onNodeSelectModulos(evento: any): void {
+        console.log(evento.node)
+        // console.log(this.lstaplicativosSeleccionados)
+        // console.log(this.aplicativoSeleccionado)
+    }
     btnObtenerSucursal(evento: any): void {
         this.lstSucursal = [];
         this.lstGerencia = [];

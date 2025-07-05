@@ -29,7 +29,7 @@ export class DashBoardGeneral implements OnInit {
 
     filtroForm: FormGroup;
 
-    lstBusqueda: any[] = [];
+    lstDataBusqueda: any[] = [];
 
     lstEstados: any[] = [];
     constructor(private _ActivatedRoute: ActivatedRoute,
@@ -74,7 +74,7 @@ export class DashBoardGeneral implements OnInit {
         this.bloquearComponente = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
         const { usuario, nombres, estado } = this.filtroForm.value;
         const filtroFormato = { USUARIO: usuario, NOMBRECOMPLETO: nombres, ESTADO: estado };
 
@@ -82,7 +82,7 @@ export class DashBoardGeneral implements OnInit {
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
-                    this.lstBusqueda = [...consultaRepsonse.data.map((d: any) => ({
+                    this.lstDataBusqueda = [...consultaRepsonse.data.map((d: any) => ({
                         nroDocumento: d.USUARIO,
                         codigoTipoDocumento: d.TipoDocumento,
                         nombres: d.NOMBRECOMPLETO,

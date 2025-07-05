@@ -18,6 +18,7 @@ import { AplicativoService } from '../../services/aplicativo.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
 import { ComboItem } from '../../../../../../core/models/interfaces/comboItem';
 import { ESTADO_REGISTRO } from '../../../../../../core/constants/estados-registro';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 @Component({
     selector: 'app-busqueda-aplicativo',
     standalone: true,
@@ -50,6 +51,15 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
             Estado: [{ value: null, disabled: this.bloquearComponente }],
             rangoFechaCreacion: [{ value: [new Date(), new Date()], disabled: this.bloquearComponente }],
         });
+        this.lstColBusqueda = [
+            'Ruc',
+            'Razón Social',
+            'Fecha',
+            'Doc. Representante',
+            'Representante',
+            'Teléfono',
+            'Estado',
+        ]
     }
     obtenerDatosSelect(): void {
 
@@ -65,11 +75,11 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
         this._AplicativoService.obtenerAplicativos(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
-                    this.lstBusqueda = [...consultaRepsonse.data];
+                    this.lstDataBusqueda = [...consultaRepsonse.data];
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
                 } else {
@@ -94,7 +104,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
 
         let valorAccionServicio: number = ACCION_MANTENIMIENTO.ESTADO
         registro.Estado = registro.Estado == ESTADO_REGISTRO.ACTIVO_NUM ? ESTADO_REGISTRO.INACTIVO_NUM : ESTADO_REGISTRO.ACTIVO_NUM;
-        
+
         this._AplicativoService.mantenimiento(valorAccionServicio, registro).pipe(
             tap((response: ResponseApi) => {
                 if (response.success) {
@@ -119,7 +129,7 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
@@ -130,9 +140,9 @@ export class BusquedaAplicativo extends BaseComponenteBusqueda implements OnInit
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

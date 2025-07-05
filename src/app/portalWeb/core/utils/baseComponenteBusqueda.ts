@@ -16,7 +16,8 @@ export class BaseComponenteBusqueda extends BaseGeneral {
 
     cntRegistros: number = 10;
     filtroForm: FormGroup;
-    lstBusqueda: any[] = [];
+    lstDataBusqueda: any[] = [];
+    lstColBusqueda: string[] = [];
 
     optTodos = { descripcion: 'TODOS', codigo: null };
 
@@ -44,12 +45,11 @@ export class BaseComponenteBusqueda extends BaseGeneral {
         this._LayoutService.onMenuToggle();
     }
     protected MensajeToastComun(key: string, tipo: string, titulo: string, dsc: string): void {
-        this._MessageService.clear();
+        // this._MessageService.clear();
         this._MessageService.add({ key: key, severity: tipo, summary: titulo, detail: dsc });
     }
 
     protected btnInactivarRegistro(event: Event, registro: any) {
-        console.log(event.target as EventTarget)
         this._ConfirmationService.confirm({
             target: event.target as EventTarget,
             message: `¿Está seguro que quiere inactivar este registro?`,
@@ -89,5 +89,9 @@ export class BaseComponenteBusqueda extends BaseGeneral {
             this.barraBusqueda = false;
             this.filtroForm.enable();
         }, 300);
+    }
+
+    protected exportarExcel(lstCabecera: string[], lstData: any[], nombreArchivo: string): boolean {
+        return true;
     }
 }

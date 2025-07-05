@@ -16,7 +16,7 @@ import { HostListener } from '@angular/core';
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoSucursal } from '../mantenimiento-sucursal.component/mantenimiento-sucursal.component';
 import { AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { CompaniaService } from '../../../../../seguridad/components/compania/services/compania.service';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
@@ -83,12 +83,12 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
         this._SucursalService.obtener(this.filtroForm.value).pipe(
             tap((consultaRepsonse: ResponseApi) => {
                 if (consultaRepsonse.success) {
 
-                    this.lstBusqueda = [...consultaRepsonse.data];
+                    this.lstDataBusqueda = [...consultaRepsonse.data];
                     this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
                     return;
                 } else {
@@ -138,7 +138,7 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Mantenimiento.IniciarMantenimientoFormulario(accion, registro);
     }
 
@@ -149,9 +149,9 @@ export class BusquedaSucursal extends BaseComponenteBusqueda implements OnInit, 
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;

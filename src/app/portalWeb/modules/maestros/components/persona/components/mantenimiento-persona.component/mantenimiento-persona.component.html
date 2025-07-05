@@ -1,121 +1,166 @@
 <p-dialog header="{{accion | titlecase}} {{ breadcrumb | titlecase}}" [modal]="true" [closable]="!bloquearComponente"
-    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-9 w-11'" [maximizable]="true">
+    [(visible)]="visualizarForm" [position]="position" [styleClass]="'md:w-10 w-11'" [maximizable]="true">
     <p-progressbar mode="indeterminate" class="mb-0 mt-0" [style]="{ height: '1px' }" *ngIf="bloquearComponente" />
 
     <form class="flex flex-wrap" [formGroup]="mantenimientoForm">
         <p-fieldset legend="Información General" class="col-6">
             <div class="w-12 flex flex-wrap">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="compania">Tipo de persona</label>
-                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        appendTo="body" id="compania" formControlName="compania"
+                    <label for="compania">Tipo de persona <span class="font-semibold text-red-500">*</span></label>
+                    <p-select appendTo="body" [options]="lstTipoPersonas" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="compania" formControlName="TipoPersona"
                         placeholder="Seleccione una opción"></p-select>
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="compania">Tipo de Persona</label>
-                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        appendTo="body" id="compania" formControlName="compania"
-                        placeholder="Seleccione una opción"></p-select>
+                    @if (mantenimientoForm.get('TipoPersona')?.invalid && mantenimientoForm.get('TipoPersona')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo tipo de persona es obligatorio
+                    </p-message>
+                    }
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
                     <label for="compania">Sexo</label>
-                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="compania" formControlName="compania" placeholder="Seleccione una opción"></p-select>
+                    <p-select appendTo="body" [options]="lstSexos" optionLabel="descripcion" optionValue="codigo"
+                        appendTo="body" id="compania" formControlName="Sexo"
+                        placeholder="Seleccione una opción"></p-select>
+                    @if (mantenimientoForm.get('Sexo')?.invalid && mantenimientoForm.get('Sexo')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo sexo es obligatorio
+                    </p-message>
+                    }
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Nro. Documento</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label for="compania">Tipo documento <span class="font-semibold text-red-500">*</span></label>
+                    <p-select appendTo="body" [options]="lstTipoDocumentos" optionLabel="descripcion"
+                        optionValue="codigo" id="compania" formControlName="TipoDocumento"
+                        placeholder="Seleccione una opción"></p-select>
+                    @if (mantenimientoForm.get('TipoDocumento')?.invalid &&
+                    mantenimientoForm.get('TipoDocumento')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo tipo de documento es obligatorio
+                    </p-message>
+                    }
+                </div>
+                @if (mantenimientoForm.get('TipoDocumento')?.value !='R') {
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>Nro. Documento <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText type="text" formControlName="Documento" placeholder="Obligatorio" />
+                    @if (mantenimientoForm.get('Documento')?.invalid && mantenimientoForm.get('Documento')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo nro. Documento es obligatorio
+                    </p-message>
+                    }
+                </div>
+                }
+                @if (mantenimientoForm.get('TipoDocumento')?.value =='R') {
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>Ruc <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText type="text" formControlName="DocumentoFiscal" placeholder="Obligatorio" />
+                    @if (mantenimientoForm.get('DocumentoFiscal')?.invalid &&
+                    mantenimientoForm.get('DocumentoFiscal')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo ruc es obligatorio
+                    </p-message>
+                    }
+                </div>
+                }
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>{{mantenimientoForm.get('TipoPersona')?.value =='J' ? 'Razón social':'Nombres'}} <span
+                            class="font-semibold text-red-500">*</span></label>
+                    <input pInputText type="text" formControlName="Nombres" placeholder="Obligatorio" />
+                    @if (mantenimientoForm.get('Nombres')?.invalid && mantenimientoForm.get('Nombres')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo
+                        {{mantenimientoForm.get('TipoPersona')?.value =='J' ? 'Razón social':'Nombres'}} es obligatorio
+                    </p-message>
+                    }
+                </div>
+                @if (mantenimientoForm.get('TipoPersona')?.value =='N') {
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>Apellido paterno</label>
+                    <input pInputText type="text" formControlName="ApellidoPaterno" placeholder="" />
+                </div>}
+                @if (mantenimientoForm.get('TipoPersona')?.value =='N') {
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>Apellido materno</label>
+                    <input pInputText type="text" formControlName="ApellidoMaterno" placeholder="" />
+                </div>
+                }
+                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
+                    <label>Fecha de nacimiento <span class="font-semibold text-red-500">*</span></label>
+                    <p-datepicker formControlName="FechaNacimiento" [styleClass]="'col-12 p-0'" appendTo="body"
+                        [iconDisplay]="'input'" [showIcon]="false" inputId="icondisplay" placeholder="dd/mm/aaaa"
+                        (onSelect)="onCalcularEdad()" (onBlur)="onCalcularEdad()" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Ruc</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Nombres</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Apellido paterno</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Apellido materno</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
-                </div>
-                <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Fecha de nacimiento</label>
-                    <p-datepicker formControlName="rangoFechaCreacion" [styleClass]="'col-12 p-0'" appendTo="body"
-                        [iconDisplay]="'input'" [showIcon]="false" inputId="icondisplay" />
+                    <label>Edad</label>
+                    <input pInputText type="text" formControlName="Edad" placeholder="Edad calculada" />
                 </div>
             </div>
         </p-fieldset>
         <p-fieldset legend="Información Adicional" class="col-6">
             <div class="w-12 flex flex-wrap">
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Teléfono Nro. 1</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label>Teléfono Nro. 1</label>
+                    <input pInputText type="text" formControlName="Telefono" placeholder="" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Teléfono Nro. 2</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label>Teléfono Nro. 2</label>
+                    <input pInputText type="text" formControlName="Celular" placeholder="" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Correo electrónico</label>
-                    <input pInputText id="Código" type="mail" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label>Correo electrónico <span class="font-semibold text-red-500">*</span></label>
+                    <input pInputText type="mail" formControlName="CorreoElectronico" placeholder="Obligatorio" />
+                    @if (mantenimientoForm.get('CorreoElectronico')?.invalid &&
+                    mantenimientoForm.get('CorreoElectronico')?.touched)
+                    {
+                    <p-message severity="error" variant="simple" size="small">El campo correo electrónico es obligatorio
+                    </p-message>
+                    }
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Dirección</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label>Dirección</label>
+                    <input pInputText type="text" formControlName="Direccion" placeholder="" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Estado">Estado</label>
+                    <label for="Estado">Estado <span class="font-semibold text-red-500">*</span></label>
                     <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        appendTo="body" id="Estado" formControlName="estado"
+                        appendTo="body" id="Estado" formControlName="Estado"
                         placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-6 col-12 ">
-                    <label for="Código">Referencia</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <label>Referencia</label>
+                    <input pInputText type="text" formControlName="DireccionReferencia" placeholder="" />
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Departamento">Departamento</label>
-                    <p-select appendTo="body" [options]="lstPerfiles" optionLabel="descripcion" optionValue="codigo"
-                        id="Departamento" formControlName="departamento" appendTo="body"
-                        placeholder="Seleccione una opción"></p-select>
+                    <p-select appendTo="body" [options]="lstDepartamentos" optionLabel="descripcion"
+                        optionValue="codigo" id="Departamento" formControlName="DEPARTAMENTO" appendTo="body"
+                        [filter]="true" placeholder="Seleccione una opción"
+                        (onChange)="btnObtenerProvincia($event)"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Provincia">Provincia</label>
-                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        appendTo="body" id="Provincia" formControlName="provincia"
-                        placeholder="Seleccione una opción"></p-select>
+                    <p-select appendTo="body" [options]="lstProvincias" optionLabel="descripcion" optionValue="codigo"
+                        [filter]="true" appendTo="body" id="Provincia" formControlName="PROVINCIA"
+                        placeholder="Seleccione una opción" (onChange)="btnObtenerDistritos($event)"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-4 col-12 ">
                     <label for="Distrito">Distrito</label>
-                    <p-select appendTo="body" [options]="lstEstados" optionLabel="descripcion" optionValue="codigo"
-                        id="Distrito" formControlName="distrito" placeholder="Seleccione una opción"></p-select>
+                    <p-select appendTo="body" [options]="lstDistritos" optionLabel="descripcion" optionValue="codigo"
+                        [filter]="true" id="Distrito" formControlName="SunatUbigeo"
+                        placeholder="Seleccione una opción"></p-select>
                 </div>
                 <div class="flex flex-col gap-2 pl-2 pr-2 md:col-12 col-12 ">
                     <label for="Distrito">Comentario</label>
-                    <input pInputText id="Código" type="text" formControlName="codigo"
-                        placeholder="Código de sucursal" />
+                    <input pInputText type="text" formControlName="Comentario" placeholder="" />
                 </div>
             </div>
         </p-fieldset>
     </form>
 
+    @if (visualizarLogMoficaciones) {
     <div class="flex flex-wrap justify-content-between">
         <!-- <app-log-modificaciones [componente]="this"></app-log-modificaciones> -->
-        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones" *ngIf="visualizarLogMoficaciones">
+        <p-fieldset [styleClass]="'font-bold'" legend="Log de modificaciones">
             <div class="flex flex-column">
                 <div class="flex">
                     <p-avatar label="P" styleClass="mr-2" size="large" shape="circle" />
@@ -132,17 +177,20 @@
                 </p-divider>
             </div>
         </p-fieldset>
-    </div>
+    </div>}
     <ng-template #footer>
 
         <div class="gap-2">
+            @if (accion != AccionFormulario.AGREGAR) {
             <p-button icon="pi pi-users" severity="secondary" class="mr-2" label="{{'Auditoria' | titlecase}}" raised
-                *ngIf="accion != 'AGREGAR'" (onClick)="btnLogAuditoria()" />
+                (onClick)="btnLogAuditoria()" />}
+            @if (accion != AccionFormulario.VER) {
             <p-button
-                icon="pi {{!bloquearComponente ?  accion == 'AGREGAR' ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
-                class="ml-2" label="{{accion | titlecase}}" raised *ngIf="accion != 'VER'"
-                (onClick)="btnConfirmarGuardarMantenimiento($event)" />
+                icon="pi {{!bloquearComponente ?  accion == AccionFormulario.AGREGAR ? 'pi-plus':'pi-pencil': 'pi-spin pi-spinner' }}"
+                class="ml-2" label="{{accion | titlecase}}" raised [disabled]="!mantenimientoForm.valid"
+                (onClick)="btnConfirmarGuardarMantenimiento($event)" />}
         </div>
     </ng-template>
 </p-dialog>
 <p-confirmdialog key="confirmarRegistroMantenimiento" />
+<p-toast [showTransformOptions]="'translateY(90%)'" key="notification" position="bottom-right"></p-toast>

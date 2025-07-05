@@ -11,6 +11,7 @@ import { HostListener } from '@angular/core';
 import { ComponentesCompartidosModule } from '../../componentes-compartidos.module';
 import { AccionesBusquedaComponente } from '../../../core/utils/acccionesBusquedaComponente';
 import { SecurityService } from '../../../security/services/Security.service';
+import { AccionFormulario } from '../../../core/enums/accionFormulario.enum';
 
 @Component({
     selector: 'app-cabecera-vista',
@@ -22,7 +23,7 @@ import { SecurityService } from '../../../security/services/Security.service';
 
         <div class="flex flex-wrap gap-2">
             <p-button icon="pi pi-plus" label="Nuevo" raised (onClick)="btnMantenimientoFormulario()" />
-            <p-button type="submit" icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()"  />
+            <p-button type="submit" icon="pi pi-search" label="Buscar" severity="secondary" raised (onClick)="btnBuscar()" [disabled]="!componente.filtroForm.valid" />
             <p-button icon="pi pi-download" label="Exportar" severity="contrast" raised (onClick)="btnExportar()" />
         </div>
     </div>
@@ -54,7 +55,7 @@ export class CabeceraVistaComponent implements OnInit {
     }
 
     btnMantenimientoFormulario(): void {
-        this.componente.btnMantenimientoFormulario('AGREGAR');
+        this.componente.btnMantenimientoFormulario(AccionFormulario.AGREGAR);
     }
 
     btnBuscar(): void {

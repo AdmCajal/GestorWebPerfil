@@ -18,7 +18,7 @@ import { AcccionesMantenimientoComponente } from '../../../../../../core/utils/a
 import { CompaniaService } from '../../services/compania.service';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { PersonaService } from '../../../../../maestros/components/persona/services/persona.service';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { BaseComponenteMantenimiento } from '../../../../../../core/utils/baseComponenteMantenimiento';
 import { SecurityService } from '../../../../../../security/services/Security.service';
@@ -132,7 +132,7 @@ export class MantenimientoCompania extends BaseComponenteMantenimiento implement
         this.barraBusqueda = true;
         this.mantenimientoForm.disable();
 
-        let valorAccionServicio: number = this.accion == ACCION_FORMULARIO.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
+        let valorAccionServicio: number = this.accion == AccionFormulario.AGREGAR ? ACCION_MANTENIMIENTO.AGREGAR : ACCION_MANTENIMIENTO.ACTUALIZAR;
 
         this.mantenimientoForm.get('Grupo')?.setValue(this.mantenimientoForm.get('CodDep')?.value + "" + this.mantenimientoForm.get('CodPro')?.value + "" + this.mantenimientoForm.get('CodDis')?.value);
 

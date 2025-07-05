@@ -4,14 +4,31 @@ import { FormGroup } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LayoutService } from '../../../layout/service/layout.service';
+import { AccionFormulario } from '../enums/accionFormulario.enum';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BaseGeneral {
 
+    AccionFormulario = AccionFormulario;
     constructor(
     ) {
+    }
+
+    obtenerDescEstado(estado: string | number): string {
+        switch (estado) {
+            case 1:
+            case "1":
+            case "A":
+                return "Activo";
+            case "0":
+            case 2:
+            case "I":
+                return "Inactivo";
+            default:
+                return "Sin estado válido";
+        }
     }
 
     obtenerColorEstado(estado: string | number): "success" | "info" | "warn" | "danger" | "secondary" | "contrast" {

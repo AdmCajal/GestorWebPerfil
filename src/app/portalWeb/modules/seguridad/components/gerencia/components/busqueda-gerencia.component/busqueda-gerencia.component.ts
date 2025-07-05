@@ -13,7 +13,7 @@ import { MenuLayoutService } from '../../../../../../core/services/menu.layout.s
 import { LayoutService } from '../../../../../../../layout/service/layout.service';
 import { MantenimientoGerencia } from '../mantenimiento-gerencia.component/mantenimiento-gerencia.component';
 import { AccionesBusquedaComponente as AccionesBusquedaComponente } from '../../../../../../core/utils/acccionesBusquedaComponente';
-import { ACCION_FORMULARIO } from '../../../../../../core/constants/acciones-formulario';
+import { AccionFormulario } from '../../../../../../core/enums/accionFormulario.enum';
 import { ACCION_MANTENIMIENTO } from '../../../../../../core/constants/acciones-mantenimiento';
 import { GerenciaService } from '../../services/gerencia.service';
 import { BaseComponenteBusqueda } from '../../../../../../core/utils/baseComponenteBusqueda';
@@ -76,9 +76,9 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
         this.barraBusqueda = true;
         this.filtroForm.disable();
 
-        this.lstBusqueda = [];
+        this.lstDataBusqueda = [];
 
-        this.lstBusqueda = [
+        this.lstDataBusqueda = [
             {
                 nombreAplicativo: 'Spring',
                 descripcion: 'Aplicativo ERP',
@@ -101,7 +101,7 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
         //     tap((consultaRepsonse: ResponseApi) => {
         //         if (consultaRepsonse.success) {
 
-        //             this.lstBusqueda = [...consultaRepsonse.data];
+        //             this.lstDataBusqueda = [...consultaRepsonse.data];
 
         //             this.MensajeToastComun('notification', 'success', 'Correcto', consultaRepsonse.mensaje);
         //             return;
@@ -151,10 +151,10 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
     btnExportar(): void {
         throw new Error('Method not implemented.');
     }
-    btnMantenimientoFormulario(accion: 'AGREGAR' | 'EDITAR' | 'VER', registro?: any): void {
+    btnMantenimientoFormulario(accion: AccionFormulario, registro?: any): void {
         this._Mantenimiento.visualizarForm = true;
         this._Mantenimiento.accion = accion;
-        this._Mantenimiento.bloquearComponente = accion == ACCION_FORMULARIO.VER ? true : false;
+        this._Mantenimiento.bloquearComponente = accion == AccionFormulario.VER ? true : false;
         this._Mantenimiento.estructuraForm();
         this._Mantenimiento.mantenimientoForm.patchValue(registro);
     }
@@ -166,9 +166,9 @@ export class BusquedaGerencia extends BaseComponenteBusqueda implements OnInit, 
 
         if (respuesta.accion) {
             switch (respuesta.accion) {
-                case 'AGREGAR':
+                case AccionFormulario.AGREGAR:
                     break;
-                case 'EDITAR':
+                case AccionFormulario.EDITAR:
                     break;
                 default:
                     break;
